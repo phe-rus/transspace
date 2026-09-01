@@ -4,7 +4,8 @@
     "**/*.tsx",
     "eslint.config.js",
     "prettier.config.js",
-    "vite.config.ts"
+    "vite.config.ts",
+    "worker-configuration.d.ts"
   ],
   "compilerOptions": {
     "target": "ES2022",
@@ -16,21 +17,21 @@
       "DOM.Iterable"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "./worker-configuration.d.ts"
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@pherus/ui/*": [
-        "../../shared/ui/src/*"
-      ]
+      "@/*": ["./src/*"],
+      "@components/*": ["./components/*"],
+      "@collections/*": ["./collections/*"],
+      "@pherus/ui/*": ["../../shared/ui/src/*"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "allowJs": true,
     /* Linting */
     "skipLibCheck": true,
     "strict": true,

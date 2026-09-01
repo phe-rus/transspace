@@ -29,11 +29,11 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "google.antigravity",
     "[json]": {
-        "editor.defaultFormatter": "google.antigravity",
+        "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true
     },
     "[jsonc]": {
-        "editor.defaultFormatter": "google.antigravity",
+        "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true
     },
     "[javascript]": {

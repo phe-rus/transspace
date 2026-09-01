@@ -1,18 +1,24 @@
-import { getContext, Queryprovider } from "@/lib/query.provider"
-import { routeTree } from "@/routeTree.gen"
+import { queryContext, Queryprovider } from "@/lib/query-context"
+import type { RequestContext } from "@/types"
+import { deLocalizeUrl, localizeUrl } from '@collections/runtime'
 import { createRouter as createTanStackRouter } from "@tanstack/react-router"
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
+import { routeTree } from "./routeTree.gen"
 
 export function getRouter() {
-  const queryClient = getContext()
+  const queryClient = queryContext()
   const router = createTanStackRouter({
-    routeTree,
+    routeTree: routeTree,
     context: {
-      queryClient: queryClient,
+      queryClient: queryClient
     },
     scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
+    rewrite: {
+      input: ({ url }) => deLocalizeUrl(url),
+      output: ({ url }) => localizeUrl(url),
+    },
     Wrap: ({ children }) => (
       <Queryprovider query={queryClient}>
         {children}
@@ -31,5 +37,6 @@ export function getRouter() {
 declare module "@tanstack/react-router" {
   interface Register {
     router: ReturnType<typeof getRouter>
+    server: RequestContext
   }
 }

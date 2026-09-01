@@ -7,7 +7,7 @@ export const seo = ({
     description = 'Tanstack start - template',
     type = 'website',
     img = '/og.png',
-    locale = 'en_US',
+    locale,
     keywords,
     icons,
     styles,
@@ -42,6 +42,7 @@ export const seo = ({
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: title },
         { name: 'twitter:description', content: description },
+        ...(canonicalUrl ? [{ property: 'twitter:url', content: canonicalUrl }] : []),
         ...(typeof img === 'string'
             ? [{ name: 'twitter:image', content: img }]
             : Array.isArray(img) && img.length > 0

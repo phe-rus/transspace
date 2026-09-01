@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "aria-mira",
+  "style": "base-mira",
   "rsc": false,
   "tsx": true,
   "tailwind": {
@@ -11,11 +11,11 @@
   },
   "iconLibrary": "hugeicons",
   "aliases": {
-    "components": "@workspace/ui/components",
-    "utils": "@workspace/ui/lib/utils",
-    "hooks": "@workspace/ui/hooks",
-    "lib": "@workspace/ui/lib",
-    "ui": "@workspace/ui/components"
+    "components": "@pherus/ui/components",
+    "utils": "@pherus/ui/lib/utils",
+    "hooks": "@pherus/ui/hooks",
+    "lib": "@pherus/ui/lib",
+    "ui": "@pherus/ui/components"
   },
   "rtl": false,
   "menuColor": "default-translucent",

@@ -1,5 +1,7 @@
-import type { RouterAppContext } from "@/lib/query.provider"
+import { getclientURL } from "@/lib/getURL"
 import { seo } from "@/seo/seo"
+import type { RouterAppContext } from "@/types"
+import { getLocale } from "@collections/runtime"
 import tailwindcss from "@pherus/ui/globals.css?url"
 import { cn } from "@pherus/ui/lib/utils"
 import { TanStackDevtools } from "@tanstack/react-devtools"
@@ -17,6 +19,8 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
       shortcut: '/favicon.ico',
       apple: '/favicon.ico'
     },
+    canonicalUrl: getclientURL(),
+    locale: getLocale(),
     styles: tailwindcss
   }),
   notFoundComponent: () => (
@@ -31,7 +35,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 function RootDocument() {
   return (
     <html
-      lang="en"
+      lang={getLocale()}
       className="antialiased blur-none"
       suppressHydrationWarning
     >

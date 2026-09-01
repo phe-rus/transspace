@@ -1,11 +1,6 @@
-import type * as React from "react"
+import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
-import {
-  Button as ButtonPrimitive,
-  Link as LinkPrimitive,
-  type ButtonProps as ButtonPrimitiveProps,
-  type LinkProps as LinkPrimitiveProps,
-} from "react-aria-components"
+
 import { cn } from "@pherus/ui/lib/utils"
 
 const buttonVariants = cva(
@@ -48,40 +43,14 @@ function Button({
   variant = "default",
   size = "default",
   ...props
-}: Omit<ButtonPrimitiveProps, "className"> &
-  React.RefAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants> & {
-    className?: string
-  }) {
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"
-      data-variant={variant}
-      data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
   )
 }
 
-function LinkButton({
-  className,
-  variant = "default",
-  size = "default",
-  ...props
-}: Omit<LinkPrimitiveProps, "className"> &
-  VariantProps<typeof buttonVariants> & {
-    className?: string
-  }) {
-  return (
-    <LinkPrimitive
-      data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
-}
-
-export { Button, LinkButton, buttonVariants }
+export { Button, buttonVariants }

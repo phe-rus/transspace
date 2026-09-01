@@ -1,6 +1,4 @@
-import { focusManager, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import type { PropsWithChildren } from "react"
-import { useState } from "react"
+import { focusManager, QueryCache, QueryClient } from "@tanstack/react-query"
 
 if (typeof window !== "undefined") {
     focusManager.setEventListener((setFocused) => {
@@ -10,15 +8,7 @@ if (typeof window !== "undefined") {
 }
 
 let cachedClient: QueryClient | undefined
-type QueryProviderProps = PropsWithChildren<{
-    query: QueryClient
-}>
-
-export type RouterAppContext = {
-    queryClient: QueryClient
-}
-
-export const queryContext = () => {
+export const clientContext = () => {
     return new QueryClient({
         defaultOptions: {
             queries: {
@@ -38,24 +28,10 @@ export const queryContext = () => {
     })
 }
 
-export function getContext() {
+export function queryContext() {
     if (typeof window !== "undefined") {
-        if (!cachedClient) cachedClient = queryContext()
+        if (!cachedClient) cachedClient = clientContext()
         return cachedClient
     }
-    return queryContext()
-}
-
-export const Queryprovider = ({
-    query,
-    children
-}: QueryProviderProps) => {
-    const [client] = useState(() => query)
-    return (
-        <QueryClientProvider client={client}>
-            <>
-                {children}
-            </>
-        </QueryClientProvider>
-    )
+    return clientContext()
 }
