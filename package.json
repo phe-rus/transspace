@@ -28,5 +28,10 @@
   "workspaces": [
     "transspace",
     "shared/*"
-  ]
+  ],
+  "dependencies": {
+    "@tanstack/react-query": "^5.102.8",
+    "@tanstack/react-query-devtools": "^5.102.8",
+    "@tanstack/react-router-ssr-query": "^1.167.2"
+  }
 }

@@ -22,8 +22,8 @@
       "@/*": [
         "./src/*"
       ],
-      "@workspace/ui/*": [
-        "../../packages/ui/src/*"
+      "@pherus/ui/*": [
+        "../../shared/ui/src/*"
       ]
     },
     /* Bundler mode */

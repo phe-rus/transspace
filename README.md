@@ -1,21 +1,7 @@
-# shadcn/ui monorepo template
+# Transspace
 
-This is a TanStack Start monorepo template with shadcn/ui.
+### Queer knowledge, resources, community, & support.
 
-## Adding components
+A platform by Pherus built for the LGBTQ+ community. Discover trusted resources, practical knowledge, opportunities, and support shared through queer-to-queer community knowledge.
 
-To add components to your app, run the following command at the root of your `web` app:
-
-```bash
-pnpm dlx shadcn@latest add button -c apps/web
-```
-
-This will place the ui components in the `packages/ui/src/components` directory.
-
-## Using components
-
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@workspace/ui/components/button";
-```
+We're currently preparing Transspace for its first stage of development. Read the full story or reach out if you'd like to help us build it.

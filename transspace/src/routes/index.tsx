@@ -1,9 +1,11 @@
+import { Button } from "@pherus/ui/components/button"
 import { createFileRoute } from "@tanstack/react-router"
-import { Button } from "@workspace/ui/components/button"
 
-export const Route = createFileRoute("/")({ component: App })
+export const Route = createFileRoute("/")({
+  component: RouteComponent
+})
 
-function App() {
+function RouteComponent() {
   return (
     <div className="flex min-h-svh p-6">
       <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">

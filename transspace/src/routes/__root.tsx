@@ -1,27 +1,23 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
+import type { RouterAppContext } from "@/lib/query.provider"
+import { seo } from "@/seo/seo"
+import tailwindcss from "@pherus/ui/globals.css?url"
+import { cn } from "@pherus/ui/lib/utils"
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
-import appCss from "@workspace/ui/globals.css?url"
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TanStack Start Starter",
-      },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
+export const Route = createRootRouteWithContext<RouterAppContext>()({
+  head: () => seo({
+    title: "TanStack Start Starter",
+    description: "TanStack Start Starter",
+    keywords: ['TanStack', 'Start', 'Starter'],
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon.ico',
+      apple: '/favicon.ico'
+    },
+    styles: tailwindcss
   }),
   notFoundComponent: () => (
     <main className="container mx-auto p-4 pt-16">
@@ -32,15 +28,40 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className="antialiased blur-none"
+      suppressHydrationWarning
+    >
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className={cn(
+        "relative min-h-svh min-w-full border bg-background",
+        "overflow-x-hidden selection:bg-olive-500/15",
+        "typeset wrap-anywhere duration-200",
+        "flex flex-col"
+      )}>
+        <Outlet />
         <Scripts />
+        <TanStackDevtools
+          config={{
+            triggerMode: "floating",
+            position: "top-right",
+          }}
+          plugins={[
+            {
+              name: "TanStack Query",
+              render: <ReactQueryDevtoolsPanel />,
+            },
+            {
+              name: "Tanstack Router",
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+          ]}
+        />
       </body>
     </html>
   )
