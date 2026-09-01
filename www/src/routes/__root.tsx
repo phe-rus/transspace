@@ -1,9 +1,11 @@
-import { getLocale } from "@/collections/runtime"
 import { getclientURL } from "@/lib/getURL"
+import { getLocale } from "@/paraglide/runtime"
 import { seo } from "@/seo/seo"
 import type { RouterAppContext } from "@/types"
+import { Bgtransform } from "@components/background/bg-transform"
 import tailwindcss from "@pherus/ui/globals.css?url"
 import { cn } from "@pherus/ui/lib/utils"
+import { ThemeProvider } from "@pherus/ui/theming"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
@@ -46,9 +48,18 @@ function RootDocument() {
         "relative min-h-svh min-w-full border bg-background",
         "overflow-x-hidden selection:bg-olive-500/15",
         "typeset wrap-anywhere duration-200",
-        "flex flex-col"
+        "flex flex-col isolate"
       )}>
-        <Outlet />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableColorScheme
+          enableSystem
+        >
+          <Bgtransform />
+          <Outlet />
+        </ThemeProvider>
         <Scripts />
         <TanStackDevtools
           config={{

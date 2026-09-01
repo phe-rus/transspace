@@ -3,9 +3,9 @@
     "nav": {
         "title": "Transspace",
         "items": {
-            "overview": "Aperçu",
-            "resources": "Ressources",
-            "opportunities": "Opportunités"
+            "overview": "概览",
+            "resources": "资源",
+            "opportunities": "机遇"
         }
     }
 }
