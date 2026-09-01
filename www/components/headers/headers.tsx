@@ -1,5 +1,5 @@
-import { m } from "@collections/messages"
-import { getLocale, locales, setLocale } from "@collections/runtime"
+import { m } from "@/paraglide/messages"
+import { getLocale, locales, setLocale } from "@/paraglide/runtime"
 import { Person } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"

@@ -1,4 +1,4 @@
-import { paraglideMiddleware } from '@collections/server.js'
+import { paraglideMiddleware } from '@/paraglide/server.js'
 import handler from "@tanstack/react-start/server-entry"
 
 export default {

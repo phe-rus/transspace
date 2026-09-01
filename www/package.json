@@ -13,17 +13,21 @@
     "deploy": "wrangler deploy",
     "type-gen": "wrangler types",
     "postinstall": "bun run type-gen",
-    "translate": "inlang machine translate --project project.inlang"
+    "translate": "inlang machine translate --project project.inlang",
+    "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.3.0",
     "@hugeicons/react": "^1.1.10",
+    "@pherus/ui": "workspace:*",
     "@tanstack/react-devtools": "latest",
+    "@tanstack/react-query": "^5.102.8",
+    "@tanstack/react-query-devtools": "^5.102.8",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-router-ssr-query": "^1.167.2",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
-    "@pherus/ui": "workspace:*",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4"

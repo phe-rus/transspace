@@ -1,7 +1,7 @@
+import { getLocale } from "@/collections/runtime"
 import { getclientURL } from "@/lib/getURL"
 import { seo } from "@/seo/seo"
 import type { RouterAppContext } from "@/types"
-import { getLocale } from "@collections/runtime"
 import tailwindcss from "@pherus/ui/globals.css?url"
 import { cn } from "@pherus/ui/lib/utils"
 import { TanStackDevtools } from "@tanstack/react-devtools"

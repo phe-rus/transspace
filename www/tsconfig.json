@@ -20,11 +20,17 @@
       "vite/client",
       "./worker-configuration.d.ts"
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./components/*"],
-      "@collections/*": ["./collections/*"],
-      "@pherus/ui/*": ["../../shared/ui/src/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@pherus/ui/*": [
+        "../../shared/ui/src/*"
+      ]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

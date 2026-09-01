@@ -17,11 +17,12 @@ const config = defineConfig({
   },
   plugins: [
     paraglideVitePlugin({
-      project: './project.inlang',
-      outdir: './collections',
+      project: path.resolve(import.meta.dirname, './project.inlang'),
+      outdir: path.resolve(import.meta.dirname, './src/paraglide'),
       outputStructure: 'message-modules',
       cookieName: 'PARAGLIDE_LOCALE',
-      strategy: ['url', 'cookie', 'preferredLanguage', 'baseLocale']
+      strategy: ['url', 'cookie', 'preferredLanguage', 'baseLocale'],
+      emitTsDeclarations: true,
     }),
     cloudflare({
       viteEnvironment: {
