@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "transspace",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -20,7 +20,7 @@
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
-    "@workspace/ui": "workspace:*",
+    "@pherus/ui": "workspace:*",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwindcss": "^4"
