@@ -7,5 +7,15 @@
       "resources": "Ressourcen",
       "opportunities": "Möglichkeiten"
     }
+  },
+  "overview": {
+    "hero": {
+      "title": "Queer-Wissen, Ressourcen, Gemeinschaft und Unterstützung.",
+      "subtitle": "Eine Plattform von Pherus für die LGBTQ+ Community. Entdecke vertrauenswürdige Ressourcen, praktische Kenntnisse, Möglichkeiten und Unterstützung, die durch die Queer-Community geteilt werden.",
+      "links": {
+        "resources": "Ressourcen durchsuchen",
+        "opportunities": "Möglichkeiten durchsuchen"
+      }
+    }
   }
 }

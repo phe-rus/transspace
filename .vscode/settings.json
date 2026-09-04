@@ -41,7 +41,7 @@
         "editor.formatOnSave": true
     },
     "[typescriptreact]": {
-         "editor.defaultFormatter": "vscode.typescript-language-features",
+        "editor.defaultFormatter": "vscode.typescript-language-features",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
@@ -54,5 +54,8 @@
         "source.action.useSortedKeys.biome": "explicit",
         "source.organizeImports.biome": "explicit",
         "source.fixAll.biome": "explicit"
+    },
+    "[tailwindcss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }

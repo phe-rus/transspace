@@ -7,5 +7,15 @@
             "resources": "资源",
             "opportunities": "机遇"
         }
+    },
+    "overview": {
+        "hero": {
+            "title": "酷儿知识、资源、社区和支持。",
+            "subtitle": "一个由 Pherus 为 LGBTQ+ 社区建立的平台。发现可信赖的资源、实践知识、机会以及通过酷儿到酷儿社区知识分享的支持。",
+            "links": {
+                "resources": "浏览资源",
+                "opportunities": "浏览机遇"
+            }
+        }
     }
 }

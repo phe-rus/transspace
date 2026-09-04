@@ -7,5 +7,15 @@
             "resources": "Ressources",
             "opportunities": "Opportunités"
         }
+    },
+    "overview": {
+        "hero": {
+            "title": "Savoir, ressources, communauté et soutien queer.",
+            "subtitle": "Une plateforme de Pherus conçue pour la communauté LGBTQ+. Découvrez des ressources fiables, des connaissances pratiques, des opportunités et du soutien partagés par la communauté queer.",
+            "links": {
+                "resources": "Parcourir les ressources",
+                "opportunities": "Parcourir les opportunités"
+            }
+        }
     }
 }

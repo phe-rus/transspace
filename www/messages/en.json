@@ -7,5 +7,15 @@
       "resources": "Resources",
       "opportunities": "Opportunities"
     }
+  },
+  "overview": {
+    "hero": {
+      "title": "Queer knowledge, resources, community, and support.",
+      "subtitle": "A platform by Pherus built for the LGBTQ+ community. Discover trusted resources, practical knowledge, opportunities, and support shared through queer-to-queer community knowledge.",
+      "links": {
+        "resources": "Browse resources",
+        "opportunities": "Browse opportunities"
+      }
+    }
   }
 }
