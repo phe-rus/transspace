@@ -1,11 +1,11 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "nav": {
+  "navigation": {
     "title": "Transspace",
     "items": {
-      "overview": "Übersicht",
       "resources": "Ressourcen",
-      "opportunities": "Möglichkeiten"
+      "opportunities": "Möglichkeiten",
+      "community": "Community"
     }
   },
   "overview": {

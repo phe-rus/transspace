@@ -1,16 +1,19 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "nav": {
+  "navigation": {
     "title": "Transspace",
     "items": {
-      "overview": "Overview",
       "resources": "Resources",
-      "opportunities": "Opportunities"
+      "opportunities": "Opportunities",
+      "legal": "Legal",
+      "learn-new-skills": "Learn new skills",
+      "support": "Support",
+      "the-fog-of-history": "The fog of history"
     }
   },
   "overview": {
     "hero": {
-      "title": "Queer knowledge, resources, community, and support.",
+      "title": "Queer resources, community, and support for everyone.",
       "subtitle": "A platform by Pherus built for the LGBTQ+ community. Discover trusted resources, practical knowledge, opportunities, and support shared through queer-to-queer community knowledge.",
       "links": {
         "resources": "Browse resources",

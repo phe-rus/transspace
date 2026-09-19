@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "cn"
 
-import { cn } from "@pherus/ui/lib/utils"
 import { Button } from "@pherus/ui/components/button"
 import { Input } from "@pherus/ui/components/input"
 import { Textarea } from "@pherus/ui/components/textarea"
