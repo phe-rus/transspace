@@ -87,13 +87,19 @@ function RouteComponent() {
         </div>
       </section>
 
-      <section className='container grid grid-cols-12 gap-3 min-h-screen justify-center  w-full mx-auto md:max-w-5xl'>
+      <section className={cn(
+        'container grid grid-cols-12 gap-3 min-h-screen',
+        'justify-center w-full mx-auto md:max-w-5xl'
+      )}>
         <span className='flex w-full col-span-5 shadow bg-[#D4736E] h-[18vh] rounded-2xl' />
         <span className='flex w-full col-span-4 shadow bg-[#E8C87A] h-[18vh] rounded-2xl' />
         <span className='flex w-full col-span-3 shadow bg-[#5B7B95] h-[18vh] rounded-2xl' />
       </section>
 
-      <section className='container flex flex-col gap-5 min-h-screen justify-center  w-full mx-auto md:max-w-5xl'>
+      <section className={cn(
+        'container flex flex-col gap-5 min-h-screen',
+        'justify-center w-full mx-auto md:max-w-5xl'
+      )}>
         <div className='flex items-center justify-between'>
           <h1>Explore by real community need</h1>
         </div>
@@ -119,8 +125,11 @@ function RouteComponent() {
         </div>
       </section>
 
-      <section className='flex flex-col gap-5 w-full min-h-screen justify-center bg-[#F5E2E0]'>
-        <div className='container grid grid-cols-2 gap-5 py-10 mx-auto w-full md:max-w-5xl'>
+      <section className={cn(
+        'flex flex-col gap-5 w-full min-h-screen',
+        'justify-center bg-[#F5E2E0]'
+      )}>
+        <div className='container grid grid-cols-1 md:grid-cols-2 gap-5 py-10 mx-auto w-full md:max-w-5xl'>
           <div className='flex flex-col'>
             <h2 className='text-3xl'>We carry knowledge across borders</h2>
             <p className="text-base">
@@ -145,12 +154,15 @@ function RouteComponent() {
           </div>
 
           <div className='flex flex-col'>
-            <span className="bg-muted flex-1 rounded-2xl min-h-[45vh]" />
+            <span className="bg-muted flex-1 rounded-2xl min-h-[35vh]" />
           </div>
         </div>
       </section>
 
-      <section className='container flex flex-col min-h-screen justify-center gap-5 w-full mx-auto md:max-w-5xl'>
+      <section className={cn(
+        'container flex flex-col min-h-screen',
+        'justify-center gap-5 w-full mx-auto md:max-w-5xl'
+      )}>
         <div>
           <span>Weekly Curation</span>
           <h1>Insights from the frontlines</h1>
@@ -161,7 +173,10 @@ function RouteComponent() {
         </div>
       </section>
 
-      <section className='container flex flex-col min-h-screen justify-center gap-5 w-full mx-auto md:max-w-5xl'>
+      <section className={cn(
+        'container flex flex-col min-h-screen',
+        'justify-center gap-5 w-full mx-auto md:max-w-5xl'
+      )}>
         <div>
           <span>Mutual aid</span>
           <h1>Active community campaigns</h1>

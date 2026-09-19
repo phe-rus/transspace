@@ -38,10 +38,10 @@ export const Headers = () => {
     }, [])
 
     return (
-        <header className='sticky top-0'>
+        <header className='sticky top-0 z-35 bg-background border-b border-border/35'>
             <section className={cn(
                 'flex items-center justify-between h-10',
-                'backdrop-blur w-full px-5 z-35'
+                'w-full px-5'
             )}>
                 <div className='flex items-center gap-5'>
                     <Link to='/' className="font-bold text-base text-primary">

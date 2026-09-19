@@ -1,3 +1,4 @@
+import { Footers } from '@/components/footers'
 import { Headers } from '@/components/headers'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Fragment } from 'react/jsx-runtime'
@@ -11,6 +12,7 @@ function RouteComponent() {
     <Fragment>
       <Headers />
       <Outlet />
+      <Footers />
     </Fragment>
   )
 }
