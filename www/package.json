@@ -28,6 +28,7 @@
     "@tanstack/react-router-ssr-query": "^1.167.2",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
+    "motion": "^13.4.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4"
@@ -49,6 +50,6 @@
     "typescript": "^7.0.2",
     "vite": "^8",
     "web-vitals": "^6.2.1",
-    "wrangler": "^4.127.1"
+    "wrangler": "^4.135.0"
   }
 }

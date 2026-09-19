@@ -1,4 +1,4 @@
-import { Headers } from '@components/headers'
+import { Headers } from '@/components/headers'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Fragment } from 'react/jsx-runtime'
 

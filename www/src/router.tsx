@@ -1,6 +1,6 @@
 import { queryContext, Queryprovider } from "@/lib/query-context"
-import type { RequestContext } from "@/types"
 import { deLocalizeUrl, localizeUrl } from '@/paraglide/runtime'
+import type { RequestContext } from "@/types"
 import { createRouter as createTanStackRouter } from "@tanstack/react-router"
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
 import { routeTree } from "./routeTree.gen"

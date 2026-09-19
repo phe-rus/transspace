@@ -1,8 +1,9 @@
+import { Bgtransform } from "@/components/background/bg-transform"
+import { LanguageSelect } from "@/components/languages"
 import { getclientURL } from "@/lib/getURL"
 import { getLocale } from "@/paraglide/runtime"
 import { seo } from "@/seo/seo"
 import type { RouterAppContext } from "@/types"
-import { Bgtransform } from "@components/background/bg-transform"
 import tailwindcss from "@pherus/ui/globals.css?url"
 import { cn } from "@pherus/ui/lib/utils"
 import { ThemeProvider } from "@pherus/ui/theming"
@@ -59,6 +60,7 @@ function RootDocument() {
         >
           <Bgtransform />
           <Outlet />
+          <LanguageSelect />
         </ThemeProvider>
         <Scripts />
         <TanStackDevtools

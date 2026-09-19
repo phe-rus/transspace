@@ -26,9 +26,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@components/*": [
-        "./components/*"
-      ],
       "@pherus/ui/*": [
         "../../shared/ui/src/*"
       ]

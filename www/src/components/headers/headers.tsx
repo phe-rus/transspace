@@ -1,11 +1,8 @@
-import { getNativeLanguageName } from "@/lib/intl.displayNames"
 import { m } from "@/paraglide/messages"
-import { getLocale, locales, setLocale } from "@/paraglide/runtime"
 import { Person } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { cn } from "@pherus/ui/lib/utils"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@pherus/ui/select"
 import { Link } from "@tanstack/react-router"
 import { useMemo } from "react"
 
@@ -24,14 +21,6 @@ export const Headers = () => {
             to: "/opportunities"
         }
     ], [])
-
-    const languages = useMemo(() => Array.from(locales, (locale) => {
-        return {
-            value: locale,
-            label: getNativeLanguageName(locale),
-        }
-    }), [locales])
-
 
     return (
         <header className='sticky top-0'>
@@ -57,27 +46,6 @@ export const Headers = () => {
                 </div>
 
                 <nav className='flex items-center gap-2'>
-                    <Select
-                        defaultValue={getLocale()}
-                        items={languages}
-                        onValueChange={(value) => {
-                            setLocale(value as any)
-                        }}
-                    >
-                        <SelectTrigger size='sm' className='w-32 border-border/55!'>
-                            <SelectValue placeholder='Language' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectLabel>Languages</SelectLabel>
-                                {languages.map((item) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
                     <Button
                         size='icon-sm'
                         variant='secondary'
