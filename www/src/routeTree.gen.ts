@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as protectionRouteRouteImport } from './routes/(protection)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as publicResourcesRouteRouteImport } from './routes/(public)/resources/route'
+import { Route as publicResourcesIndexRouteImport } from './routes/(public)/resources/index'
 
 const protectionRouteRoute = protectionRouteRouteImport.update({
   id: '/(protection)',
@@ -26,25 +28,46 @@ const publicIndexRoute = publicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const publicResourcesRouteRoute = publicResourcesRouteRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicResourcesIndexRoute = publicResourcesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicResourcesRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/resources': typeof publicResourcesRouteRouteWithChildren
   '/': typeof publicIndexRoute
+  '/resources/': typeof publicResourcesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
+  '/resources': typeof publicResourcesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(protection)': typeof protectionRouteRoute
   '/(public)': typeof publicRouteRouteWithChildren
+  '/(public)/resources': typeof publicResourcesRouteRouteWithChildren
   '/(public)/': typeof publicIndexRoute
+  '/(public)/resources/': typeof publicResourcesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/resources' | '/' | '/resources/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/(protection)' | '/(public)' | '/(public)/'
+  to: '/' | '/resources'
+  id:
+    | '__root__'
+    | '/(protection)'
+    | '/(public)'
+    | '/(public)/resources'
+    | '/(public)/'
+    | '/(public)/resources/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -75,14 +98,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
+    '/(public)/resources': {
+      id: '/(public)/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof publicResourcesRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/resources/': {
+      id: '/(public)/resources/'
+      path: '/'
+      fullPath: '/resources/'
+      preLoaderRoute: typeof publicResourcesIndexRouteImport
+      parentRoute: typeof publicResourcesRouteRoute
+    }
   }
 }
 
+interface publicResourcesRouteRouteChildren {
+  publicResourcesIndexRoute: typeof publicResourcesIndexRoute
+}
+
+const publicResourcesRouteRouteChildren: publicResourcesRouteRouteChildren = {
+  publicResourcesIndexRoute: publicResourcesIndexRoute,
+}
+
+const publicResourcesRouteRouteWithChildren =
+  publicResourcesRouteRoute._addFileChildren(publicResourcesRouteRouteChildren)
+
 interface publicRouteRouteChildren {
+  publicResourcesRouteRoute: typeof publicResourcesRouteRouteWithChildren
   publicIndexRoute: typeof publicIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicResourcesRouteRoute: publicResourcesRouteRouteWithChildren,
   publicIndexRoute: publicIndexRoute,
 }
 

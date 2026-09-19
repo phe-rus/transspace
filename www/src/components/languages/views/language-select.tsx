@@ -1,4 +1,3 @@
-import { getNativeLanguageName } from "@/lib/intl.displayNames"
 import { getLocale, locales } from "@/paraglide/runtime"
 import { Check, ChevronDown, Globe, SearchIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -14,7 +13,7 @@ import {
 } from "motion/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { DEFAULT_ANCHOR, type Anchor, type Edge, type Side } from "../types"
-import { selectLocale, setStoreAnchor, useStoreAnchor } from "../useLocals"
+import { getNativeLanguageName, selectLocale, setStoreAnchor, useStoreAnchor } from "../useLocals"
 
 const VIEWPORT_PADDING = 12
 
