@@ -1,7 +1,6 @@
 import { Footers } from '@/components/footers'
 import { Headers } from '@/components/headers'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { Fragment } from 'react/jsx-runtime'
 
 export const Route = createFileRoute('/(public)')({
   component: RouteComponent
@@ -9,10 +8,10 @@ export const Route = createFileRoute('/(public)')({
 
 function RouteComponent() {
   return (
-    <Fragment>
+    <div data-posture="expressive">
       <Headers />
       <Outlet />
       <Footers />
-    </Fragment>
+    </div>
   )
 }

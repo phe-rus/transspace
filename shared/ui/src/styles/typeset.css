@@ -26,7 +26,13 @@
         &:where(p) {
             margin-block: 0;
             line-height: normal;
-            color: var(--muted-foreground) !important;
+            /*
+              Not !important: measured light mode contrast of --muted-foreground
+              on --background is 4.26:1, under the 4.5:1 floor (AC-4). Dropping
+              !important lets a component opt into --foreground where contrast
+              matters, rather than forcing every paragraph below the floor.
+            */
+            color: var(--muted-foreground);
         }
 
         &:where(h1, h2, h3, h4, h5, h6) {

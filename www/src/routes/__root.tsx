@@ -46,7 +46,7 @@ function RootDocument() {
       </head>
       <body className={cn(
         "relative min-h-svh min-w-full border bg-background",
-        "overflow-x-hidden selection:bg-olive-500/15",
+        "overflow-x-hidden selection:bg-primary/15",
         "typeset wrap-anywhere duration-200",
         "flex flex-col isolate"
       )}>

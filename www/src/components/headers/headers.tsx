@@ -3,31 +3,25 @@ import { Menu03Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@pherus/ui/avatar"
 import { Button } from "@pherus/ui/button"
+import {
+    Drawer,
+    DrawerBackdrop,
+    DrawerClose,
+    DrawerContent,
+    DrawerPopup,
+    DrawerPortal,
+    DrawerTitle,
+    DrawerTrigger,
+    DrawerViewport,
+} from "@pherus/ui/drawer"
 import { cn } from "@pherus/ui/lib/utils"
+import { fadeDown, staggerChildren as stagger } from "@pherus/ui/lib/motion"
 import { Link } from "@tanstack/react-router"
-import { motion, type Variants } from "motion/react"
-import { useMemo } from "react"
+import { motion } from "motion/react"
+import { useMemo, useState } from "react"
 
 export const Headers = () => {
-    const stagger: Variants = useMemo(
-        () => ({
-            hidden: {},
-            show: { transition: { staggerChildren: 0.05 } },
-        }),
-        [],
-    )
-
-    const fadeDown: Variants = useMemo(
-        () => ({
-            hidden: { opacity: 0, y: -8 },
-            show: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.4, ease: "easeOut" },
-            },
-        }),
-        [],
-    )
+    const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
     const navItems = useMemo(() => [
         {
@@ -112,14 +106,62 @@ export const Headers = () => {
                     </motion.div>
 
                     <motion.div variants={fadeDown}>
-                        <Button
-                            size="icon-sm"
-                            variant="ghost"
-                            className="flex md:hidden"
-                            aria-label="Open menu"
+                        <Drawer
+                            side="right"
+                            open={mobileNavOpen}
+                            onOpenChange={setMobileNavOpen}
                         >
-                            <HugeiconsIcon icon={Menu03Icon} />
-                        </Button>
+                            <DrawerTrigger
+                                render={
+                                    <Button
+                                        size="icon-sm"
+                                        variant="ghost"
+                                        className="flex md:hidden"
+                                        aria-label="Open menu"
+                                    >
+                                        <HugeiconsIcon icon={Menu03Icon} />
+                                    </Button>
+                                }
+                            />
+                            <DrawerPortal>
+                                <DrawerBackdrop />
+                                <DrawerViewport side="right">
+                                    <DrawerPopup side="right">
+                                        <DrawerContent>
+                                            <div className="flex items-center justify-between">
+                                                <DrawerTitle>{m["navigation.title"]()}</DrawerTitle>
+                                                <DrawerClose
+                                                    render={
+                                                        <Button
+                                                            size="icon-sm"
+                                                            variant="ghost"
+                                                            aria-label="Close menu"
+                                                        >
+                                                            <HugeiconsIcon icon={Menu03Icon} />
+                                                        </Button>
+                                                    }
+                                                />
+                                            </div>
+                                            <nav className="flex flex-col gap-1">
+                                                {navItems.map((item) => (
+                                                    <Link
+                                                        key={item.to}
+                                                        to={item.to}
+                                                        onClick={() => setMobileNavOpen(false)}
+                                                        className="rounded-lg px-2 py-2 text-sm"
+                                                        activeProps={{
+                                                            className: "text-primary",
+                                                        }}
+                                                    >
+                                                        {item.label}
+                                                    </Link>
+                                                ))}
+                                            </nav>
+                                        </DrawerContent>
+                                    </DrawerPopup>
+                                </DrawerViewport>
+                            </DrawerPortal>
+                        </Drawer>
                     </motion.div>
                 </nav>
             </section>

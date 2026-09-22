@@ -322,3 +322,35 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/*
+  Global reduced-motion floor: covers every CSS animation/transition in the
+  app (third party components included), not only the shared motion module.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  Posture tokens: one product, two postures. A shared component reads
+  --posture-radius / --posture-spacing / --posture-motion from whichever
+  side it renders under, set once per route group layout.
+*/
+[data-posture="expressive"] {
+  --posture-radius: var(--radius-4xl);
+  --posture-spacing: --spacing(6);
+  --posture-motion: 1;
+}
+
+[data-posture="dense"] {
+  --posture-radius: var(--radius-lg);
+  --posture-spacing: --spacing(3);
+  --posture-motion: 0;
+}
