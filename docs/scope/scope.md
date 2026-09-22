@@ -1,0 +1,156 @@
+# Scope: Transspace
+
+A global, community-driven knowledge and resource platform by Pherus for the LGBTQIA+ community: discover trusted healthcare, legal, housing, opportunity, and life-skills resources through queer-to-queer (Q2Q) community knowledge, kept trustworthy by community submission and moderation.
+
+**Build approach:** Tracer Bullet (each vertical, directory, atlas, guides, stories, opportunities, businesses, is built end to end through data, API, and UI before the next one starts; the stated measure of success is real directory usage, so the first slice has to work for real before anything else is added).
+**Workflow:** Beta (after `/develop`: `/check verify`, then `/test`). Features touching identity, moderation, or the data model carry a `· GA` override (adds a fresh-model `/check review` and `/document`), given the sensitivity of the content and the audience.
+**Workspace:** `www` (the product app). `shared/ui` is tracked here as a foundation dependency, not a separate workspace scope, since it has no roadmap of its own.
+
+_These are recommendations to keep your build orderly, not requirements. Skip anything that does not fit: if you already know how to build a feature, use `/develop` and skip `/architect`. You decide when a feature is `done`._
+
+## At a glance
+
+| # | Feature | Phase | Status |
+|---|---------|-------|--------|
+| 1 | Stack & architecture | Foundation | existing |
+| 2 | Coding standards & tooling | Foundation | planned |
+| 3 | Internationalization foundation | Foundation | existing |
+| 4 | Design system & UI foundation | Foundation | in-progress |
+| 5 | Navigation shell (header, footer, language switcher) | Foundation | in-progress |
+| 6 | Data model & backend | Foundation | planned |
+| 7 | Authentication & identity | Foundation | planned |
+| 8 | Trust & verification signals | Foundation | planned |
+| 9 | Resource directory | Slice 1 | planned |
+| 10 | Accounts & saved resources | Slice 1 | planned |
+| 11 | Contribution & moderation flow | Slice 2 | planned |
+| 12 | Resource Atlas | Slice 3 | planned |
+| 13 | Guides | Slice 4 | planned |
+| 14 | Stories | Slice 5 | planned |
+| 15 | Opportunities | Slice 6 | planned |
+| 16 | Businesses & creators | Slice 7 | planned |
+| 17 | Unified global search | Slice 8 | planned |
+
+## Foundations
+
+### 1. Stack & architecture · existing
+TanStack Start on Cloudflare Workers (Vite, Wrangler), in a Turborepo + bun workspace monorepo with the `www` app and a `shared/ui` package.
+code in `./`, `www/`
+
+### 2. Coding standards & tooling
+No root `AGENTS.md` yet; lint, format, and typecheck scripts already exist per package, but conventions (naming, folder shape, component patterns) aren't written down anywhere.
+**Done when:** root `AGENTS.md` reflects the real stack and conventions, and lint/format/typecheck run clean across both workspaces.
+- [ ] Capture conventions + tooling choices: `/audit`
+
+### 3. Internationalization foundation · existing
+Paraglide/inlang wired end to end: server middleware, runtime locale switching, and a language picker with persisted position. The message catalog currently only covers the landing page and nav labels.
+code in `www/src/paraglide/`, `www/src/components/languages/`
+
+### 4. Design system & UI foundation · in-progress
+`@pherus/ui`, a Base UI/shadcn-flavored component package (button, card, input, select, avatar, badge, progress, textarea, toast). Covers today's landing page but is missing primitives later slices will need (dialog, tabs, combobox, forms, data tables, map/atlas visuals); grow it alongside each slice via `/develop`.
+code in `shared/ui/src/components/`
+
+### 5. Navigation shell (header, footer, language switcher) · in-progress
+Header, footer, and language switcher are built and animated; several links (Opportunities, Legal, Learn new skills, The fog of history) point at routes that don't exist yet and will resolve as each slice ships.
+code in `www/src/components/headers/`, `www/src/components/footers/`, `www/src/components/languages/`
+
+### 6. Data model & backend · needs a decision · GA
+No database or API layer exists yet (`www/src/routes/api/` is empty). Every entity, resources, categories, countries, guides, stories, opportunities, businesses, submissions, accounts, needs a schema and a Workers API surface before any content vertical is real instead of hardcoded.
+**Done when:** a data model and API layer exist that the resource directory (and later verticals) can read and write against, with migrations applied and types generated.
+- [ ] Design it (spec): `/architect data model & backend`
+
+### 7. Authentication & identity · needs a decision · GA
+OAuth-based sign in with a private account identity kept separate from a pseudonymous, public Q2Q profile (display name, avatar, topics, region). No accounts or sessions exist yet; the `(protection)` route is an empty stub.
+**Done when:** a person can sign in via OAuth, gets a private account plus a pseudonymous public profile, and protected routes actually gate on session state.
+- [ ] Design it (spec): `/architect authentication & identity`
+
+### 8. Trust & verification signals · needs a decision · GA
+A shared way to show why a piece of content can be trusted (community submitted, community reviewed, references available, professional/verified, last reviewed), so every content type carries the same signals instead of a generic star rating.
+**Done when:** a trust/status model exists that resource, guide, story, opportunity, and business detail pages can all render consistently.
+- [ ] Design it (spec): `/architect trust & verification signals`
+
+## Slice 1: Resource directory
+
+### 9. Resource directory · needs a decision
+Browse and search resources by need and category (health care, transition support, mental health, legal, immigration, housing). The landing page hero and category cards already exist with hardcoded data, and `/resources` is an empty stub; this feature wires the real thing. This is the walking skeleton, success for this build is measured by real directory usage.
+**Done when:** a person can search or browse by category, see real results backed by the data model, open a resource detail page with its trust signals, and empty/no-result states render.
+- [ ] Design it (spec): `/architect resource directory`
+
+### 10. Accounts & saved resources · needs a decision
+Sign up/sign in (built on the Authentication foundation), a lightweight profile, and the ability to save/bookmark resources to revisit later.
+**Done when:** a signed-in person can bookmark a resource from its card or detail page and see their saved list; signed-out visitors keep full read access to the directory.
+- [ ] Design it (spec): `/architect accounts & saved resources`
+
+## Slice 2: Contribution & moderation
+
+### 11. Contribution & moderation flow · needs a decision · GA
+A progressive submission flow for community members to propose a resource (later: guide/story/opportunity/business), and an admin/moderator review queue, using the `(protection)` route as the reviewer's protected area, to approve, reject, or request changes before anything goes live. This is what makes the community-submit-and-moderate trust model real.
+**Done when:** a signed-in person can submit a resource and see its status (pending/approved/rejected) on a submitter dashboard; a moderator can review, approve, or reject a submission and it reflects live in the directory once approved.
+- [ ] Design it (spec): `/architect contribution & moderation flow`
+
+## Slice 3: Resource Atlas
+
+### 12. Resource Atlas · needs a decision
+Geographic drill-down discovery (world → region → country → city → category) so a person can explore what's available where they are or where they're headed, without it feeling like a database table.
+**Done when:** a person can navigate from a world view down to a country/city and see the resources, guides, and community notes relevant there.
+- [ ] Design it (spec): `/architect resource atlas`
+
+## Slice 4: Guides
+
+### 13. Guides · needs a decision
+Editorial, community-contributed practical guides (e.g. "Finding healthcare in Uganda," "Understanding gender-affirming care"), the existing "Learn new skills" nav destination.
+**Done when:** a person can browse and read a guide with contributor info, references, and related resources; guides go through the same contribution & moderation flow.
+- [ ] Design it (spec): `/architect guides`
+
+## Slice 5: Stories
+
+### 14. Stories · needs a decision
+Firsthand community narratives (transition, relocation, housing, employment experiences), the existing "The fog of history" nav destination, clearly framed as personal experience rather than guaranteed instruction, with contributor privacy options.
+**Done when:** a person can read a story, see that it's marked as personal experience, and choose how visible their identity is when they submit one.
+- [ ] Design it (spec): `/architect stories`
+
+## Slice 6: Opportunities
+
+### 15. Opportunities · needs a decision
+Jobs, freelance work, scholarships, mentorship, and volunteering shared by the community and allies, filterable by country, remote/local, category, and deadline.
+**Done when:** a person can filter and browse opportunities and open one to see eligibility, deadline, and how to apply.
+- [ ] Design it (spec): `/architect opportunities`
+
+## Slice 7: Businesses & creators
+
+### 16. Businesses & creators · needs a decision
+Discovery space for queer-owned businesses, creators, and professionals the community wants to support.
+**Done when:** a person can browse and open a business/creator profile with what they offer and how to reach or support them.
+- [ ] Design it (spec): `/architect businesses & creators`
+
+## Slice 8: Unified global search
+
+### 17. Unified global search · needs a decision
+One search that spans resources, guides, stories, opportunities, and businesses once those verticals exist, with suggested/recent searches and a useful empty state. Deliberately sequenced last since it needs the other content types to search across.
+**Done when:** a search from the homepage or header returns relevant results across content types, with a helpful empty state when nothing matches.
+- [ ] Design it (spec): `/architect unified global search`
+
+## Deferred
+Out of scope for the current build pass, kept so the plan stays honest.
+- **Community support & mutual aid**: crowdfunding/donation campaigns, the raised/target progress cards already sketched on the landing page · needs a decision · GA
+- **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects · needs a decision · GA
+
+## Legend
+
+**The decision box.** Every feature carries exactly one, the sub-task whose label ends with `(spec)`. Every other box is an execution box; `/architect` never ticks one.
+
+**Feature lifecycle**: the scope updates as a feature moves; each row is what it shows and who sets it:
+
+| State | Set by | The feature shows |
+|---|---|---|
+| `planned` · needs a decision | `/scope` | one box: `Design it (spec): /architect <feature>` |
+| `in-progress` (designed) | **`/architect` at spec capture** | `Design it` ticked; spec linked; `Build it: /develop <feature>` + 2 to 5 milestones; the tier's closing boxes (`Verify it`, `Test it`, `Review it` + `Document it` for GA) |
+| `in-progress` (building) | `/develop` | milestone sub-boxes tick one by one; code pointer filled |
+| `in-progress` (verified) | `/check verify` | `Build it` + milestones ticked; `Verify it` ticked |
+| `done` | you, when you decide it is; `/sync` reconciles | boxes you ran ticked; the tier's last stage (Beta/GA → after `/test`) is the suggested point to call it done |
+
+- **Next step** = the first unticked box (always a command or a tracked milestone).
+- **needs a decision** = run `/architect` first; otherwise straight to `/develop`.
+- **Atomic build tasks live in the spec's `## Build plan`, not here.**
+- **Status**: `planned` → `in-progress` → `done`, plus `existing` (pre-workflow) and `dropped` (de-scoped, kept for history).
+- **Workflow tier tag** beside a heading (`· GA`) sets that feature's rigor above the project default; no tag inherits Beta.
+- **Pointer line** (`code in <path>`): filled by `/architect` (spec) and `/develop` (code).
