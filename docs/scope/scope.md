@@ -47,7 +47,17 @@ code in `www/src/paraglide/`, `www/src/components/languages/`
 
 ### 4. Design system & UI foundation · in-progress
 `@pherus/ui`, a Base UI/shadcn-flavored component package (button, card, input, select, avatar, badge, progress, textarea, toast). Covers today's landing page but is missing primitives later slices will need (dialog, tabs, combobox, forms, data tables, map/atlas visuals); grow it alongside each slice via `/develop`.
-code in `shared/ui/src/components/`
+**Done when:** typography and color follow the written token rules with no unexplained inline overrides, motion is centralized and reduced motion aware, an accessibility floor is written, and the public versus protected posture split is real and checkable.
+- [x] Design it (spec): `/architect design system & UI foundation`
+- [ ] Build it: `/develop design system & UI foundation`
+  - [ ] Fix the known token, typography, and accessibility violations in `index.tsx`, `__root.tsx`, and `headers.tsx` (AC-1, AC-2, AC-4)
+  - [ ] Add the shared motion module with reduced motion support, at both the module and global CSS level (AC-3)
+  - [ ] Enforce the token rule with a new `shared/ui` lint config, and add the popover/menu and drawer primitives the mega menu needs (AC-2, AC-5)
+  - [ ] Wire the public/protected posture split and apply the shape signature radii and spring (AC-6, AC-7)
+  - [ ] Measure the light mode contrast floor and write the standard into a new `shared/ui/AGENTS.md` (AC-4, AC-6, AC-7)
+- [ ] Verify it: `/check verify design system & UI foundation`
+- [ ] Test it: `/test design system & UI foundation`
+spec [0001](../specs/0001-design-system-ui-foundation/index.md) · code in `shared/ui/src/components/`
 
 ### 5. Navigation shell (header, footer, language switcher) · in-progress
 Header, footer, and language switcher are built and animated; several links (Opportunities, Legal, Learn new skills, The fog of history) point at routes that don't exist yet and will resolve as each slice ships.
