@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.3.0",
+    "maplibre-gl": "^6.11.0",
     "motion": "^13.4.0",
     "next-themes": "^0.4.6",
     "react": "^19.2.6",
@@ -42,6 +43,7 @@
     "./globals.css": "./src/styles/globals.css",
     "./lib/*": "./src/lib/*.ts",
     "./*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts"
+    "./hooks/*": "./src/hooks/*.ts",
+    "./geo-mapping": "./src/geo-mapping/index.ts"
   }
 }

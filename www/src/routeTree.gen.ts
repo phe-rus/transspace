@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as protectionRouteRouteImport } from './routes/(protection)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as publicAtlasRouteImport } from './routes/(public)/atlas'
 import { Route as publicResourcesRouteRouteImport } from './routes/(public)/resources/route'
 import { Route as publicResourcesIndexRouteImport } from './routes/(public)/resources/index'
 
@@ -28,6 +29,11 @@ const publicIndexRoute = publicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const publicAtlasRoute = publicAtlasRouteImport.update({
+  id: '/atlas',
+  path: '/atlas',
+  getParentRoute: () => publicRouteRoute,
+} as any)
 const publicResourcesRouteRoute = publicResourcesRouteRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -41,10 +47,12 @@ const publicResourcesIndexRoute = publicResourcesIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/resources': typeof publicResourcesRouteRouteWithChildren
+  '/atlas': typeof publicAtlasRoute
   '/': typeof publicIndexRoute
   '/resources/': typeof publicResourcesIndexRoute
 }
 export interface FileRoutesByTo {
+  '/atlas': typeof publicAtlasRoute
   '/': typeof publicIndexRoute
   '/resources': typeof publicResourcesIndexRoute
 }
@@ -53,19 +61,21 @@ export interface FileRoutesById {
   '/(protection)': typeof protectionRouteRoute
   '/(public)': typeof publicRouteRouteWithChildren
   '/(public)/resources': typeof publicResourcesRouteRouteWithChildren
+  '/(public)/atlas': typeof publicAtlasRoute
   '/(public)/': typeof publicIndexRoute
   '/(public)/resources/': typeof publicResourcesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/resources' | '/' | '/resources/'
+  fullPaths: '/resources' | '/atlas' | '/' | '/resources/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/resources'
+  to: '/atlas' | '/' | '/resources'
   id:
     | '__root__'
     | '/(protection)'
     | '/(public)'
     | '/(public)/resources'
+    | '/(public)/atlas'
     | '/(public)/'
     | '/(public)/resources/'
   fileRoutesById: FileRoutesById
@@ -98,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
+    '/(public)/atlas': {
+      id: '/(public)/atlas'
+      path: '/atlas'
+      fullPath: '/atlas'
+      preLoaderRoute: typeof publicAtlasRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
     '/(public)/resources': {
       id: '/(public)/resources'
       path: '/resources'
@@ -128,11 +145,13 @@ const publicResourcesRouteRouteWithChildren =
 
 interface publicRouteRouteChildren {
   publicResourcesRouteRoute: typeof publicResourcesRouteRouteWithChildren
+  publicAtlasRoute: typeof publicAtlasRoute
   publicIndexRoute: typeof publicIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicResourcesRouteRoute: publicResourcesRouteRouteWithChildren,
+  publicAtlasRoute: publicAtlasRoute,
   publicIndexRoute: publicIndexRoute,
 }
 

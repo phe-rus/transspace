@@ -1,4 +1,3 @@
-import { Footers } from '@/components/footers'
 import { Headers } from '@/components/headers'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
@@ -11,7 +10,6 @@ function RouteComponent() {
     <div data-posture="expressive">
       <Headers />
       <Outlet />
-      <Footers />
     </div>
   )
 }
