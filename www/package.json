@@ -41,6 +41,7 @@
     "@tailwindcss/vite": "^4",
     "@tanstack/devtools-vite": "latest",
     "@tanstack/eslint-config": "latest",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",

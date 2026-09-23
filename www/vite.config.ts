@@ -15,6 +15,14 @@ const config = defineConfig({
       "@": path.resolve(import.meta.dirname, "./src")
     },
   },
+  optimizeDeps: {
+    // maplibre-gl loads its tile-processing work off a Web Worker it
+    // constructs internally; esbuild's dep pre-bundling rewrites that
+    // worker's URL and breaks it ("Worker failed to load"), leaving the
+    // map canvas blank. Excluding it from pre-bundling lets it load as
+    // real ESM, where its own worker loading works correctly.
+    exclude: ["maplibre-gl"],
+  },
   plugins: [
     paraglideVitePlugin({
       project: path.resolve(import.meta.dirname, './project.inlang'),

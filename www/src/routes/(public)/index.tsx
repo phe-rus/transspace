@@ -75,7 +75,7 @@ function RouteComponent() {
               <h2>Berlin, DE</h2>
               <p>12 community verified resources active nearby. 3 areas nearby require vetted access.</p>
             </div>
-            <Button size="sm" className="w-fit rounded-full" render={<Link to="/resources" />}>
+            <Button size="sm" className="w-fit rounded-full" render={<Link to="/r" />}>
               <HugeiconsIcon icon={MapsIcon} className="size-3.5" />
               Open the map
             </Button>

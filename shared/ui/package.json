@@ -9,19 +9,20 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@base-ui/react": "^1.7.0",
+    "@base-ui/react": "^1.8.0",
     "@daypicker/react": "^10.0.1",
     "@fontsource-variable/inter": "^5.3.0",
     "@hugeicons/core-free-icons": "^4.3.0",
     "@hugeicons/react": "^1.1.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cn": "^0.3.0",
-    "maplibre-gl": "^6.11.0",
+    "cn": "^0.4.0",
+    "lucide-react": "^1.47.0",
+    "maplibre-gl": "^6",
     "motion": "^13.4.0",
     "next-themes": "^0.4.6",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "shadcn": "^4.19.1",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.6.0",
@@ -31,19 +32,19 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4",
     "@tanstack/eslint-config": "latest",
-    "@turbo/gen": "^2.9.15",
-    "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@turbo/gen": "^2.11.3",
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^10",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^7"
   },
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./lib/*": "./src/lib/*.ts",
     "./*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts",
-    "./geo-mapping": "./src/geo-mapping/index.ts"
+    "./hooks/*": "./src/hooks/*.ts"
   }
 }

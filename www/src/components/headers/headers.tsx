@@ -59,9 +59,9 @@ export const Headers = () => {
 
     const navItems = useMemo(() => [
         { label: "Map", to: "/atlas" },
-        { label: "Communities", to: "/resources" },
-        { label: "Support", to: "/resources" },
-        { label: "Profile", to: "/resources" },
+        { label: "Communities", to: "/r" },
+        { label: "Support", to: "/r" },
+        { label: "Profile", to: "/r" },
     ], [])
 
     const resourceGroups = useMemo(() => [
@@ -69,32 +69,32 @@ export const Headers = () => {
             label: "Health",
             icon: Stethoscope02Icon,
             items: [
-                { label: "Healthcare providers", description: "Gender-affirming practitioners and clinics." },
-                { label: "Mental health & HIV", description: "Counseling, peer support, and testing." },
+                { label: "Healthcare providers", description: "Gender-affirming practitioners and clinics.", to: "/r/health/providers" },
+                { label: "Mental health & HIV", description: "Counseling, peer support, and testing.", to: "/r/health/mental-and-hiv" },
             ],
         },
         {
             label: "Safety",
             icon: Shield01Icon,
             items: [
-                { label: "Safe spaces & housing", description: "Vetted shelters and cooperative housing." },
-                { label: "Legal & immigration", description: "Name change, asylum, and legal aid." },
+                { label: "Safe spaces & housing", description: "Vetted shelters and cooperative housing.", to: "/r/housing/safe-spaces" },
+                { label: "Legal & immigration", description: "Name change, asylum, and legal aid.", to: "/r/legal/immigration" },
             ],
         },
         {
             label: "Get involved",
             icon: UserGroup02Icon,
             items: [
-                { label: "Story submissions", description: "Share what worked in your community." },
-                { label: "Community support", description: "Mutual aid and local organizing." },
+                { label: "Story submissions", description: "Share what worked in your community.", to: "/stories" },
+                { label: "Community support", description: "Mutual aid and local organizing.", to: "/r/community/support" },
             ],
         },
         {
             label: "Grow",
             icon: Rocket01Icon,
             items: [
-                { label: "Jobs & careers", description: "Inclusive employers and career support." },
-                { label: "Skills & learning", description: "Workshops and community-led courses." },
+                { label: "Jobs & careers", description: "Inclusive employers and career support.", to: "/opportunities" },
+                { label: "Skills & learning", description: "Workshops and community-led courses.", to: "/guides" },
             ],
         },
     ], [])
@@ -236,7 +236,7 @@ export const Headers = () => {
                                             </div>
                                             <nav className="flex flex-col gap-1">
                                                 <Link
-                                                    to="/resources"
+                                                    to="/r"
                                                     onClick={() => setMobileNavOpen(false)}
                                                     className="rounded-lg px-2 py-2 text-sm"
                                                 >
@@ -288,7 +288,7 @@ export const Headers = () => {
                                         {group.items.map((item) => (
                                             <Link
                                                 key={item.label}
-                                                to="/resources"
+                                                to={item.to}
                                                 className={cn(
                                                     "flex items-start gap-3 rounded-xl p-2.5",
                                                     "transition-colors hover:bg-muted",

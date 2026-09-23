@@ -1,90 +1,182 @@
+import { AtlasAreaZone } from "@/components/atlas/area-zone"
+import { AtlasAutoRotate } from "@/components/atlas/auto-rotate"
+import { AtlasCountryZone } from "@/components/atlas/country-zone"
+import { AtlasDetailPanel, type AtlasSelection } from "@/components/atlas/detail-panel"
+import { AtlasFlaggedBorders } from "@/components/atlas/flagged-borders"
+import { AtlasResourceList } from "@/components/atlas/resource-list"
+import { atlasResources } from "@/data/atlas-resources"
+import { atlasZones } from "@/data/atlas-zones"
 import {
-  Alert01Icon,
-  CheckmarkCircle01Icon,
-  FilterHorizontalIcon,
-  Location01Icon,
-  QuoteDownIcon,
-  SearchIcon,
-  Shield01Icon,
-} from "@hugeicons/core-free-icons"
+  RESOURCE_CATEGORIES,
+  resourceCategoryColor,
+  resourceCategoryLabel,
+  type ResourceCategory,
+  type ResourceProperties,
+} from "@/data/resource-categories"
+import { FilterHorizontalIcon, SearchIcon, Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button } from "@pherus/ui/button"
-import {
-  GeoArc,
-  GeoCompassControl,
-  GeoLayersControl,
-  GeoMap,
-  GeoMarker,
-  GeoPopup,
-  GeoZoomControl,
-  type LngLat,
-} from "@pherus/ui/geo-mapping"
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@pherus/ui/input-group"
 import { cn } from "@pherus/ui/lib/utils"
+import { Map, MapClusterLayer, MapControls } from "@pherus/ui/map"
 import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 export const Route = createFileRoute("/(public)/atlas")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [openPin, setOpenPin] = useState<string | null>(null)
+  const [search, setSearch] = useState("")
+  const [activeCategory, setActiveCategory] = useState<ResourceCategory | null>(null)
+  const [selected, setSelected] = useState<AtlasSelection | null>(null)
+  const [filtersOpen, setFiltersOpen] = useState(true)
 
-  const berlin: LngLat = [13.405, 52.52]
-  const kampala: LngLat = [32.5825, 0.3476]
+  const flaggedCountryNames = atlasZones
+    .filter((zone) => zone.category === "crisis")
+    .map((zone) => zone.country)
 
-  const pins: { id: string; label: string; icon: typeof Shield01Icon; position: LngLat }[] = [
-    { id: "kreuzberg", label: "Kreuzberg Sanctuary", icon: Shield01Icon, position: [13.403, 52.499] },
-    { id: "rosa", label: "Rosa Wellness Clinic", icon: Location01Icon, position: [13.43, 52.505] },
-  ]
+  // Country zones render first, area zones last: DOM order is paint order,
+  // so the more specific (and geographically smaller) area zone always
+  // wins a click where the two overlap, like Wandegeya inside Uganda.
+  const countryZones = atlasZones.filter((zone) => zone.scope === "country")
+  const areaZones = atlasZones.filter((zone) => zone.scope === "area")
 
-  const recentReportPosition: LngLat = [13.46, 52.53]
+  const filteredResources = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    return atlasResources.filter((resource) => {
+      const matchesCategory = !activeCategory || resource.category === activeCategory
+      const matchesSearch =
+        !query ||
+        resource.name.toLowerCase().includes(query) ||
+        resource.city.toLowerCase().includes(query) ||
+        resource.country.toLowerCase().includes(query)
+      return matchesCategory && matchesSearch
+    })
+  }, [search, activeCategory])
+
+  const resourceFeatures = useMemo(
+    () => ({
+      type: "FeatureCollection" as const,
+      features: filteredResources.map((resource) => ({
+        type: "Feature" as const,
+        properties: resource as unknown as GeoJSON.GeoJsonProperties,
+        geometry: { type: "Point" as const, coordinates: resource.position },
+      })),
+    }),
+    [filteredResources],
+  )
 
   return (
     <div className="relative -mt-11 h-svh w-full overflow-hidden">
-      <GeoMap initialView={{ center: berlin, zoom: 11.5 }} className="absolute inset-0">
-        {/* Berlin carries community knowledge shared with partner cities abroad. */}
-        <GeoArc from={berlin} to={kampala} />
+      <Map
+        center={[20, 25]}
+        zoom={1.6}
+        projection={{ type: "globe" }}
+        className="absolute inset-0"
+      >
+        <AtlasAutoRotate />
+        <AtlasFlaggedBorders countryNames={flaggedCountryNames} />
+        <MapClusterLayer
+          data={resourceFeatures}
+          pointColor="#3b82f6"
+          onPointClick={(feature) => {
+            const properties = feature.properties as unknown as ResourceProperties
+            const resource = atlasResources.find((item) => item.id === properties.id)
+            if (resource) setSelected({ kind: "resource", data: resource })
+          }}
+        />
 
-        {pins.map((pin) => (
-          <GeoMarker
-            key={pin.id}
-            position={pin.position}
-            onMouseEnter={() => setOpenPin(pin.id)}
-            onMouseLeave={() => setOpenPin(null)}
-          >
-            <div className="flex cursor-pointer flex-col items-center gap-1.5">
-              <span className="flex size-8 items-center justify-center rounded-full bg-foreground/10">
-                <HugeiconsIcon icon={pin.icon} className="size-4" />
-              </span>
-              <span className="rounded bg-background px-1 text-xs text-muted-foreground">{pin.label}</span>
-            </div>
-          </GeoMarker>
+        {countryZones.map((zone) => (
+          <AtlasCountryZone key={zone.id} zone={zone} onSelect={(picked) => setSelected({ kind: "zone", data: picked })} />
+        ))}
+        {areaZones.map((zone) => (
+          <AtlasAreaZone key={zone.id} zone={zone} onSelect={(picked) => setSelected({ kind: "zone", data: picked })} />
         ))}
 
-        <GeoPopup position={pins[1].position} open={openPin === "rosa"} offset={44}>
-          <p className="w-40">Free consult, community verified.</p>
-        </GeoPopup>
+        {/* bottom-20, not the component's default bottom-10: the global
+            language switcher is fixed at right:20px/bottom:20px on every
+            page, and would otherwise sit directly on top of these. */}
+        <MapControls
+          showZoom
+          showCompass
+          showLocate
+          showFullscreen
+          className="right-5 bottom-20"
+        />
 
-        <GeoMarker position={recentReportPosition} anchorBottom={false}>
-          <div className="flex flex-col items-center gap-1.5">
-            <HugeiconsIcon icon={Alert01Icon} className="size-4.5 text-destructive" />
-            <span className="text-xs text-destructive">Recent reports</span>
-          </div>
-        </GeoMarker>
-      </GeoMap>
-
-      <div className="pointer-events-none absolute inset-x-0 top-12 flex justify-center px-5">
-        <div
-          className={cn(
-            "pointer-events-auto flex w-full max-w-md items-center gap-2.5 rounded-full",
-            "border border-border/35 bg-card px-4.5 py-3 shadow",
+        {/* bottom-10, not bottom-5: the map's own attribution toggle sits at
+            the literal bottom-left corner and was getting covered. */}
+        <div className="absolute bottom-10 left-5 flex flex-col gap-3">
+          {selected ? (
+            <AtlasDetailPanel selection={selected} onBack={() => setSelected(null)} />
+          ) : (
+            <AtlasResourceList
+              resources={filteredResources}
+              selectedId={null}
+              onSelect={(resource) => setSelected({ kind: "resource", data: resource })}
+            />
           )}
-        >
-          <HugeiconsIcon icon={SearchIcon} className="size-4 text-muted-foreground" />
-          <p className="flex-1">Search resources or areas…</p>
-          <HugeiconsIcon icon={FilterHorizontalIcon} className="size-4 text-muted-foreground" />
         </div>
+      </Map>
+
+      <div className="pointer-events-none absolute inset-x-0 top-12 flex flex-col items-center gap-2.5 px-5">
+        <InputGroup className="pointer-events-auto h-11 w-full max-w-md rounded-full bg-card px-1.5 shadow">
+          <InputGroupAddon align="inline-start">
+            <HugeiconsIcon icon={SearchIcon} className="size-4" />
+          </InputGroupAddon>
+          <InputGroupInput
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search resources, cities, or countries…"
+          />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              size="icon-sm"
+              variant={filtersOpen ? "secondary" : "ghost"}
+              aria-label="Toggle category filters"
+              aria-pressed={filtersOpen}
+              onClick={() => setFiltersOpen((open) => !open)}
+            >
+              <HugeiconsIcon icon={FilterHorizontalIcon} className="size-4" />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+
+        {filtersOpen && (
+          <div className="pointer-events-auto flex flex-wrap justify-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setActiveCategory(null)}
+              className={cn(
+                "rounded-full border px-3 py-1.5 text-xs transition-colors",
+                activeCategory === null
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border/35 bg-card text-muted-foreground",
+              )}
+            >
+              All
+            </button>
+            {RESOURCE_CATEGORIES.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory((current) => (current === category ? null : category))}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors",
+                  activeCategory === category
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border/35 bg-card text-muted-foreground",
+                )}
+              >
+                <span
+                  className="size-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: resourceCategoryColor[category] }}
+                />
+                {resourceCategoryLabel[category]}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div
@@ -95,47 +187,6 @@ function RouteComponent() {
       >
         <HugeiconsIcon icon={Shield01Icon} className="size-3.5 text-destructive" />
         Protected connection
-      </div>
-
-      <article
-        className={cn(
-          "pointer-events-none absolute bottom-5 left-5 flex w-full max-w-xs flex-col gap-3 rounded-3xl",
-          "border border-border/35 bg-card/35 p-5 shadow-lg backdrop-blur",
-        )}
-      >
-        <div className="flex items-center justify-between">
-          <h3>Rosa Wellness Clinic</h3>
-          <p>Free consult</p>
-        </div>
-        <h6 className="flex items-center gap-1.5">
-          <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3.5" />
-          Community verified clinic
-        </h6>
-        <p>
-          Gender affirming primary care with an informed consent model. Sliding scale billing, entrance from the
-          side courtyard.
-        </p>
-        <div className="grid grid-cols-2 gap-2.5">
-          <div className="rounded-xl border border-border p-2.5">
-            <h6>Wait time</h6>
-            <p className="text-foreground">~ 3 weeks</p>
-          </div>
-          <div className="rounded-xl border border-border p-2.5">
-            <h6>Location</h6>
-            <p className="text-foreground">Exact</p>
-          </div>
-        </div>
-        <div className="flex items-start gap-2 border-t border-border pt-3">
-          <HugeiconsIcon icon={QuoteDownIcon} className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-          <p className="italic">"Very quiet entrance, no questions asked, felt safe." Anonymous, 2h ago</p>
-        </div>
-        <Button size="sm" className="pointer-events-auto rounded-full">View resource</Button>
-      </article>
-
-      <div className="absolute right-5 bottom-6 flex flex-col gap-2.5">
-        <GeoZoomControl />
-        <GeoCompassControl />
-        <GeoLayersControl />
       </div>
     </div>
   )
