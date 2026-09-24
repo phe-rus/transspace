@@ -71,7 +71,11 @@ import { Route as publicRLegalIndexRouteImport } from './routes/(public)/r/legal
 import { Route as publicRMentalHealthIndexRouteImport } from './routes/(public)/r/mental-health/index'
 import { Route as publicRSafeSpaceIndexRouteImport } from './routes/(public)/r/safe-space/index'
 import { Route as publicRTravelIndexRouteImport } from './routes/(public)/r/travel/index'
+import { Route as ApiTrustSignalsContentTypeContentIdRouteImport } from './routes/api/trust-signals.$contentType.$contentId'
 import { Route as publicRResourceIdDetailsIndexRouteImport } from './routes/(public)/r/$resourceId/details/index'
+import { Route as ApiTrustSignalsContentTypeContentIdCoSignRouteImport } from './routes/api/trust-signals.$contentType.$contentId.co-sign'
+import { Route as ApiTrustSignalsContentTypeContentIdDisputeRouteImport } from './routes/api/trust-signals.$contentType.$contentId.dispute'
+import { Route as ApiTrustSignalsContentTypeContentIdVerifyRouteImport } from './routes/api/trust-signals.$contentType.$contentId.verify'
 
 const authenticationRouteRoute = authenticationRouteRouteImport.update({
   id: '/(authentication)',
@@ -403,11 +407,35 @@ const publicRTravelIndexRoute = publicRTravelIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRTravelRouteRoute,
 } as any)
+const ApiTrustSignalsContentTypeContentIdRoute =
+  ApiTrustSignalsContentTypeContentIdRouteImport.update({
+    id: '/api/trust-signals/$contentType/$contentId',
+    path: '/api/trust-signals/$contentType/$contentId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const publicRResourceIdDetailsIndexRoute =
   publicRResourceIdDetailsIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => publicRResourceIdDetailsRouteRoute,
+  } as any)
+const ApiTrustSignalsContentTypeContentIdCoSignRoute =
+  ApiTrustSignalsContentTypeContentIdCoSignRouteImport.update({
+    id: '/co-sign',
+    path: '/co-sign',
+    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
+  } as any)
+const ApiTrustSignalsContentTypeContentIdDisputeRoute =
+  ApiTrustSignalsContentTypeContentIdDisputeRouteImport.update({
+    id: '/dispute',
+    path: '/dispute',
+    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
+  } as any)
+const ApiTrustSignalsContentTypeContentIdVerifyRoute =
+  ApiTrustSignalsContentTypeContentIdVerifyRouteImport.update({
+    id: '/verify',
+    path: '/verify',
+    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -460,6 +488,7 @@ export interface FileRoutesByFullPath {
   '/submit/': typeof publicSubmitIndexRoute
   '/support/': typeof publicSupportIndexRoute
   '/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
+  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/profile/account-settings/': typeof publicProfileAccountSettingsIndexRoute
   '/profile/help-and-support/': typeof publicProfileHelpAndSupportIndexRoute
   '/profile/security/': typeof publicProfileSecurityIndexRoute
@@ -470,6 +499,9 @@ export interface FileRoutesByFullPath {
   '/r/mental-health/': typeof publicRMentalHealthIndexRoute
   '/r/safe-space/': typeof publicRSafeSpaceIndexRoute
   '/r/travel/': typeof publicRTravelIndexRoute
+  '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
+  '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
+  '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -499,6 +531,7 @@ export interface FileRoutesByTo {
   '/stories': typeof publicStoriesIndexRoute
   '/submit': typeof publicSubmitIndexRoute
   '/support': typeof publicSupportIndexRoute
+  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/profile/account-settings': typeof publicProfileAccountSettingsIndexRoute
   '/profile/help-and-support': typeof publicProfileHelpAndSupportIndexRoute
   '/profile/security': typeof publicProfileSecurityIndexRoute
@@ -509,6 +542,9 @@ export interface FileRoutesByTo {
   '/r/mental-health': typeof publicRMentalHealthIndexRoute
   '/r/safe-space': typeof publicRSafeSpaceIndexRoute
   '/r/travel': typeof publicRTravelIndexRoute
+  '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
+  '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
+  '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/r/$resourceId/details': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRoutesById {
@@ -565,6 +601,7 @@ export interface FileRoutesById {
   '/(public)/submit/': typeof publicSubmitIndexRoute
   '/(public)/support/': typeof publicSupportIndexRoute
   '/(public)/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
+  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/(public)/profile/account-settings/': typeof publicProfileAccountSettingsIndexRoute
   '/(public)/profile/help-and-support/': typeof publicProfileHelpAndSupportIndexRoute
   '/(public)/profile/security/': typeof publicProfileSecurityIndexRoute
@@ -575,6 +612,9 @@ export interface FileRoutesById {
   '/(public)/r/mental-health/': typeof publicRMentalHealthIndexRoute
   '/(public)/r/safe-space/': typeof publicRSafeSpaceIndexRoute
   '/(public)/r/travel/': typeof publicRTravelIndexRoute
+  '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
+  '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
+  '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/(public)/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRouteTypes {
@@ -629,6 +669,7 @@ export interface FileRouteTypes {
     | '/submit/'
     | '/support/'
     | '/r/$resourceId/details'
+    | '/api/trust-signals/$contentType/$contentId'
     | '/profile/account-settings/'
     | '/profile/help-and-support/'
     | '/profile/security/'
@@ -639,6 +680,9 @@ export interface FileRouteTypes {
     | '/r/mental-health/'
     | '/r/safe-space/'
     | '/r/travel/'
+    | '/api/trust-signals/$contentType/$contentId/co-sign'
+    | '/api/trust-signals/$contentType/$contentId/dispute'
+    | '/api/trust-signals/$contentType/$contentId/verify'
     | '/r/$resourceId/details/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -668,6 +712,7 @@ export interface FileRouteTypes {
     | '/stories'
     | '/submit'
     | '/support'
+    | '/api/trust-signals/$contentType/$contentId'
     | '/profile/account-settings'
     | '/profile/help-and-support'
     | '/profile/security'
@@ -678,6 +723,9 @@ export interface FileRouteTypes {
     | '/r/mental-health'
     | '/r/safe-space'
     | '/r/travel'
+    | '/api/trust-signals/$contentType/$contentId/co-sign'
+    | '/api/trust-signals/$contentType/$contentId/dispute'
+    | '/api/trust-signals/$contentType/$contentId/verify'
     | '/r/$resourceId/details'
   id:
     | '__root__'
@@ -733,6 +781,7 @@ export interface FileRouteTypes {
     | '/(public)/submit/'
     | '/(public)/support/'
     | '/(public)/r/$resourceId/details'
+    | '/api/trust-signals/$contentType/$contentId'
     | '/(public)/profile/account-settings/'
     | '/(public)/profile/help-and-support/'
     | '/(public)/profile/security/'
@@ -743,6 +792,9 @@ export interface FileRouteTypes {
     | '/(public)/r/mental-health/'
     | '/(public)/r/safe-space/'
     | '/(public)/r/travel/'
+    | '/api/trust-signals/$contentType/$contentId/co-sign'
+    | '/api/trust-signals/$contentType/$contentId/dispute'
+    | '/api/trust-signals/$contentType/$contentId/verify'
     | '/(public)/r/$resourceId/details/'
   fileRoutesById: FileRoutesById
 }
@@ -758,6 +810,7 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
+  ApiTrustSignalsContentTypeContentIdRoute: typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -1196,12 +1249,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicRTravelIndexRouteImport
       parentRoute: typeof publicRTravelRouteRoute
     }
+    '/api/trust-signals/$contentType/$contentId': {
+      id: '/api/trust-signals/$contentType/$contentId'
+      path: '/api/trust-signals/$contentType/$contentId'
+      fullPath: '/api/trust-signals/$contentType/$contentId'
+      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(public)/r/$resourceId/details/': {
       id: '/(public)/r/$resourceId/details/'
       path: '/'
       fullPath: '/r/$resourceId/details/'
       preLoaderRoute: typeof publicRResourceIdDetailsIndexRouteImport
       parentRoute: typeof publicRResourceIdDetailsRouteRoute
+    }
+    '/api/trust-signals/$contentType/$contentId/co-sign': {
+      id: '/api/trust-signals/$contentType/$contentId/co-sign'
+      path: '/co-sign'
+      fullPath: '/api/trust-signals/$contentType/$contentId/co-sign'
+      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdCoSignRouteImport
+      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
+    }
+    '/api/trust-signals/$contentType/$contentId/dispute': {
+      id: '/api/trust-signals/$contentType/$contentId/dispute'
+      path: '/dispute'
+      fullPath: '/api/trust-signals/$contentType/$contentId/dispute'
+      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdDisputeRouteImport
+      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
+    }
+    '/api/trust-signals/$contentType/$contentId/verify': {
+      id: '/api/trust-signals/$contentType/$contentId/verify'
+      path: '/verify'
+      fullPath: '/api/trust-signals/$contentType/$contentId/verify'
+      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdVerifyRouteImport
+      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
     }
   }
 }
@@ -1630,6 +1711,27 @@ const ApiUploadsRouteWithChildren = ApiUploadsRoute._addFileChildren(
   ApiUploadsRouteChildren,
 )
 
+interface ApiTrustSignalsContentTypeContentIdRouteChildren {
+  ApiTrustSignalsContentTypeContentIdCoSignRoute: typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
+  ApiTrustSignalsContentTypeContentIdDisputeRoute: typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
+  ApiTrustSignalsContentTypeContentIdVerifyRoute: typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
+}
+
+const ApiTrustSignalsContentTypeContentIdRouteChildren: ApiTrustSignalsContentTypeContentIdRouteChildren =
+  {
+    ApiTrustSignalsContentTypeContentIdCoSignRoute:
+      ApiTrustSignalsContentTypeContentIdCoSignRoute,
+    ApiTrustSignalsContentTypeContentIdDisputeRoute:
+      ApiTrustSignalsContentTypeContentIdDisputeRoute,
+    ApiTrustSignalsContentTypeContentIdVerifyRoute:
+      ApiTrustSignalsContentTypeContentIdVerifyRoute,
+  }
+
+const ApiTrustSignalsContentTypeContentIdRouteWithChildren =
+  ApiTrustSignalsContentTypeContentIdRoute._addFileChildren(
+    ApiTrustSignalsContentTypeContentIdRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   authenticationRouteRoute: authenticationRouteRouteWithChildren,
   protectionRouteRoute: protectionRouteRoute,
@@ -1642,16 +1744,19 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
+  ApiTrustSignalsContentTypeContentIdRoute:
+    ApiTrustSignalsContentTypeContentIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

@@ -98,17 +98,17 @@ spec [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-ide
 A shared way to show why a piece of content can be trusted (community submitted, community reviewed, references available, professional/verified, last reviewed), so every content type carries the same signals instead of a generic star rating.
 **Done when:** a trust/status model exists that resource, guide, story, opportunity, and business detail pages can all render consistently.
 - [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md)
-- [ ] Build it: `/develop trust & verification signals`
-  - [ ] `trust_signal` and `trust_co_sign` migrations, the shipped content type registry, and `createTrustSignal` (AC-1)
-  - [ ] Co sign endpoint with the anti gaming checks and the live recomputed, reversible `community_reviewed` state (AC-2)
-  - [ ] `setReferencesAvailable` (AC-3)
-  - [ ] Moderator verify and dispute actions, audited (AC-4, AC-5)
-  - [ ] Public read endpoint and the shared trust badge component in `shared/ui` (AC-6)
+- [x] Build it: `/develop trust & verification signals`
+  - [x] `trust_signal` and `trust_co_sign` migrations, the shipped content type registry, and `createTrustSignal` (AC-1)
+  - [x] Co sign endpoint with the anti gaming checks and the live recomputed, reversible `community_reviewed` state (AC-2) — recompute is driven by a fresh `COUNT` so it is correct for either an insert or a delete; only the insert path (`POST .../co-sign`) is exposed over HTTP today, there is no co-sign withdrawal endpoint yet since the spec's own API surface table names none
+  - [x] `setReferencesAvailable` (AC-3)
+  - [x] Moderator verify and dispute actions, audited (AC-4, AC-5)
+  - [x] Public read endpoint and the shared trust badge component in `shared/ui` (AC-6)
 - [ ] Verify it: `/check verify trust & verification signals`
 - [ ] Test it: `/test trust & verification signals`
 - [ ] Review it (fresh model): `/check review trust & verification signals`
 - [ ] Document it: `/document trust & verification signals`
-spec [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md)
+spec [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md) · code in `www/src/schemas/trust.ts`, `www/src/domains/trust-signals/`, `www/src/routes/api/trust-signals.*`, `shared/ui/src/components/trust-badge.tsx`
 
 ## Slice 1: Resource directory
 

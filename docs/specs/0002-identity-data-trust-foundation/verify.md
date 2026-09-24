@@ -67,3 +67,39 @@ _Steps derived from spec 0001 acceptance criteria. `/check verify` runs these; `
 - AC-6: duress sets decoy, the shared accessor shapes private data, public profile unaffected · covered by the unlock/decoy steps
 - AC-7: escalating cooldown, dual constant-time check · covered by the repeated-wrong-PIN step
 - AC-8: cookie flags, a new session with a PIN set always starts locked · covered by the sign-in-then-lock step
+
+# Verify: trust & verification signals · spec 0003 · updated 2026-09-24
+_Steps derived from spec 0003 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones. No content type (resource, guide, story, opportunity, business) exists yet, so every step below drives `createTrustSignal`/`setReferencesAvailable` directly rather than through a real submission flow; re-run these once the first content type (scope feature 9) calls them from its own save path._
+
+## UI / manual
+_None — this is a backend-only build; the shared `TrustBadge` component in `shared/ui` has no content detail page to render on yet (spec 0003 Follow up)._
+
+## Commands
+- [ ] `bunx wrangler d1 execute transspace --local --command "SELECT name FROM sqlite_master WHERE type='table'"` → `trustSignal`, `trustCoSign` present → AC-1
+- [ ] Call `createTrustSignal("resource", "r1", "<a real userLink id>")`, then `GET /api/trust-signals/resource/r1` → `{ submittedAt: <set>, communityReviewed: false, coSignCount: 0, referencesAvailable: false, professionalVerified: false, disputed: false, lastReviewedAt: null }` → AC-1, Value sourcing row 1
+- [ ] `GET /api/trust-signals/not-a-real-type/r1` → 422 "Unknown content type" → AC-1, data model
+- [ ] `GET /api/trust-signals/resource/does-not-exist` → 404 → AC-6
+- [ ] Three distinct signed-in accounts, each older than 7 days and not the submitter, `POST /api/trust-signals/resource/r1/co-sign` with a valid Turnstile token → `communityReviewed` flips to `true` on the third call, `coSignCount` reads `3` → AC-2, Value sourcing row 3
+- [ ] The original submitter calls `POST .../co-sign` on their own content → 403 → AC-2, key invariants
+- [ ] A brand new account (`userLink.createdAt` less than 7 days ago) calls `POST .../co-sign` → 403 → AC-2, Value sourcing row 2
+- [ ] The same account calls `POST .../co-sign` on the same item a second time → 409 → AC-2, key invariants
+- [ ] One account calls `POST .../co-sign` on 11 different items inside one UTC day → the 11th call → 429 → AC-2, Value sourcing row 2
+- [ ] Call `setReferencesAvailable("resource", "r1", true)`, then `GET /api/trust-signals/resource/r1` → `referencesAvailable: true` → AC-3
+- [ ] A non-moderator session calls `POST .../verify` or `POST .../dispute` → 403 on both → AC-4
+- [ ] A moderator calls `POST /api/trust-signals/resource/r1/verify` with a valid Turnstile token → `professionalVerified: true` in the response, `lastReviewedAt` updated, exactly one `moderationAction` row written (`action: "trustSignal.verify"`, `target: "resource:r1"`) → AC-4, AC-5, Value sourcing row 4
+- [ ] On a `communityReviewed` item, a moderator calls `POST .../dispute` with `{ disputed: true }` → `GET` now reads `communityReviewed: false` even though `coSignCount` is still `>= 3`, `lastReviewedAt` updated, a `moderationAction` row written (`action: "trustSignal.dispute"`) → AC-4, AC-5, key invariants
+- [ ] The same moderator calls `POST .../dispute` with `{ disputed: false }` on that item → `communityReviewed` reads `true` again (recomputed from the live `coSignCount`), a second `moderationAction` row written (`action: "trustSignal.disputeClear"`) → AC-2, AC-4, key invariants
+- [ ] Inspect the raw JSON body of any `GET /api/trust-signals/:contentType/:contentId` response → contains no `submittedBy`, `professionalVerifiedBy`, `id`, or any other internal id anywhere → AC-6
+- [ ] A burst of anonymous `GET` requests past `RATE_LIMITER_READ`'s configured limit → 429, no Turnstile challenge ever shown → AC-1 (0002 AC-5 cross reference)
+- [ ] A `co-sign`/`verify`/`dispute` call with a missing/invalid `turnstileToken` → 403 before any DB write happens → AC-2, AC-4 (0002 AC-5 cross reference)
+
+## Acceptance-criteria coverage
+- AC-1: shipped `CONTENT_TYPES` registry, `createTrustSignal`, gate-free first state · covered by the create + 422 + read-rate-limit steps
+- AC-2: self co-sign block, 7 day account age, 10/day rate, once per person, live bidirectional `community_reviewed` · covered by the co-sign and dispute-clear steps
+- AC-3: `setReferencesAvailable` as the one shared setter · covered by the references step
+- AC-4: moderator only verify/dispute, both audited · covered by the 403, verify, and dispute steps
+- AC-5: `last_reviewed_at` touched only by moderator actions · covered by the verify and dispute steps
+- AC-6: whitelisted public shape, no internal id ever returned, 404 when absent · covered by the read/inspect steps
+
+## Known gap, not covered by any step above
+The co-sign removal path implied by AC-2's "recomputed... on every co sign added or removed" and the Value sourcing table's "co-sign POST/DELETE" row has no corresponding endpoint in the spec's own API surface table (only `POST .../co-sign` is listed). `recomputeTrustSignal` in `www/src/domains/trust-signals/func.ts` is written to be correct for either an insert or a delete (it always recounts fresh from `trustCoSign`), but no client-facing way to withdraw a co-sign exists yet. Flagging for `/architect` to confirm whether a withdrawal endpoint is actually owed, or whether the phrasing only describes the recompute mechanism's own correctness property.

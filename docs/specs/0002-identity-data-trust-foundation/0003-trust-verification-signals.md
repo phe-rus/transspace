@@ -95,12 +95,12 @@ This is the shared mechanism behind the badge every piece of community content w
 
 ## Build plan
 
-1. Define the shipped `CONTENT_TYPES` constant and create the `trust_signal` and `trust_co_sign` migrations (including `co_sign_count` and `disputed`), satisfies **AC-1**
-2. Build the shared `createTrustSignal` function future content submission flows call, validating `content_type` against the registry, satisfies **AC-1**
-3. Build the co sign endpoint, including the self co sign block, the account age and daily rate checks, the once per person constraint, and the live recomputation of `community_reviewed` and `co_sign_count` on insert and delete, satisfies **AC-2**
-4. Build the shared `setReferencesAvailable` internal function, satisfies **AC-3**
-5. Build the moderator only verify and dispute endpoints, stamping `professional_verified_by` or `disputed`, `last_reviewed_at`, and a `moderation_action` row, satisfies **AC-4**, **AC-5**
-6. Build the public read endpoint with its whitelisted response shape, and a shared trust badge component in `shared/ui`, so every future content detail page renders the same shape, satisfies **AC-6** (see Follow up: this should inherit `shared/ui`'s existing shape and motion personality rather than invent a new visual language)
+1. [x] Define the shipped `CONTENT_TYPES` constant and create the `trust_signal` and `trust_co_sign` migrations (including `co_sign_count` and `disputed`), satisfies **AC-1**
+2. [x] Build the shared `createTrustSignal` function future content submission flows call, validating `content_type` against the registry, satisfies **AC-1**
+3. [x] Build the co sign endpoint, including the self co sign block, the account age and daily rate checks, the once per person constraint, and the live recomputation of `community_reviewed` and `co_sign_count` on insert and delete, satisfies **AC-2**
+4. [x] Build the shared `setReferencesAvailable` internal function, satisfies **AC-3**
+5. [x] Build the moderator only verify and dispute endpoints, stamping `professional_verified_by` or `disputed`, `last_reviewed_at`, and a `moderation_action` row, satisfies **AC-4**, **AC-5**
+6. [x] Build the public read endpoint with its whitelisted response shape, and a shared trust badge component in `shared/ui`, so every future content detail page renders the same shape, satisfies **AC-6** (see Follow up: this should inherit `shared/ui`'s existing shape and motion personality rather than invent a new visual language)
 
 ## Consequences
 
