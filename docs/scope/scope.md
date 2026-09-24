@@ -17,9 +17,9 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Internationalization foundation | Foundation | existing |
 | 4 | Design system & UI foundation | Foundation | in-progress |
 | 5 | Navigation shell (header, footer, language switcher) | Foundation | in-progress |
-| 6 | Data model & backend | Foundation | planned |
-| 7 | Authentication & identity | Foundation | planned |
-| 8 | Trust & verification signals | Foundation | planned |
+| 6 | Data model & backend | Foundation | in-progress |
+| 7 | Authentication & identity | Foundation | in-progress |
+| 8 | Trust & verification signals | Foundation | in-progress |
 | 9 | Resource directory | Slice 1 | planned |
 | 10 | Accounts & saved resources | Slice 1 | planned |
 | 11 | Contribution & moderation flow | Slice 2 | planned |
@@ -63,20 +63,52 @@ spec [0001](../specs/0001-design-system-ui-foundation/index.md) · code in `shar
 Header, footer, and language switcher are built and animated; several links (Opportunities, Legal, Learn new skills, The fog of history) point at routes that don't exist yet and will resolve as each slice ships.
 code in `www/src/components/headers/`, `www/src/components/footers/`, `www/src/components/languages/`
 
-### 6. Data model & backend · needs a decision · GA
+### 6. Data model & backend · GA
 No database or API layer exists yet (`www/src/routes/api/` is empty). Every entity, resources, categories, countries, guides, stories, opportunities, businesses, submissions, accounts, needs a schema and a Workers API surface before any content vertical is real instead of hardcoded.
 **Done when:** a data model and API layer exist that the resource directory (and later verticals) can read and write against, with migrations applied and types generated.
-- [ ] Design it (spec): `/architect data model & backend`
+- [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend.md)
+- [ ] Build it: `/develop data model & backend`
+  - [ ] D1 and Drizzle wired in with a migration workflow matching Infra's own (AC-1)
+  - [ ] Moderator system: table, grant/revoke, a floor of two, an append only audit log (AC-2)
+  - [ ] R2 upload module: sniffed allowlist, SVG sanitizing, quota computed by listing (AC-3)
+  - [ ] Shared pagination utility and Cloudflare Rate Limiting wired to write versus read endpoints (AC-4, AC-5)
+  - [ ] Server function domain folder convention plus a matching REST shell established (AC-6)
+- [ ] Verify it: `/check verify data model & backend`
+- [ ] Test it: `/test data model & backend`
+- [ ] Review it (fresh model): `/check review data model & backend`
+- [ ] Document it: `/document data model & backend`
+spec [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend.md)
 
-### 7. Authentication & identity · needs a decision · GA
+### 7. Authentication & identity · GA
 OAuth-based sign in with a private account identity kept separate from a pseudonymous, public Q2Q profile (display name, avatar, topics, region). No accounts or sessions exist yet; the `(protection)` route is an empty stub.
 **Done when:** a person can sign in via OAuth, gets a private account plus a pseudonymous public profile, and protected routes actually gate on session state.
-- [ ] Design it (spec): `/architect authentication & identity`
+- [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md)
+- [ ] Build it: `/develop authentication & identity`
+  - [ ] Registered as an Infra OAuth client and the thin Better Auth `genericOAuth` sign in/callback flow wired end to end (AC-1)
+  - [ ] `user_link` and `profile` migrations, plus the onboarding gate for a new person (AC-2, AC-3)
+  - [ ] Sign out, including sign out everywhere (AC-4)
+  - [ ] Local app lock: PIN settings, unlock prompt, and the server side decoy session state (AC-5, AC-6, AC-7, AC-8)
+- [ ] Verify it: `/check verify authentication & identity`
+- [ ] Test it: `/test authentication & identity`
+- [ ] Review it (fresh model): `/check review authentication & identity`
+- [ ] Document it: `/document authentication & identity`
+spec [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md)
 
-### 8. Trust & verification signals · needs a decision · GA
+### 8. Trust & verification signals · GA
 A shared way to show why a piece of content can be trusted (community submitted, community reviewed, references available, professional/verified, last reviewed), so every content type carries the same signals instead of a generic star rating.
 **Done when:** a trust/status model exists that resource, guide, story, opportunity, and business detail pages can all render consistently.
-- [ ] Design it (spec): `/architect trust & verification signals`
+- [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md)
+- [ ] Build it: `/develop trust & verification signals`
+  - [ ] `trust_signal` and `trust_co_sign` migrations, the shipped content type registry, and `createTrustSignal` (AC-1)
+  - [ ] Co sign endpoint with the anti gaming checks and the live recomputed, reversible `community_reviewed` state (AC-2)
+  - [ ] `setReferencesAvailable` (AC-3)
+  - [ ] Moderator verify and dispute actions, audited (AC-4, AC-5)
+  - [ ] Public read endpoint and the shared trust badge component in `shared/ui` (AC-6)
+- [ ] Verify it: `/check verify trust & verification signals`
+- [ ] Test it: `/test trust & verification signals`
+- [ ] Review it (fresh model): `/check review trust & verification signals`
+- [ ] Document it: `/document trust & verification signals`
+spec [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md)
 
 ## Slice 1: Resource directory
 

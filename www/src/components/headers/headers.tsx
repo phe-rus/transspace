@@ -1,5 +1,5 @@
 import { m } from "@/paraglide/messages"
-import { ArrowDown01Icon, Menu03Icon, Notification01Icon, Rocket01Icon, Shield01Icon, Stethoscope02Icon, UserGroup02Icon } from "@hugeicons/core-free-icons"
+import { ArrowDown01Icon, Menu03Icon, MessageIcon, Rocket01Icon, Shield01Icon, Stethoscope02Icon, UserGroup02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@pherus/ui/avatar"
 import { Button, buttonVariants } from "@pherus/ui/button"
@@ -198,7 +198,7 @@ export const Headers = () => {
                             className="rounded-full"
                             aria-label={m["navigation.aria.notifications"]()}
                         >
-                            <HugeiconsIcon icon={Notification01Icon} />
+                            <HugeiconsIcon icon={MessageIcon} />
                         </Button>
                     </motion.div>
 
@@ -206,9 +206,6 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-2 md:flex"
                     >
-                        <span className="text-xs text-muted-foreground">
-                            email@example.com
-                        </span>
                         <Avatar
                             className='border-0! size-6! ring-0!'
                         >
