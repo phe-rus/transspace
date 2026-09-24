@@ -1,21 +1,247 @@
 {
-    "$schema": "https://inlang.com/schema/inlang-message-format",
-    "navigation": {
-        "title": "Transspace",
-        "items": {
-            "resources": "资源",
-            "opportunities": "机遇",
-            "community": "Community"
-        }
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "navigation": {
+    "title": "Transspace",
+    "items": {
+      "resources": "资源",
+      "map": "地图",
+      "communities": "社区",
+      "support": "支持",
+      "profile": "个人资料"
     },
-    "overview": {
-        "hero": {
-            "title": "酷儿知识、资源、社区和支持。",
-            "subtitle": "一个由 Pherus 为 LGBTQ+ 社区建立的平台。发现可信赖的资源、实践知识、机会以及通过酷儿到酷儿社区知识分享的支持。",
-            "links": {
-                "resources": "浏览资源",
-                "opportunities": "浏览机遇"
-            }
+    "groups": {
+      "health": {
+        "label": "健康",
+        "items": {
+          "healthcareProviders": { "label": "医疗服务提供者", "description": "药房和综合诊所。" },
+          "genderAffirmingCare": { "label": "性别肯定护理", "description": "激素治疗和性别诊所。" },
+          "mentalHealth": { "label": "心理健康与艾滋病", "description": "咨询、同伴支持和检测。" },
+          "generalHealth": { "label": "普通健康", "description": "常规检查和日常护理。" }
         }
+      },
+      "safety": {
+        "label": "安全",
+        "items": {
+          "safeSpaces": { "label": "安全空间", "description": "经过审核的庇护所和合作住房。" },
+          "legalAid": { "label": "法律援助", "description": "更名、庇护和法律援助。" },
+          "travel": { "label": "旅行与流动", "description": "边境通行与身份证件须知。" }
+        }
+      },
+      "getInvolved": {
+        "label": "参与",
+        "items": {
+          "storySubmissions": { "label": "投稿故事", "description": "分享在你的社区中行之有效的经验。" },
+          "communitySupport": { "label": "社区互助", "description": "互助与本地组织。" }
+        }
+      },
+      "grow": {
+        "label": "成长",
+        "items": {
+          "jobsAndCareers": { "label": "工作与职业", "description": "包容性雇主与职业支持。" },
+          "skillsAndLearning": { "label": "技能与学习", "description": "工作坊和社区主导的课程。" }
+        }
+      }
+    },
+    "aria": {
+      "privacy": "隐私",
+      "notifications": "通知",
+      "openMenu": "打开菜单",
+      "closeMenu": "关闭菜单"
     }
+  },
+  "pages": {
+    "home": {
+      "welcomeBackTitle": "欢迎回来，River。",
+      "welcomeBackSubtitle": "你所在的地区已被收录。以下是你的社区今天的概况。",
+      "welcomeGuestTitle": "欢迎来到 Transspace。",
+      "welcomeGuestSubtitle": "登录以查看你附近的资源和社区动态。",
+      "localStatus": "本地状态",
+      "areaSummary": "附近有 12 个经社区验证的资源正在提供服务。附近有 3 个区域需要审核后才能访问。",
+      "openTheMap": "打开地图",
+      "exploreTitle": "探索",
+      "exploreSubtitle": "查找资源",
+      "crisisSupportTitle": "危机支持",
+      "crisisSupportSubtitle": "寻求帮助",
+      "trendingTitle": "你的社区热门话题",
+      "trendingSubtitle": "你的圈子中的热烈讨论",
+      "joinCommunity": "加入社区",
+      "protectedNotice": "你的连接受到保护。确切位置永远不会被分享"
+    },
+    "atlas": {
+      "searchPlaceholder": "搜索资源、城市或国家…",
+      "toggleFilters": "切换分类筛选",
+      "all": "全部",
+      "protectedConnection": "受保护的连接"
+    },
+    "resources": {
+      "index": {
+        "searchPlaceholder": "搜索资源，例如“柏林激素治疗”",
+        "contribute": "贡献",
+        "all": "全部",
+        "resourcesNearCount": "附近有 {count} 个资源，靠近",
+        "noMatches": "没有匹配结果。请尝试其他搜索词，或清除筛选条件。",
+        "trustSignals": "信任标识",
+        "verifiedOnly": "仅显示经社区验证",
+        "freeOnly": "浮动收费/免费",
+        "internationalOnly": "接受来自其他国家的人",
+        "relatedGuides": "相关指南"
+      },
+      "healthcareProviders": {
+        "title": "医疗服务提供者",
+        "subtitle": "社区成员使用过并认可的药房和综合诊所。",
+        "empty": "暂无收录的服务提供者。"
+      },
+      "genderAffirmationHealth": {
+        "title": "性别肯定护理",
+        "subtitle": "社区成员使用过并认可的激素治疗、手术转诊和性别诊所。",
+        "empty": "暂无收录的服务提供者。"
+      },
+      "mentalHealth": {
+        "title": "心理健康与艾滋病",
+        "subtitle": "来自社区信赖的服务机构的咨询、同伴支持以及艾滋病检测和治疗。",
+        "empty": "暂无收录的服务。"
+      },
+      "generalHealth": {
+        "title": "普通健康",
+        "subtitle": "常规检查、疫苗接种和日常护理，就诊时不会把重点放在你的性别上。",
+        "empty": "暂无收录的普通诊所。"
+      },
+      "safeSpace": {
+        "title": "安全空间与住房",
+        "subtitle": "为跨性别者和非二元性别者提供的经审核庇护所、合作住房和紧急收容。",
+        "empty": "暂无收录的住房。"
+      },
+      "legal": {
+        "title": "法律与移民",
+        "subtitle": "为 LGBTQIA+ 群体提供更名、性别标记更新、庇护案件处理和法律援助。",
+        "empty": "暂无收录的法律援助。"
+      },
+      "travel": {
+        "title": "旅行与流动",
+        "subtitle": "边境通行须知、身份证件建议，以及经社区审核的安全旅行路线。",
+        "empty": "暂无收录的旅行资源。"
+      },
+      "detail": {
+        "backToResources": "返回资源列表",
+        "notFoundTitle": "未找到该资源",
+        "notFoundBody": "该资源可能已被移除，或链接已失效。",
+        "verified": "社区已验证",
+        "pendingReview": "社区提交，待审核",
+        "lastReviewedCount": "上次审核时间：{when}",
+        "communityReportsCount": "{count} 条社区反馈",
+        "photoPlaceholder": "{name} 的照片",
+        "about": "关于",
+        "services": "服务项目",
+        "location": "位置",
+        "locationGatedNote": "一旦你的账户通过审核，我们会向你提供确切地址和入口说明。",
+        "requestFullAddress": "请求完整地址",
+        "communityExperiences": "社区体验分享",
+        "anonymousCommunityMember": "匿名社区成员",
+        "saveResource": "收藏此资源",
+        "suggestUpdate": "建议更新",
+        "trustSignals": "信任标识",
+        "internationalAccessNote": "接受来自其他国家的人"
+      }
+    },
+    "opportunities": {
+      "title": "工作与职业",
+      "subtitle": "由社区和盟友分享的工作、自由职业、奖学金、导师计划和志愿服务机会。",
+      "searchPlaceholder": "搜索机会，例如“远程设计工作”",
+      "post": "发布机会",
+      "all": "全部",
+      "countLabel": "{count} 个机会",
+      "noMatches": "没有匹配结果。请尝试其他搜索词，或清除筛选条件。",
+      "refine": "筛选优化",
+      "remoteOnly": "仅限远程",
+      "verifiedOnly": "仅显示经社区验证",
+      "beforeYouApply": "申请前须知",
+      "verified": "社区已验证",
+      "pendingReview": "社区提交，待审核",
+      "remote": "远程",
+      "deadlineLabel": "截止日期：{deadline}",
+      "view": "查看"
+    },
+    "guides": {
+      "title": "技能与学习",
+      "subtitle": "由社区贡献的实用指南，涵盖从首次激素咨询到经历空窗期后重建简历的方方面面。",
+      "searchPlaceholder": "搜索指南，例如“更改姓名”",
+      "contribute": "贡献指南",
+      "all": "全部",
+      "noMatches": "没有匹配结果。请尝试其他搜索词，或清除筛选条件。",
+      "communityReviewed": "社区已审核",
+      "readGuide": "阅读指南"
+    },
+    "support": {
+      "badge": "探索性概念，尚未纳入当前版本",
+      "title": "互助",
+      "subtitle": "一个集体互助的空间。你可以请求所需的帮助，也可以分享你能提供的支持，完全保护隐私。",
+      "requestHelp": "请求帮助",
+      "offerSupport": "提供支持",
+      "filters": "筛选",
+      "privacyNoteStrong": "你的身份受到保护。",
+      "privacyNote": "此处仅显示你的化名，绝不会显示你的真实姓名或确切位置。"
+    },
+    "profile": {
+      "editPhoto": "编辑头像",
+      "role": "社区贡献者 · they/them",
+      "privacyNarrative": "隐私心得",
+      "accountSettingsTitle": "账户设置",
+      "accountSettingsSubtitle": "偏好设置与安全",
+      "dataAndPrivacyTitle": "数据与隐私",
+      "dataAndPrivacySubtitle": "管理你的数字足迹",
+      "helpAndSupportTitle": "帮助与支持",
+      "helpAndSupportSubtitle": "资源与联系方式",
+      "communitiesTitle": "社区",
+      "communitiesSubtitle": "你的圈子和群组",
+      "savedResources": "已收藏的资源",
+      "mySubmissions": "我的提交",
+      "pending": "待审核",
+      "approved": "已通过",
+      "logOut": "退出登录"
+    },
+    "submit": {
+      "title": "提交资源",
+      "subtitle": "为资源目录推荐诊所、庇护所、法律援助点或支持空间。每一份提交都会先经过社区审核，然后才会公开显示。",
+      "resourceName": "资源名称",
+      "resourceNamePlaceholder": "例如“Rosa Wellness Clinic”",
+      "category": "分类",
+      "moreSpecifically": "具体细分",
+      "country": "国家",
+      "city": "城市",
+      "estimate": "大致费用与等待时间",
+      "estimatePlaceholder": "例如“免费咨询 · 约2周”",
+      "contact": "如何联系到他们？",
+      "contactPlaceholder": "预约链接、电话、无需预约的接待时间…",
+      "description": "描述",
+      "descriptionPlaceholder": "去之前应该了解什么？是什么让这个地方值得信赖？",
+      "internationalAccess": "接待来自其他国家的人",
+      "privacyNoteStrong": "提交内容将保持匿名。",
+      "privacyNote": "每条提交都会先经过管理员审核，之后才会公开。目前这里还不会保存任何内容，该流程仍在设计中。",
+      "submit": "提交审核",
+      "notPartOfBuild": "尚未纳入当前版本"
+    },
+    "stories": {
+      "comingSoon": "故事版块即将上线。"
+    }
+  },
+  "components": {
+    "resourceCard": {
+      "verified": "社区已验证",
+      "pendingReview": "社区提交，待审核"
+    },
+    "mutualAidCard": {
+      "connect": "联系",
+      "respond": "回应"
+    },
+    "atlasDetail": {
+      "backToList": "返回列表",
+      "verified": "社区已验证",
+      "internationalAccess": "国际访问",
+      "contact": "联系方式",
+      "signInToUnlock": "登录以解锁详细信息"
+    },
+    "atlasList": {
+      "noMatches": "此搜索或筛选条件没有匹配结果。"
+    }
+  }
 }

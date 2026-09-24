@@ -1,3 +1,4 @@
+import { m } from "@/paraglide/messages"
 import { ArrowRightIcon, FavouriteIcon, MapsIcon, SearchIcon, Shield01Icon, UserGroupIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
@@ -45,14 +46,14 @@ function RouteComponent() {
           {signedIn
             ? (
               <>
-                <h1>Welcome back, River.</h1>
-                <p>Your area is mapped. Here is a snapshot of your community today.</p>
+                <h1>{m["pages.home.welcomeBackTitle"]()}</h1>
+                <p>{m["pages.home.welcomeBackSubtitle"]()}</p>
               </>
             )
             : (
               <>
-                <h1>Welcome to Transspace.</h1>
-                <p>Sign in to see resources near you and your community activity.</p>
+                <h1>{m["pages.home.welcomeGuestTitle"]()}</h1>
+                <p>{m["pages.home.welcomeGuestSubtitle"]()}</p>
               </>
             )}
         </motion.div>
@@ -69,15 +70,15 @@ function RouteComponent() {
           >
             <h6 className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-success" />
-              Local status
+              {m["pages.home.localStatus"]()}
             </h6>
             <div>
               <h2>Berlin, DE</h2>
-              <p>12 community verified resources active nearby. 3 areas nearby require vetted access.</p>
+              <p>{m["pages.home.areaSummary"]()}</p>
             </div>
             <Button size="sm" className="w-fit rounded-full" nativeButton={false} render={<Link to="/r" />}>
               <HugeiconsIcon icon={MapsIcon} className="size-3.5" />
-              Open the map
+              {m["pages.home.openTheMap"]()}
             </Button>
           </motion.div>
 
@@ -91,8 +92,8 @@ function RouteComponent() {
               )}
             >
               <HugeiconsIcon icon={SearchIcon} className="size-5" />
-              <h3>Explore</h3>
-              <p>Find resources</p>
+              <h3>{m["pages.home.exploreTitle"]()}</h3>
+              <p>{m["pages.home.exploreSubtitle"]()}</p>
             </motion.div>
 
             <motion.div
@@ -104,8 +105,8 @@ function RouteComponent() {
               )}
             >
               <HugeiconsIcon icon={FavouriteIcon} className="size-5 text-destructive" />
-              <h3 className="text-destructive">Crisis support</h3>
-              <p>Ask for help</p>
+              <h3 className="text-destructive">{m["pages.home.crisisSupportTitle"]()}</h3>
+              <p>{m["pages.home.crisisSupportSubtitle"]()}</p>
             </motion.div>
           </div>
         </div>
@@ -120,11 +121,11 @@ function RouteComponent() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2>Trending in your communities</h2>
-              <p>Active conversations in your circles</p>
+              <h2>{m["pages.home.trendingTitle"]()}</h2>
+              <p>{m["pages.home.trendingSubtitle"]()}</p>
             </div>
             <a className="flex items-center gap-1">
-              Join a community
+              {m["pages.home.joinCommunity"]()}
               <HugeiconsIcon icon={ArrowRightIcon} className="size-3.5" />
             </a>
           </div>
@@ -165,7 +166,7 @@ function RouteComponent() {
             )}
           >
             <HugeiconsIcon icon={Shield01Icon} className="size-3.5 text-olive-500" />
-            Your connection is protected. Exact locations are never shared
+            {m["pages.home.protectedNotice"]()}
           </div>
         </motion.div>
       </motion.section>

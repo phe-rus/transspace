@@ -1,5 +1,6 @@
 import { MutualAidCard } from "@/components/support/mutual-aid-card"
 import { mutualAidPosts } from "@/data/mutual-aid-posts"
+import { m } from "@/paraglide/messages"
 import { Add01Icon, Alert01Icon, FilterHorizontalIcon, HeartHandshakeIcon, Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
@@ -19,26 +20,26 @@ function RouteComponent() {
           className="flex w-fit items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1.5 text-xs! text-warning"
         >
           <HugeiconsIcon icon={Alert01Icon} className="size-3" />
-          Exploratory concept, not part of this build yet
+          {m["pages.support.badge"]()}
         </div>
-        <h1>Mutual aid</h1>
+        <h1>{m["pages.support.title"]()}</h1>
         <p className="max-w-lg">
-          A space for collective care. Request what you need, or share what you can, with complete privacy.
+          {m["pages.support.subtitle"]()}
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2.5">
         <Button disabled className="h-10 gap-1.5 rounded-full px-5">
           <HugeiconsIcon icon={Add01Icon} />
-          Request help
+          {m["pages.support.requestHelp"]()}
         </Button>
         <Button variant="outline" disabled className="h-10 gap-1.5 rounded-full px-5">
           <HugeiconsIcon icon={HeartHandshakeIcon} />
-          Offer support
+          {m["pages.support.offerSupport"]()}
         </Button>
         <Button variant="outline" disabled className="h-10 gap-1.5 rounded-full px-5">
           <HugeiconsIcon icon={FilterHorizontalIcon} />
-          Filters
+          {m["pages.support.filters"]()}
         </Button>
       </div>
 
@@ -51,8 +52,7 @@ function RouteComponent() {
       <div className="flex items-center gap-3 rounded-3xl border border-border p-5">
         <HugeiconsIcon icon={Shield01Icon} className="size-4.5 shrink-0" />
         <p>
-          <strong className="text-foreground">Your identity is protected.</strong> Only your pseudonymous display
-          name is shown here, never your real name or exact location.
+          <strong className="text-foreground">{m["pages.support.privacyNoteStrong"]()}</strong> {m["pages.support.privacyNote"]()}
         </p>
       </div>
     </article>

@@ -1,4 +1,5 @@
 import type { AtlasResource } from "@/data/atlas-resources"
+import { m } from "@/paraglide/messages"
 import { resourceCategoryColor } from "@/data/resource-categories"
 import { useMap } from "@pherus/ui/map"
 import { cn } from "@pherus/ui/lib/utils"
@@ -19,7 +20,7 @@ export function AtlasResourceList({ resources, selectedId, onSelect }: AtlasReso
 
   return (
     <div className="no-scrollbar pointer-events-auto flex max-h-[46vh] w-full max-w-sm flex-col gap-1 overflow-y-auto rounded-3xl border border-border/35 bg-card/80 p-2 shadow-lg backdrop-blur">
-      {resources.length === 0 && <p className="p-3 text-center">No matches for this search or filter.</p>}
+      {resources.length === 0 && <p className="p-3 text-center">{m["components.atlasList.noMatches"]()}</p>}
       {resources.map((resource) => (
         <button
           key={resource.id}

@@ -1,4 +1,5 @@
 import { GuideCard } from "@/components/guides/guide-card"
+import { m } from "@/paraglide/messages"
 import {
   GUIDE_CATEGORIES,
   guideCategoryIcon,
@@ -35,10 +36,9 @@ function RouteComponent() {
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-2">
-        <h1>Skills & learning</h1>
+        <h1>{m["pages.guides.title"]()}</h1>
         <p className="max-w-lg">
-          Practical, community-contributed guides, from a first hormone consultation to rebuilding a resume after a
-          gap.
+          {m["pages.guides.subtitle"]()}
         </p>
       </div>
 
@@ -51,12 +51,12 @@ function RouteComponent() {
             <InputGroupInput
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder='Search guides, e.g. "name change"'
+              placeholder={m["pages.guides.searchPlaceholder"]()}
             />
           </InputGroup>
           <Button variant="secondary" disabled className="h-11 shrink-0 gap-1.5 rounded-full px-5">
             <HugeiconsIcon icon={Add01Icon} />
-            Contribute a guide
+            {m["pages.guides.contribute"]()}
           </Button>
         </div>
 
@@ -71,7 +71,7 @@ function RouteComponent() {
                 : "border-border text-muted-foreground hover:border-muted-foreground",
             )}
           >
-            All
+            {m["pages.guides.all"]()}
           </button>
           {GUIDE_CATEGORIES.map((category) => (
             <button
@@ -99,7 +99,7 @@ function RouteComponent() {
 
         {filteredGuides.length === 0 && (
           <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center md:col-span-2">
-            <p>No matches. Try a different search, or clear a filter.</p>
+            <p>{m["pages.guides.noMatches"]()}</p>
           </div>
         )}
       </div>

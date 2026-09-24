@@ -1,4 +1,5 @@
 import { OpportunityCard } from "@/components/opportunities/opportunity-card"
+import { m } from "@/paraglide/messages"
 import {
   OPPORTUNITY_CATEGORIES,
   opportunities,
@@ -42,9 +43,9 @@ function RouteComponent() {
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-2">
-        <h1>Jobs & careers</h1>
+        <h1>{m["pages.opportunities.title"]()}</h1>
         <p className="max-w-lg">
-          Jobs, freelance work, scholarships, mentorship, and volunteering shared by the community and allies.
+          {m["pages.opportunities.subtitle"]()}
         </p>
       </div>
 
@@ -57,12 +58,12 @@ function RouteComponent() {
             <InputGroupInput
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder='Search opportunities, e.g. "remote design job"'
+              placeholder={m["pages.opportunities.searchPlaceholder"]()}
             />
           </InputGroup>
           <Button disabled className="h-11 shrink-0 gap-1.5 rounded-full px-5">
             <HugeiconsIcon icon={Add01Icon} />
-            Post an opportunity
+            {m["pages.opportunities.post"]()}
           </Button>
         </div>
 
@@ -77,7 +78,7 @@ function RouteComponent() {
                 : "border-border text-muted-foreground hover:border-muted-foreground",
             )}
           >
-            All
+            {m["pages.opportunities.all"]()}
           </button>
           {OPPORTUNITY_CATEGORIES.map((category) => (
             <button
@@ -100,7 +101,7 @@ function RouteComponent() {
 
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex flex-2 flex-col gap-3.5">
-          <p>{filteredOpportunities.length} opportunities</p>
+          <p>{m["pages.opportunities.countLabel"]({ count: filteredOpportunities.length })}</p>
 
           {filteredOpportunities.map((item) => (
             <OpportunityCard key={item.id} opportunity={item} />
@@ -108,14 +109,14 @@ function RouteComponent() {
 
           {filteredOpportunities.length === 0 && (
             <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-              <p>No matches. Try a different search, or clear a filter.</p>
+              <p>{m["pages.opportunities.noMatches"]()}</p>
             </div>
           )}
         </div>
 
         <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
           <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
-            <h6>Refine</h6>
+            <h6>{m["pages.opportunities.refine"]()}</h6>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
                 type="checkbox"
@@ -123,7 +124,7 @@ function RouteComponent() {
                 onChange={(event) => setRemoteOnly(event.target.checked)}
                 className="accent-success"
               />
-              Remote only
+              {m["pages.opportunities.remoteOnly"]()}
             </label>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
@@ -132,12 +133,12 @@ function RouteComponent() {
                 onChange={(event) => setVerifiedOnly(event.target.checked)}
                 className="accent-success"
               />
-              Community verified only
+              {m["pages.opportunities.verifiedOnly"]()}
             </label>
           </div>
 
           <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-5">
-            <h6>Before you apply</h6>
+            <h6>{m["pages.opportunities.beforeYouApply"]()}</h6>
             <p>Deciding when to come out at work</p>
             <p>Rebuilding a resume after a gap</p>
           </div>

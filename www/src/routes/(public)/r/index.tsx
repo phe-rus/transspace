@@ -1,5 +1,6 @@
 import { ResourceCard } from "@/components/resources/resource-card"
 import { atlasResources } from "@/data/atlas-resources"
+import { m } from "@/paraglide/messages"
 import {
   RESOURCE_CATEGORIES,
   resourceCategoryColor,
@@ -53,7 +54,7 @@ function RouteComponent() {
             <InputGroupInput
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder='Search resources, e.g. "hormone therapy Berlin"'
+              placeholder={m["pages.resources.index.searchPlaceholder"]()}
             />
           </InputGroup>
           <div className={cn(
@@ -64,7 +65,7 @@ function RouteComponent() {
             Berlin, DE
           </div>
           <Button variant="secondary" disabled className="h-11 shrink-0 rounded-full px-5">
-            Contribute
+            {m["pages.resources.index.contribute"]()}
           </Button>
         </div>
 
@@ -79,7 +80,7 @@ function RouteComponent() {
                 : "border-border text-muted-foreground hover:border-muted-foreground",
             )}
           >
-            All
+            {m["pages.resources.index.all"]()}
           </button>
           {RESOURCE_CATEGORIES.map((category) => (
             <button
@@ -105,7 +106,7 @@ function RouteComponent() {
 
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex flex-2 flex-col gap-3.5">
-          <p>{filteredResources.length} resources near Berlin, DE</p>
+          <p>{m["pages.resources.index.resourcesNearCount"]({ count: filteredResources.length })} Berlin, DE</p>
 
           {filteredResources.map((resource) => (
             <ResourceCard key={resource.id} resource={resource} />
@@ -113,14 +114,14 @@ function RouteComponent() {
 
           {filteredResources.length === 0 && (
             <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-              <p>No matches. Try a different search, or clear a filter.</p>
+              <p>{m["pages.resources.index.noMatches"]()}</p>
             </div>
           )}
         </div>
 
         <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
           <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
-            <h6>Trust signals</h6>
+            <h6>{m["pages.resources.index.trustSignals"]()}</h6>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
                 type="checkbox"
@@ -128,7 +129,7 @@ function RouteComponent() {
                 onChange={(event) => setVerifiedOnly(event.target.checked)}
                 className="accent-success"
               />
-              Community verified only
+              {m["pages.resources.index.verifiedOnly"]()}
             </label>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
@@ -137,7 +138,7 @@ function RouteComponent() {
                 onChange={(event) => setFreeOnly(event.target.checked)}
                 className="accent-success"
               />
-              Sliding scale / free
+              {m["pages.resources.index.freeOnly"]()}
             </label>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
@@ -146,12 +147,12 @@ function RouteComponent() {
                 onChange={(event) => setInternationalOnly(event.target.checked)}
                 className="accent-success"
               />
-              Accepts people from other countries
+              {m["pages.resources.index.internationalOnly"]()}
             </label>
           </div>
 
           <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-5">
-            <h6>Related guides</h6>
+            <h6>{m["pages.resources.index.relatedGuides"]()}</h6>
             <p>Finding gender affirming care in Germany</p>
             <p>What "community verified" actually means</p>
           </div>

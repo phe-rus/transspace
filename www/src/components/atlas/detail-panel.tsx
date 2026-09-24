@@ -1,5 +1,6 @@
 import type { AtlasResource } from "@/data/atlas-resources"
 import type { AtlasZone } from "@/data/atlas-zones"
+import { m } from "@/paraglide/messages"
 import { resourceCategoryColor, resourceCategoryIcon, resourceCategoryLabel } from "@/data/resource-categories"
 import { ArrowLeft01Icon, CheckmarkCircle01Icon, SquareLock02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -16,7 +17,7 @@ export interface AtlasDetailPanelProps {
 function Header({ category, name, onBack }: { category: keyof typeof resourceCategoryColor; name: string; onBack: () => void }) {
   return (
     <div className="flex items-center gap-2">
-      <Button size="icon-sm" variant="ghost" aria-label="Back to list" onClick={onBack}>
+      <Button size="icon-sm" variant="ghost" aria-label={m["components.atlasDetail.backToList"]()} onClick={onBack}>
         <HugeiconsIcon icon={ArrowLeft01Icon} />
       </Button>
       <span className="flex size-7 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${resourceCategoryColor[category]}22` }}>
@@ -41,10 +42,10 @@ export function AtlasDetailPanel({ selection, onBack }: AtlasDetailPanelProps) {
           {resource.verified && (
             <h6 className="flex items-center gap-1.5">
               <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3.5" />
-              Community verified
+              {m["components.atlasDetail.verified"]()}
             </h6>
           )}
-          {resource.internationalAccess && <h6>International access</h6>}
+          {resource.internationalAccess && <h6>{m["components.atlasDetail.internationalAccess"]()}</h6>}
         </div>
       </article>
     )
@@ -68,7 +69,7 @@ export function AtlasDetailPanel({ selection, onBack }: AtlasDetailPanelProps) {
             ))}
             {zone.contact && (
               <div className="rounded-xl border border-border p-2.5">
-                <h6>Contact</h6>
+                <h6>{m["components.atlasDetail.contact"]()}</h6>
                 <p>{zone.contact}</p>
               </div>
             )}
@@ -77,7 +78,7 @@ export function AtlasDetailPanel({ selection, onBack }: AtlasDetailPanelProps) {
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-xl bg-card/70">
               <HugeiconsIcon icon={SquareLock02Icon} className="size-4" />
               <Button size="sm" disabled className="rounded-full">
-                Sign in to unlock details
+                {m["components.atlasDetail.signInToUnlock"]()}
               </Button>
             </div>
           )}

@@ -1,21 +1,247 @@
 {
-    "$schema": "https://inlang.com/schema/inlang-message-format",
-    "navigation": {
-        "title": "Transspace",
-        "items": {
-            "resources": "Ressources",
-            "opportunities": "Opportunités",
-            "community": "Community"
-        }
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "navigation": {
+    "title": "Transspace",
+    "items": {
+      "resources": "Ressources",
+      "map": "Carte",
+      "communities": "Communautés",
+      "support": "Soutien",
+      "profile": "Profil"
     },
-    "overview": {
-        "hero": {
-            "title": "Savoir, ressources, communauté et soutien queer.",
-            "subtitle": "Une plateforme de Pherus conçue pour la communauté LGBTQ+. Découvrez des ressources fiables, des connaissances pratiques, des opportunités et du soutien partagés par la communauté queer.",
-            "links": {
-                "resources": "Parcourir les ressources",
-                "opportunities": "Parcourir les opportunités"
-            }
+    "groups": {
+      "health": {
+        "label": "Santé",
+        "items": {
+          "healthcareProviders": { "label": "Professionnels de santé", "description": "Pharmacies et cliniques polyvalentes." },
+          "genderAffirmingCare": { "label": "Soins d'affirmation de genre", "description": "Traitement hormonal et cliniques de genre." },
+          "mentalHealth": { "label": "Santé mentale & VIH", "description": "Conseil, soutien par les pairs et dépistage." },
+          "generalHealth": { "label": "Santé générale", "description": "Bilans de routine et soins du quotidien." }
         }
+      },
+      "safety": {
+        "label": "Sécurité",
+        "items": {
+          "safeSpaces": { "label": "Espaces sûrs", "description": "Refuges vérifiés et logements coopératifs." },
+          "legalAid": { "label": "Aide juridique", "description": "Changement de nom, asile et aide juridique." },
+          "travel": { "label": "Voyage & mobilité", "description": "Notes sur le passage des frontières et les papiers d'identité." }
+        }
+      },
+      "getInvolved": {
+        "label": "S'impliquer",
+        "items": {
+          "storySubmissions": { "label": "Soumissions de témoignages", "description": "Partagez ce qui a fonctionné dans votre communauté." },
+          "communitySupport": { "label": "Soutien communautaire", "description": "Entraide et organisation locale." }
+        }
+      },
+      "grow": {
+        "label": "Évoluer",
+        "items": {
+          "jobsAndCareers": { "label": "Emplois & carrières", "description": "Employeurs inclusifs et accompagnement de carrière." },
+          "skillsAndLearning": { "label": "Compétences & apprentissage", "description": "Ateliers et cours animés par la communauté." }
+        }
+      }
+    },
+    "aria": {
+      "privacy": "Confidentialité",
+      "notifications": "Notifications",
+      "openMenu": "Ouvrir le menu",
+      "closeMenu": "Fermer le menu"
     }
+  },
+  "pages": {
+    "home": {
+      "welcomeBackTitle": "Content de te revoir, River.",
+      "welcomeBackSubtitle": "Votre secteur est cartographié. Voici un aperçu de votre communauté aujourd'hui.",
+      "welcomeGuestTitle": "Bienvenue sur Transspace.",
+      "welcomeGuestSubtitle": "Connectez-vous pour voir les ressources près de chez vous et l'activité de votre communauté.",
+      "localStatus": "Statut local",
+      "areaSummary": "12 ressources vérifiées par la communauté sont actives à proximité. 3 zones à proximité nécessitent un accès vérifié.",
+      "openTheMap": "Ouvrir la carte",
+      "exploreTitle": "Explorer",
+      "exploreSubtitle": "Trouver des ressources",
+      "crisisSupportTitle": "Aide en cas de crise",
+      "crisisSupportSubtitle": "Demander de l'aide",
+      "trendingTitle": "Tendances dans vos communautés",
+      "trendingSubtitle": "Conversations actives dans vos cercles",
+      "joinCommunity": "Rejoindre une communauté",
+      "protectedNotice": "Votre connexion est protégée. Les emplacements exacts ne sont jamais partagés"
+    },
+    "atlas": {
+      "searchPlaceholder": "Rechercher des ressources, villes ou pays…",
+      "toggleFilters": "Basculer les filtres de catégorie",
+      "all": "Tous",
+      "protectedConnection": "Connexion protégée"
+    },
+    "resources": {
+      "index": {
+        "searchPlaceholder": "Rechercher des ressources, ex. « traitement hormonal Berlin »",
+        "contribute": "Contribuer",
+        "all": "Tous",
+        "resourcesNearCount": "{count} ressources près de",
+        "noMatches": "Aucun résultat. Essayez une autre recherche ou effacez un filtre.",
+        "trustSignals": "Signaux de confiance",
+        "verifiedOnly": "Vérifié par la communauté uniquement",
+        "freeOnly": "Tarif dégressif / gratuit",
+        "internationalOnly": "Accepte les personnes venant d'autres pays",
+        "relatedGuides": "Guides associés"
+      },
+      "healthcareProviders": {
+        "title": "Professionnels de santé",
+        "subtitle": "Pharmacies et cliniques polyvalentes utilisées et recommandées par la communauté.",
+        "empty": "Aucun professionnel répertorié pour le moment."
+      },
+      "genderAffirmationHealth": {
+        "title": "Soins d'affirmation de genre",
+        "subtitle": "Traitement hormonal, orientations chirurgicales et cliniques de genre utilisées et recommandées par la communauté.",
+        "empty": "Aucun professionnel répertorié pour le moment."
+      },
+      "mentalHealth": {
+        "title": "Santé mentale & VIH",
+        "subtitle": "Conseil, soutien par les pairs, ainsi que dépistage et traitement du VIH auprès de services de confiance pour la communauté.",
+        "empty": "Aucun service répertorié pour le moment."
+      },
+      "generalHealth": {
+        "title": "Santé générale",
+        "subtitle": "Bilans de routine, vaccinations et soins du quotidien auprès de praticiens qui ne feront pas de votre genre le sujet de la consultation.",
+        "empty": "Aucun cabinet généraliste répertorié pour le moment."
+      },
+      "safeSpace": {
+        "title": "Espaces sûrs & logement",
+        "subtitle": "Refuges vérifiés, logements coopératifs et accueil d'urgence pour les personnes trans et non binaires.",
+        "empty": "Aucun logement répertorié pour le moment."
+      },
+      "legal": {
+        "title": "Juridique & immigration",
+        "subtitle": "Changement de nom, mise à jour de la mention de genre, dossiers d'asile et aide juridique pour les personnes LGBTQIA+.",
+        "empty": "Aucune aide juridique répertoriée pour le moment."
+      },
+      "travel": {
+        "title": "Voyage & mobilité",
+        "subtitle": "Notes sur le passage des frontières, recommandations sur les papiers d'identité et itinéraires de voyage sûrs vérifiés par la communauté.",
+        "empty": "Aucune ressource de voyage répertoriée pour le moment."
+      },
+      "detail": {
+        "backToResources": "Retour aux ressources",
+        "notFoundTitle": "Ressource introuvable",
+        "notFoundBody": "Elle a peut-être été supprimée, ou le lien est obsolète.",
+        "verified": "Vérifié par la communauté",
+        "pendingReview": "Soumis par la communauté, en attente de vérification",
+        "lastReviewedCount": "Dernière vérification {when}",
+        "communityReportsCount": "{count} retours de la communauté",
+        "photoPlaceholder": "Photo de {name}",
+        "about": "À propos",
+        "services": "Services",
+        "location": "Emplacement",
+        "locationGatedNote": "L'adresse exacte et les indications d'accès sont communiquées une fois votre compte vérifié.",
+        "requestFullAddress": "Demander l'adresse complète",
+        "communityExperiences": "Retours d'expérience de la communauté",
+        "anonymousCommunityMember": "Membre anonyme de la communauté",
+        "saveResource": "Enregistrer cette ressource",
+        "suggestUpdate": "Suggérer une mise à jour",
+        "trustSignals": "Signaux de confiance",
+        "internationalAccessNote": "Accepte les personnes venant d'autres pays"
+      }
+    },
+    "opportunities": {
+      "title": "Emplois & carrières",
+      "subtitle": "Emplois, missions freelance, bourses, mentorat et bénévolat partagés par la communauté et ses alliés.",
+      "searchPlaceholder": "Rechercher des opportunités, ex. « emploi design à distance »",
+      "post": "Publier une opportunité",
+      "all": "Tous",
+      "countLabel": "{count} opportunités",
+      "noMatches": "Aucun résultat. Essayez une autre recherche ou effacez un filtre.",
+      "refine": "Affiner",
+      "remoteOnly": "Télétravail uniquement",
+      "verifiedOnly": "Vérifié par la communauté uniquement",
+      "beforeYouApply": "Avant de postuler",
+      "verified": "Vérifié par la communauté",
+      "pendingReview": "Soumis par la communauté, en attente de vérification",
+      "remote": "Télétravail",
+      "deadlineLabel": "Date limite : {deadline}",
+      "view": "Voir"
+    },
+    "guides": {
+      "title": "Compétences & apprentissage",
+      "subtitle": "Guides pratiques rédigés par la communauté, de la première consultation hormonale à la reconstruction d'un CV après une interruption.",
+      "searchPlaceholder": "Rechercher des guides, ex. « changement de nom »",
+      "contribute": "Contribuer un guide",
+      "all": "Tous",
+      "noMatches": "Aucun résultat. Essayez une autre recherche ou effacez un filtre.",
+      "communityReviewed": "Vérifié par la communauté",
+      "readGuide": "Lire le guide"
+    },
+    "support": {
+      "badge": "Concept exploratoire, pas encore intégré à cette version",
+      "title": "Entraide",
+      "subtitle": "Un espace de soin collectif. Demandez ce dont vous avez besoin, ou partagez ce que vous pouvez, en toute confidentialité.",
+      "requestHelp": "Demander de l'aide",
+      "offerSupport": "Proposer un soutien",
+      "filters": "Filtres",
+      "privacyNoteStrong": "Votre identité est protégée.",
+      "privacyNote": "Seul votre pseudonyme est affiché ici, jamais votre vrai nom ni votre emplacement exact."
+    },
+    "profile": {
+      "editPhoto": "Modifier la photo de profil",
+      "role": "Contributeur·ice communautaire · iel",
+      "privacyNarrative": "Récit sur la confidentialité",
+      "accountSettingsTitle": "Paramètres du compte",
+      "accountSettingsSubtitle": "Préférences & sécurité",
+      "dataAndPrivacyTitle": "Données & confidentialité",
+      "dataAndPrivacySubtitle": "Gérez votre empreinte numérique",
+      "helpAndSupportTitle": "Aide & assistance",
+      "helpAndSupportSubtitle": "Ressources & contact",
+      "communitiesTitle": "Communautés",
+      "communitiesSubtitle": "Vos cercles et groupes",
+      "savedResources": "Ressources enregistrées",
+      "mySubmissions": "Mes contributions",
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "logOut": "Se déconnecter"
+    },
+    "submit": {
+      "title": "Soumettre une ressource",
+      "subtitle": "Proposez une clinique, un refuge, un service d'aide juridique ou un espace de soutien pour l'annuaire. Chaque soumission est examinée par la communauté avant d'être publiée.",
+      "resourceName": "Nom de la ressource",
+      "resourceNamePlaceholder": "ex. « Rosa Wellness Clinic »",
+      "category": "Catégorie",
+      "moreSpecifically": "Plus précisément",
+      "country": "Pays",
+      "city": "Ville",
+      "estimate": "Coût & délai, approximatif",
+      "estimatePlaceholder": "ex. « Consultation gratuite · ~2 semaines »",
+      "contact": "Comment les contacter ?",
+      "contactPlaceholder": "Lien de réservation, téléphone, horaires sans rendez-vous…",
+      "description": "Description",
+      "descriptionPlaceholder": "Que faut-il savoir avant de s'y rendre ? Qu'est-ce qui rend cet endroit fiable ?",
+      "internationalAccess": "Accueille des personnes venant d'autres pays",
+      "privacyNoteStrong": "Les soumissions restent pseudonymes.",
+      "privacyNote": "Un modérateur examine chaque entrée avant qu'elle ne soit publiée. Rien n'est encore enregistré ici, ce parcours est encore en cours de conception.",
+      "submit": "Soumettre pour vérification",
+      "notPartOfBuild": "Pas encore intégré à cette version"
+    },
+    "stories": {
+      "comingSoon": "Les témoignages arrivent bientôt."
+    }
+  },
+  "components": {
+    "resourceCard": {
+      "verified": "Vérifié par la communauté",
+      "pendingReview": "Soumis par la communauté, en attente de vérification"
+    },
+    "mutualAidCard": {
+      "connect": "Contacter",
+      "respond": "Répondre"
+    },
+    "atlasDetail": {
+      "backToList": "Retour à la liste",
+      "verified": "Vérifié par la communauté",
+      "internationalAccess": "Accès international",
+      "contact": "Contact",
+      "signInToUnlock": "Connectez-vous pour débloquer les détails"
+    },
+    "atlasList": {
+      "noMatches": "Aucun résultat pour cette recherche ou ce filtre."
+    }
+  }
 }

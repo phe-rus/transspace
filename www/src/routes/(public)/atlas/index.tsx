@@ -1,4 +1,5 @@
 import { AtlasAreaZone } from "@/components/atlas/area-zone"
+import { m } from "@/paraglide/messages"
 import { AtlasAutoRotate } from "@/components/atlas/auto-rotate"
 import { AtlasCountryZone } from "@/components/atlas/country-zone"
 import { AtlasDetailPanel, type AtlasSelection } from "@/components/atlas/detail-panel"
@@ -127,13 +128,13 @@ function RouteComponent() {
           <InputGroupInput
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search resources, cities, or countries…"
+            placeholder={m["pages.atlas.searchPlaceholder"]()}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
               size="icon-sm"
               variant={filtersOpen ? "secondary" : "ghost"}
-              aria-label="Toggle category filters"
+              aria-label={m["pages.atlas.toggleFilters"]()}
               aria-pressed={filtersOpen}
               onClick={() => setFiltersOpen((open) => !open)}
             >
@@ -154,7 +155,7 @@ function RouteComponent() {
                   : "border-border/35 bg-card text-muted-foreground",
               )}
             >
-              All
+              {m["pages.atlas.all"]()}
             </button>
             {RESOURCE_CATEGORIES.map((category) => (
               <button
@@ -186,7 +187,7 @@ function RouteComponent() {
         )}
       >
         <HugeiconsIcon icon={Shield01Icon} className="size-3.5 text-destructive" />
-        Protected connection
+        {m["pages.atlas.protectedConnection"]()}
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import { ResourceCard } from "@/components/resources/resource-card"
 import { atlasResources } from "@/data/atlas-resources"
+import { m } from "@/paraglide/messages"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/(public)/r/general-health/")({
@@ -14,8 +15,8 @@ function RouteComponent() {
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-3xl">
       <div className="flex flex-col gap-2">
-        <h1>General health</h1>
-        <p>Routine checkups, vaccinations, and everyday care from practices that won't make your visit about your gender.</p>
+        <h1>{m["pages.resources.generalHealth.title"]()}</h1>
+        <p>{m["pages.resources.generalHealth.subtitle"]()}</p>
       </div>
 
       <div className="flex flex-col gap-3.5">
@@ -25,7 +26,7 @@ function RouteComponent() {
 
         {resources.length === 0 && (
           <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-            <p>No general practices listed yet.</p>
+            <p>{m["pages.resources.generalHealth.empty"]()}</p>
           </div>
         )}
       </div>

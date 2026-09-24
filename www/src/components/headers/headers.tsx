@@ -2,7 +2,7 @@ import { m } from "@/paraglide/messages"
 import { ArrowDown01Icon, Menu03Icon, Notification01Icon, Rocket01Icon, Shield01Icon, Stethoscope02Icon, UserGroup02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@pherus/ui/avatar"
-import { Button } from "@pherus/ui/button"
+import { Button, buttonVariants } from "@pherus/ui/button"
 import {
     Drawer,
     DrawerBackdrop,
@@ -59,46 +59,46 @@ export const Headers = () => {
     }, [])
 
     const navItems = useMemo(() => [
-        { label: "Map", to: "/atlas" },
-        { label: "Communities", to: "/r" },
-        { label: "Support", to: "/support" },
-        { label: "Profile", to: "/profile" },
+        { label: m["navigation.items.map"](), to: "/atlas" },
+        { label: m["navigation.items.communities"](), to: "/r" },
+        { label: m["navigation.items.support"](), to: "/support" },
+        { label: m["navigation.items.profile"](), to: "/profile" },
     ], [])
 
     const resourceGroups = useMemo(() => [
         {
-            label: "Health",
+            label: m["navigation.groups.health.label"](),
             icon: Stethoscope02Icon,
             items: [
-                { label: "Healthcare providers", description: "Pharmacies and full-spectrum clinics.", to: "/r/healthcare-providers" },
-                { label: "Gender-affirming care", description: "Hormone therapy and gender clinics.", to: "/r/gender-affirmation-health" },
-                { label: "Mental health & HIV", description: "Counseling, peer support, and testing.", to: "/r/mental-health" },
-                { label: "General health", description: "Routine checkups and everyday care.", to: "/r/general-health" },
+                { label: m["navigation.groups.health.items.healthcareProviders.label"](), description: m["navigation.groups.health.items.healthcareProviders.description"](), to: "/r/healthcare-providers" },
+                { label: m["navigation.groups.health.items.genderAffirmingCare.label"](), description: m["navigation.groups.health.items.genderAffirmingCare.description"](), to: "/r/gender-affirmation-health" },
+                { label: m["navigation.groups.health.items.mentalHealth.label"](), description: m["navigation.groups.health.items.mentalHealth.description"](), to: "/r/mental-health" },
+                { label: m["navigation.groups.health.items.generalHealth.label"](), description: m["navigation.groups.health.items.generalHealth.description"](), to: "/r/general-health" },
             ],
         },
         {
-            label: "Safety",
+            label: m["navigation.groups.safety.label"](),
             icon: Shield01Icon,
             items: [
-                { label: "Safe spaces", description: "Vetted shelters and cooperative housing.", to: "/r/safe-space" },
-                { label: "Legal aid", description: "Name change, asylum, and legal aid.", to: "/r/legal" },
-                { label: "Travel & mobility", description: "Border crossing and ID document notes.", to: "/r/travel" },
+                { label: m["navigation.groups.safety.items.safeSpaces.label"](), description: m["navigation.groups.safety.items.safeSpaces.description"](), to: "/r/safe-space" },
+                { label: m["navigation.groups.safety.items.legalAid.label"](), description: m["navigation.groups.safety.items.legalAid.description"](), to: "/r/legal" },
+                { label: m["navigation.groups.safety.items.travel.label"](), description: m["navigation.groups.safety.items.travel.description"](), to: "/r/travel" },
             ],
         },
         {
-            label: "Get involved",
+            label: m["navigation.groups.getInvolved.label"](),
             icon: UserGroup02Icon,
             items: [
-                { label: "Story submissions", description: "Share what worked in your community.", to: "/stories" },
-                { label: "Community support", description: "Mutual aid and local organizing.", to: "/support" },
+                { label: m["navigation.groups.getInvolved.items.storySubmissions.label"](), description: m["navigation.groups.getInvolved.items.storySubmissions.description"](), to: "/stories" },
+                { label: m["navigation.groups.getInvolved.items.communitySupport.label"](), description: m["navigation.groups.getInvolved.items.communitySupport.description"](), to: "/support" },
             ],
         },
         {
-            label: "Grow",
+            label: m["navigation.groups.grow.label"](),
             icon: Rocket01Icon,
             items: [
-                { label: "Jobs & careers", description: "Inclusive employers and career support.", to: "/opportunities" },
-                { label: "Skills & learning", description: "Workshops and community-led courses.", to: "/guides" },
+                { label: m["navigation.groups.grow.items.jobsAndCareers.label"](), description: m["navigation.groups.grow.items.jobsAndCareers.description"](), to: "/opportunities" },
+                { label: m["navigation.groups.grow.items.skillsAndLearning.label"](), description: m["navigation.groups.grow.items.skillsAndLearning.description"](), to: "/guides" },
             ],
         },
     ], [])
@@ -179,20 +179,24 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-1 md:flex"
                     >
-                        <Button
-                            size="icon-sm"
-                            variant='default'
-                            className="rounded-full"
-                            aria-label="Privacy"
+                        <Link
+                            to='/submit'
+                            className={cn(buttonVariants({
+                                variant: 'default',
+                                className: "rounded-full",
+                            }))}
+                            aria-label={m["navigation.aria.privacy"]()}
+
                         >
                             <HugeiconsIcon icon={Shield01Icon} />
-                        </Button>
+                            Submit a resource
+                        </Link>
 
                         <Button
-                            size="icon-sm"
+                            size="icon"
                             variant='secondary'
                             className="rounded-full"
-                            aria-label="Notifications"
+                            aria-label={m["navigation.aria.notifications"]()}
                         >
                             <HugeiconsIcon icon={Notification01Icon} />
                         </Button>
@@ -202,9 +206,11 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-2 md:flex"
                     >
+                        <span className="text-xs text-muted-foreground">
+                            email@example.com
+                        </span>
                         <Avatar
-                            size="sm"
-                            className='border-0! size-5.5! ring-0!'
+                            className='border-0! size-6! ring-0!'
                         >
                             <AvatarImage src="/avatar/orange.jpg" />
                             <AvatarFallback>AV</AvatarFallback>
@@ -223,7 +229,7 @@ export const Headers = () => {
                                         size="icon-sm"
                                         variant="ghost"
                                         className="flex md:hidden"
-                                        aria-label="Open menu"
+                                        aria-label={m["navigation.aria.openMenu"]()}
                                     >
                                         <HugeiconsIcon icon={Menu03Icon} />
                                     </Button>
@@ -241,7 +247,7 @@ export const Headers = () => {
                                                         <Button
                                                             size="icon-sm"
                                                             variant="ghost"
-                                                            aria-label="Close menu"
+                                                            aria-label={m["navigation.aria.closeMenu"]()}
                                                         >
                                                             <HugeiconsIcon icon={Menu03Icon} />
                                                         </Button>

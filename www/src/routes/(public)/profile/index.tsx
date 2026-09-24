@@ -1,6 +1,7 @@
 import { ProfileActivityRow } from "@/components/profile/activity-row"
 import { ProfileSettingRow } from "@/components/profile/setting-row"
 import { mySubmissions, savedResources } from "@/data/profile-activity"
+import { m } from "@/paraglide/messages"
 import {
   Edit02Icon,
   HelpCircleIcon,
@@ -30,7 +31,7 @@ function RouteComponent() {
               size="icon-sm"
               variant="outline"
               disabled
-              aria-label="Edit profile photo"
+              aria-label={m["pages.profile.editPhoto"]()}
               className="absolute -right-1 -bottom-1 rounded-full bg-background"
             >
               <HugeiconsIcon icon={Edit02Icon} />
@@ -41,7 +42,7 @@ function RouteComponent() {
         </div>
 
         <div className="w-full rounded-3xl border border-border bg-card px-7 py-6 text-center">
-          <h6>Privacy narrative</h6>
+          <h6>{m["pages.profile.privacyNarrative"]()}</h6>
           <p className="mt-2.5 italic">
             "I share what I've learned so someone else doesn't have to find it the hard way. My name here is not my
             name out there."
@@ -49,24 +50,24 @@ function RouteComponent() {
         </div>
 
         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
-          <ProfileSettingRow icon={Settings01Icon} title="Account settings" subtitle="Preferences & security" />
-          <ProfileSettingRow icon={SquareLock02Icon} title="Data & privacy" subtitle="Manage your footprint" />
-          <ProfileSettingRow icon={HelpCircleIcon} title="Help & support" subtitle="Resources & contact" />
-          <ProfileSettingRow icon={UserMultiple02Icon} title="Communities" subtitle="Your circles and groups" />
+          <ProfileSettingRow icon={Settings01Icon} title={m["pages.profile.accountSettingsTitle"]()} subtitle={m["pages.profile.accountSettingsSubtitle"]()} />
+          <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} />
+          <ProfileSettingRow icon={HelpCircleIcon} title={m["pages.profile.helpAndSupportTitle"]()} subtitle={m["pages.profile.helpAndSupportSubtitle"]()} />
+          <ProfileSettingRow icon={UserMultiple02Icon} title={m["pages.profile.communitiesTitle"]()} subtitle={m["pages.profile.communitiesSubtitle"]()} />
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <h6>Saved resources</h6>
+          <h6>{m["pages.profile.savedResources"]()}</h6>
           {savedResources.map((resource) => (
             <ProfileActivityRow key={resource.id} label={resource.name} meta={resource.category} />
           ))}
 
-          <h6 className="mt-4">My submissions</h6>
+          <h6 className="mt-4">{m["pages.profile.mySubmissions"]()}</h6>
           {mySubmissions.map((submission) => (
             <ProfileActivityRow
               key={submission.id}
               label={submission.title}
-              meta={submission.status === "pending" ? "Pending" : "Approved"}
+              meta={submission.status === "pending" ? m["pages.profile.pending"]() : m["pages.profile.approved"]()}
               metaClassName={submission.status === "pending" ? "text-warning" : "text-success"}
             />
           ))}
@@ -78,7 +79,7 @@ function RouteComponent() {
           className="gap-1.5 rounded-full border-destructive/40 px-6 text-destructive"
         >
           <HugeiconsIcon icon={Logout05Icon} />
-          Log out session
+          {m["pages.profile.logOut"]()}
         </Button>
       </div>
     </article>

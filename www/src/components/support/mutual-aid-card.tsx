@@ -1,4 +1,5 @@
 import type { MutualAidPost } from "@/data/mutual-aid-posts"
+import { m } from "@/paraglide/messages"
 import { Alert01Icon, ChevronRightIcon, HandHeartIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
@@ -20,7 +21,7 @@ export function MutualAidCard({ post }: MutualAidCardProps) {
           <p>{post.description}</p>
         </div>
         <Button disabled className="h-10 shrink-0 rounded-full px-5">
-          Connect
+          {m["components.mutualAidCard.connect"]()}
         </Button>
       </article>
     )
@@ -44,7 +45,7 @@ export function MutualAidCard({ post }: MutualAidCardProps) {
       <div className="mt-1 flex items-center justify-between">
         <p>{post.posterName}</p>
         <Button variant="ghost" size="sm" disabled className="gap-1 text-foreground">
-          Respond
+          {m["components.mutualAidCard.respond"]()}
           <HugeiconsIcon icon={ChevronRightIcon} />
         </Button>
       </div>

@@ -4,21 +4,244 @@
     "title": "Transspace",
     "items": {
       "resources": "Resources",
-      "opportunities": "Opportunities",
-      "legal": "Legal",
-      "learn-new-skills": "Learn new skills",
+      "map": "Map",
+      "communities": "Communities",
       "support": "Support",
-      "the-fog-of-history": "The fog of history"
+      "profile": "Profile"
+    },
+    "groups": {
+      "health": {
+        "label": "Health",
+        "items": {
+          "healthcareProviders": { "label": "Healthcare providers", "description": "Pharmacies and full-spectrum clinics." },
+          "genderAffirmingCare": { "label": "Gender-affirming care", "description": "Hormone therapy and gender clinics." },
+          "mentalHealth": { "label": "Mental health & HIV", "description": "Counseling, peer support, and testing." },
+          "generalHealth": { "label": "General health", "description": "Routine checkups and everyday care." }
+        }
+      },
+      "safety": {
+        "label": "Safety",
+        "items": {
+          "safeSpaces": { "label": "Safe spaces", "description": "Vetted shelters and cooperative housing." },
+          "legalAid": { "label": "Legal aid", "description": "Name change, asylum, and legal aid." },
+          "travel": { "label": "Travel & mobility", "description": "Border crossing and ID document notes." }
+        }
+      },
+      "getInvolved": {
+        "label": "Get involved",
+        "items": {
+          "storySubmissions": { "label": "Story submissions", "description": "Share what worked in your community." },
+          "communitySupport": { "label": "Community support", "description": "Mutual aid and local organizing." }
+        }
+      },
+      "grow": {
+        "label": "Grow",
+        "items": {
+          "jobsAndCareers": { "label": "Jobs & careers", "description": "Inclusive employers and career support." },
+          "skillsAndLearning": { "label": "Skills & learning", "description": "Workshops and community-led courses." }
+        }
+      }
+    },
+    "aria": {
+      "privacy": "Privacy",
+      "notifications": "Notifications",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
     }
   },
-  "overview": {
-    "hero": {
-      "title": "Queer resources, community, and support for everyone.",
-      "subtitle": "A platform by Pherus built for the LGBTQ+ community. Discover trusted resources, practical knowledge, opportunities, and support shared through queer-to-queer community knowledge.",
-      "links": {
-        "resources": "Browse resources",
-        "opportunities": "Browse opportunities"
+  "pages": {
+    "home": {
+      "welcomeBackTitle": "Welcome back, River.",
+      "welcomeBackSubtitle": "Your area is mapped. Here is a snapshot of your community today.",
+      "welcomeGuestTitle": "Welcome to Transspace.",
+      "welcomeGuestSubtitle": "Sign in to see resources near you and your community activity.",
+      "localStatus": "Local status",
+      "areaSummary": "12 community verified resources active nearby. 3 areas nearby require vetted access.",
+      "openTheMap": "Open the map",
+      "exploreTitle": "Explore",
+      "exploreSubtitle": "Find resources",
+      "crisisSupportTitle": "Crisis support",
+      "crisisSupportSubtitle": "Ask for help",
+      "trendingTitle": "Trending in your communities",
+      "trendingSubtitle": "Active conversations in your circles",
+      "joinCommunity": "Join a community",
+      "protectedNotice": "Your connection is protected. Exact locations are never shared"
+    },
+    "atlas": {
+      "searchPlaceholder": "Search resources, cities, or countries…",
+      "toggleFilters": "Toggle category filters",
+      "all": "All",
+      "protectedConnection": "Protected connection"
+    },
+    "resources": {
+      "index": {
+        "searchPlaceholder": "Search resources, e.g. \"hormone therapy Berlin\"",
+        "contribute": "Contribute",
+        "all": "All",
+        "resourcesNearCount": "{count} resources near",
+        "noMatches": "No matches. Try a different search, or clear a filter.",
+        "trustSignals": "Trust signals",
+        "verifiedOnly": "Community verified only",
+        "freeOnly": "Sliding scale / free",
+        "internationalOnly": "Accepts people from other countries",
+        "relatedGuides": "Related guides"
+      },
+      "healthcareProviders": {
+        "title": "Healthcare providers",
+        "subtitle": "Pharmacies and full-spectrum clinics the community has used and vouched for.",
+        "empty": "No providers listed yet."
+      },
+      "genderAffirmationHealth": {
+        "title": "Gender-affirming care",
+        "subtitle": "Hormone therapy, surgery referrals, and gender clinics the community has used and vouched for.",
+        "empty": "No providers listed yet."
+      },
+      "mentalHealth": {
+        "title": "Mental health & HIV",
+        "subtitle": "Counseling, peer support, and HIV testing and treatment, from services the community trusts.",
+        "empty": "No services listed yet."
+      },
+      "generalHealth": {
+        "title": "General health",
+        "subtitle": "Routine checkups, vaccinations, and everyday care from practices that won't make your visit about your gender.",
+        "empty": "No general practices listed yet."
+      },
+      "safeSpace": {
+        "title": "Safe spaces & housing",
+        "subtitle": "Vetted shelters, cooperative housing, and emergency intake for trans and non-binary people.",
+        "empty": "No housing listed yet."
+      },
+      "legal": {
+        "title": "Legal & immigration",
+        "subtitle": "Name change, gender marker updates, asylum casework, and legal aid for LGBTQIA+ people.",
+        "empty": "No legal aid listed yet."
+      },
+      "travel": {
+        "title": "Travel & mobility",
+        "subtitle": "Border crossing notes, ID document advisories, and community-vetted safe travel routes.",
+        "empty": "No travel resources listed yet."
+      },
+      "detail": {
+        "backToResources": "Back to resources",
+        "notFoundTitle": "Resource not found",
+        "notFoundBody": "It may have been removed, or the link is out of date.",
+        "verified": "Community verified",
+        "pendingReview": "Community submitted, awaiting review",
+        "lastReviewedCount": "Last reviewed {when}",
+        "communityReportsCount": "{count} community reports",
+        "photoPlaceholder": "{name} photo",
+        "about": "About",
+        "services": "Services",
+        "location": "Location",
+        "locationGatedNote": "Exact address and entrance notes are shared once your account has vetted status.",
+        "requestFullAddress": "Request full address",
+        "communityExperiences": "Community experiences",
+        "anonymousCommunityMember": "Anonymous community member",
+        "saveResource": "Save this resource",
+        "suggestUpdate": "Suggest an update",
+        "trustSignals": "Trust signals",
+        "internationalAccessNote": "Accepts people from other countries"
       }
+    },
+    "opportunities": {
+      "title": "Jobs & careers",
+      "subtitle": "Jobs, freelance work, scholarships, mentorship, and volunteering shared by the community and allies.",
+      "searchPlaceholder": "Search opportunities, e.g. \"remote design job\"",
+      "post": "Post an opportunity",
+      "all": "All",
+      "countLabel": "{count} opportunities",
+      "noMatches": "No matches. Try a different search, or clear a filter.",
+      "refine": "Refine",
+      "remoteOnly": "Remote only",
+      "verifiedOnly": "Community verified only",
+      "beforeYouApply": "Before you apply",
+      "verified": "Community verified",
+      "pendingReview": "Community submitted, awaiting review",
+      "remote": "Remote",
+      "deadlineLabel": "Deadline: {deadline}",
+      "view": "View"
+    },
+    "guides": {
+      "title": "Skills & learning",
+      "subtitle": "Practical, community-contributed guides, from a first hormone consultation to rebuilding a resume after a gap.",
+      "searchPlaceholder": "Search guides, e.g. \"name change\"",
+      "contribute": "Contribute a guide",
+      "all": "All",
+      "noMatches": "No matches. Try a different search, or clear a filter.",
+      "communityReviewed": "Community reviewed",
+      "readGuide": "Read guide"
+    },
+    "support": {
+      "badge": "Exploratory concept, not part of this build yet",
+      "title": "Mutual aid",
+      "subtitle": "A space for collective care. Request what you need, or share what you can, with complete privacy.",
+      "requestHelp": "Request help",
+      "offerSupport": "Offer support",
+      "filters": "Filters",
+      "privacyNoteStrong": "Your identity is protected.",
+      "privacyNote": "Only your pseudonymous display name is shown here, never your real name or exact location."
+    },
+    "profile": {
+      "editPhoto": "Edit profile photo",
+      "role": "Community contributor · they/them",
+      "privacyNarrative": "Privacy narrative",
+      "accountSettingsTitle": "Account settings",
+      "accountSettingsSubtitle": "Preferences & security",
+      "dataAndPrivacyTitle": "Data & privacy",
+      "dataAndPrivacySubtitle": "Manage your footprint",
+      "helpAndSupportTitle": "Help & support",
+      "helpAndSupportSubtitle": "Resources & contact",
+      "communitiesTitle": "Communities",
+      "communitiesSubtitle": "Your circles and groups",
+      "savedResources": "Saved resources",
+      "mySubmissions": "My submissions",
+      "pending": "Pending",
+      "approved": "Approved",
+      "logOut": "Log out session"
+    },
+    "submit": {
+      "title": "Submit a resource",
+      "subtitle": "Propose a clinic, shelter, legal aid desk, or support space for the directory. Every submission goes through community review before it appears publicly.",
+      "resourceName": "Resource name",
+      "resourceNamePlaceholder": "e.g. \"Rosa Wellness Clinic\"",
+      "category": "Category",
+      "moreSpecifically": "More specifically",
+      "country": "Country",
+      "city": "City",
+      "estimate": "Cost & wait, roughly",
+      "estimatePlaceholder": "e.g. \"Free consult · ~2 weeks\"",
+      "contact": "How does someone reach them?",
+      "contactPlaceholder": "Booking link, phone, walk-in hours…",
+      "description": "Description",
+      "descriptionPlaceholder": "What should someone know before they go? What makes this place trustworthy?",
+      "internationalAccess": "Takes people from outside its own country",
+      "privacyNoteStrong": "Submissions stay pseudonymous.",
+      "privacyNote": "A moderator reviews every entry before it's public. Nothing here is saved yet, this flow is still being designed.",
+      "submit": "Submit for review",
+      "notPartOfBuild": "Not part of this build yet"
+    },
+    "stories": {
+      "comingSoon": "Stories is coming soon."
+    }
+  },
+  "components": {
+    "resourceCard": {
+      "verified": "Community verified",
+      "pendingReview": "Community submitted, awaiting review"
+    },
+    "mutualAidCard": {
+      "connect": "Connect",
+      "respond": "Respond"
+    },
+    "atlasDetail": {
+      "backToList": "Back to list",
+      "verified": "Community verified",
+      "internationalAccess": "International access",
+      "contact": "Contact",
+      "signInToUnlock": "Sign in to unlock details"
+    },
+    "atlasList": {
+      "noMatches": "No matches for this search or filter."
     }
   }
 }

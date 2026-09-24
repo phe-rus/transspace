@@ -1,4 +1,5 @@
 import type { AtlasResource } from "@/data/atlas-resources"
+import { m } from "@/paraglide/messages"
 import { resourceCategoryColor, resourceCategoryIcon, resourceCategoryLabel } from "@/data/resource-categories"
 import { CheckmarkCircle01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -31,10 +32,10 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           {resource.verified ? (
             <h6 className="flex items-center gap-1">
               <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3" />
-              Community verified
+              {m["components.resourceCard.verified"]()}
             </h6>
           ) : (
-            <h6>Community submitted, awaiting review</h6>
+            <h6>{m["components.resourceCard.pendingReview"]()}</h6>
           )}
         </div>
         <p>{resource.description}</p>

@@ -4,18 +4,244 @@
     "title": "Transspace",
     "items": {
       "resources": "Ressourcen",
-      "opportunities": "Möglichkeiten",
-      "community": "Community"
+      "map": "Karte",
+      "communities": "Communitys",
+      "support": "Unterstützung",
+      "profile": "Profil"
+    },
+    "groups": {
+      "health": {
+        "label": "Gesundheit",
+        "items": {
+          "healthcareProviders": { "label": "Gesundheitsdienstleister", "description": "Apotheken und Vollversorgungskliniken." },
+          "genderAffirmingCare": { "label": "Geschlechtsangleichende Versorgung", "description": "Hormontherapie und Gender-Kliniken." },
+          "mentalHealth": { "label": "Psychische Gesundheit & HIV", "description": "Beratung, Peer-Support und Tests." },
+          "generalHealth": { "label": "Allgemeine Gesundheit", "description": "Routineuntersuchungen und Alltagsversorgung." }
+        }
+      },
+      "safety": {
+        "label": "Sicherheit",
+        "items": {
+          "safeSpaces": { "label": "Sichere Räume", "description": "Geprüfte Unterkünfte und Wohnkooperativen." },
+          "legalAid": { "label": "Rechtshilfe", "description": "Namensänderung, Asyl und Rechtshilfe." },
+          "travel": { "label": "Reisen & Mobilität", "description": "Hinweise zu Grenzübertritten und Ausweisdokumenten." }
+        }
+      },
+      "getInvolved": {
+        "label": "Mitmachen",
+        "items": {
+          "storySubmissions": { "label": "Geschichten einreichen", "description": "Teile, was in deiner Community funktioniert hat." },
+          "communitySupport": { "label": "Gemeinschaftliche Unterstützung", "description": "Gegenseitige Hilfe und lokale Organisierung." }
+        }
+      },
+      "grow": {
+        "label": "Weiterkommen",
+        "items": {
+          "jobsAndCareers": { "label": "Jobs & Karriere", "description": "Inklusive Arbeitgeber und Karriereunterstützung." },
+          "skillsAndLearning": { "label": "Fähigkeiten & Lernen", "description": "Workshops und von der Community geleitete Kurse." }
+        }
+      }
+    },
+    "aria": {
+      "privacy": "Datenschutz",
+      "notifications": "Benachrichtigungen",
+      "openMenu": "Menü öffnen",
+      "closeMenu": "Menü schließen"
     }
   },
-  "overview": {
-    "hero": {
-      "title": "Queer-Wissen, Ressourcen, Gemeinschaft und Unterstützung.",
-      "subtitle": "Eine Plattform von Pherus für die LGBTQ+ Community. Entdecke vertrauenswürdige Ressourcen, praktische Kenntnisse, Möglichkeiten und Unterstützung, die durch die Queer-Community geteilt werden.",
-      "links": {
-        "resources": "Ressourcen durchsuchen",
-        "opportunities": "Möglichkeiten durchsuchen"
+  "pages": {
+    "home": {
+      "welcomeBackTitle": "Willkommen zurück, River.",
+      "welcomeBackSubtitle": "Deine Umgebung ist erfasst. Hier ist ein Überblick über deine Community heute.",
+      "welcomeGuestTitle": "Willkommen bei Transspace.",
+      "welcomeGuestSubtitle": "Melde dich an, um Ressourcen in deiner Nähe und deine Community-Aktivität zu sehen.",
+      "localStatus": "Lokaler Status",
+      "areaSummary": "12 von der Community verifizierte Ressourcen sind in deiner Nähe aktiv. 3 Gebiete in der Nähe erfordern geprüften Zugang.",
+      "openTheMap": "Karte öffnen",
+      "exploreTitle": "Entdecken",
+      "exploreSubtitle": "Ressourcen finden",
+      "crisisSupportTitle": "Krisenhilfe",
+      "crisisSupportSubtitle": "Um Hilfe bitten",
+      "trendingTitle": "Angesagt in deinen Communitys",
+      "trendingSubtitle": "Aktive Gespräche in deinen Kreisen",
+      "joinCommunity": "Einer Community beitreten",
+      "protectedNotice": "Deine Verbindung ist geschützt. Genaue Standorte werden nie geteilt"
+    },
+    "atlas": {
+      "searchPlaceholder": "Ressourcen, Städte oder Länder suchen…",
+      "toggleFilters": "Kategoriefilter umschalten",
+      "all": "Alle",
+      "protectedConnection": "Geschützte Verbindung"
+    },
+    "resources": {
+      "index": {
+        "searchPlaceholder": "Ressourcen suchen, z. B. „Hormontherapie Berlin“",
+        "contribute": "Beitragen",
+        "all": "Alle",
+        "resourcesNearCount": "{count} Ressourcen in der Nähe von",
+        "noMatches": "Keine Treffer. Versuche eine andere Suche oder entferne einen Filter.",
+        "trustSignals": "Vertrauenssignale",
+        "verifiedOnly": "Nur community-verifiziert",
+        "freeOnly": "Gestaffelt / kostenlos",
+        "internationalOnly": "Akzeptiert Menschen aus anderen Ländern",
+        "relatedGuides": "Verwandte Guides"
+      },
+      "healthcareProviders": {
+        "title": "Gesundheitsdienstleister",
+        "subtitle": "Apotheken und Vollversorgungskliniken, die die Community genutzt und empfohlen hat.",
+        "empty": "Noch keine Anbieter gelistet."
+      },
+      "genderAffirmationHealth": {
+        "title": "Geschlechtsangleichende Versorgung",
+        "subtitle": "Hormontherapie, Überweisungen für Operationen und Gender-Kliniken, die die Community genutzt und empfohlen hat.",
+        "empty": "Noch keine Anbieter gelistet."
+      },
+      "mentalHealth": {
+        "title": "Psychische Gesundheit & HIV",
+        "subtitle": "Beratung, Peer-Support sowie HIV-Tests und -Behandlung von Diensten, denen die Community vertraut.",
+        "empty": "Noch keine Angebote gelistet."
+      },
+      "generalHealth": {
+        "title": "Allgemeine Gesundheit",
+        "subtitle": "Routineuntersuchungen, Impfungen und Alltagsversorgung von Praxen, bei denen dein Besuch nicht um dein Geschlecht kreist.",
+        "empty": "Noch keine Allgemeinpraxen gelistet."
+      },
+      "safeSpace": {
+        "title": "Sichere Räume & Wohnen",
+        "subtitle": "Geprüfte Unterkünfte, Wohnkooperativen und Notaufnahme für trans und nichtbinäre Menschen.",
+        "empty": "Noch keine Wohnangebote gelistet."
+      },
+      "legal": {
+        "title": "Recht & Einwanderung",
+        "subtitle": "Namensänderung, Aktualisierung des Geschlechtseintrags, Asylverfahren und Rechtshilfe für LGBTQIA+-Personen.",
+        "empty": "Noch keine Rechtshilfe gelistet."
+      },
+      "travel": {
+        "title": "Reisen & Mobilität",
+        "subtitle": "Hinweise zu Grenzübertritten, Empfehlungen zu Ausweisdokumenten und von der Community geprüfte sichere Reiserouten.",
+        "empty": "Noch keine Reiseressourcen gelistet."
+      },
+      "detail": {
+        "backToResources": "Zurück zu den Ressourcen",
+        "notFoundTitle": "Ressource nicht gefunden",
+        "notFoundBody": "Sie wurde möglicherweise entfernt, oder der Link ist veraltet.",
+        "verified": "Community-verifiziert",
+        "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend",
+        "lastReviewedCount": "Zuletzt überprüft {when}",
+        "communityReportsCount": "{count} Community-Rückmeldungen",
+        "photoPlaceholder": "Foto von {name}",
+        "about": "Über",
+        "services": "Angebote",
+        "location": "Standort",
+        "locationGatedNote": "Die genaue Adresse und Hinweise zum Eingang werden geteilt, sobald dein Konto den geprüften Status hat.",
+        "requestFullAddress": "Vollständige Adresse anfragen",
+        "communityExperiences": "Erfahrungen aus der Community",
+        "anonymousCommunityMember": "Anonymes Community-Mitglied",
+        "saveResource": "Diese Ressource speichern",
+        "suggestUpdate": "Aktualisierung vorschlagen",
+        "trustSignals": "Vertrauenssignale",
+        "internationalAccessNote": "Akzeptiert Menschen aus anderen Ländern"
       }
+    },
+    "opportunities": {
+      "title": "Jobs & Karriere",
+      "subtitle": "Jobs, freiberufliche Arbeit, Stipendien, Mentoring und Freiwilligenarbeit, geteilt von der Community und Verbündeten.",
+      "searchPlaceholder": "Möglichkeiten suchen, z. B. „Remote-Design-Job“",
+      "post": "Möglichkeit veröffentlichen",
+      "all": "Alle",
+      "countLabel": "{count} Möglichkeiten",
+      "noMatches": "Keine Treffer. Versuche eine andere Suche oder entferne einen Filter.",
+      "refine": "Verfeinern",
+      "remoteOnly": "Nur Remote",
+      "verifiedOnly": "Nur community-verifiziert",
+      "beforeYouApply": "Bevor du dich bewirbst",
+      "verified": "Community-verifiziert",
+      "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend",
+      "remote": "Remote",
+      "deadlineLabel": "Frist: {deadline}",
+      "view": "Ansehen"
+    },
+    "guides": {
+      "title": "Fähigkeiten & Lernen",
+      "subtitle": "Praktische, von der Community beigetragene Guides, von der ersten Hormonberatung bis zum Neuaufbau eines Lebenslaufs nach einer Lücke.",
+      "searchPlaceholder": "Guides suchen, z. B. „Namensänderung“",
+      "contribute": "Guide beitragen",
+      "all": "Alle",
+      "noMatches": "Keine Treffer. Versuche eine andere Suche oder entferne einen Filter.",
+      "communityReviewed": "Von der Community geprüft",
+      "readGuide": "Guide lesen"
+    },
+    "support": {
+      "badge": "Konzeptidee, noch nicht Teil dieses Builds",
+      "title": "Gegenseitige Hilfe",
+      "subtitle": "Ein Raum für kollektive Fürsorge. Frag nach, was du brauchst, oder teile, was du kannst – vollständig privat.",
+      "requestHelp": "Hilfe anfragen",
+      "offerSupport": "Unterstützung anbieten",
+      "filters": "Filter",
+      "privacyNoteStrong": "Deine Identität ist geschützt.",
+      "privacyNote": "Hier wird nur dein pseudonymer Anzeigename angezeigt, niemals dein echter Name oder genauer Standort."
+    },
+    "profile": {
+      "editPhoto": "Profilfoto bearbeiten",
+      "role": "Community-Mitwirkende·r · they/them",
+      "privacyNarrative": "Datenschutz-Erfahrungsbericht",
+      "accountSettingsTitle": "Kontoeinstellungen",
+      "accountSettingsSubtitle": "Einstellungen & Sicherheit",
+      "dataAndPrivacyTitle": "Daten & Datenschutz",
+      "dataAndPrivacySubtitle": "Verwalte deinen digitalen Fußabdruck",
+      "helpAndSupportTitle": "Hilfe & Support",
+      "helpAndSupportSubtitle": "Ressourcen & Kontakt",
+      "communitiesTitle": "Communitys",
+      "communitiesSubtitle": "Deine Kreise und Gruppen",
+      "savedResources": "Gespeicherte Ressourcen",
+      "mySubmissions": "Meine Einreichungen",
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "logOut": "Sitzung abmelden"
+    },
+    "submit": {
+      "title": "Ressource einreichen",
+      "subtitle": "Schlage eine Klinik, Unterkunft, Rechtsberatungsstelle oder einen Unterstützungsraum für das Verzeichnis vor. Jede Einreichung durchläuft eine Community-Prüfung, bevor sie öffentlich sichtbar wird.",
+      "resourceName": "Name der Ressource",
+      "resourceNamePlaceholder": "z. B. „Rosa Wellness Clinic“",
+      "category": "Kategorie",
+      "moreSpecifically": "Genauer gesagt",
+      "country": "Land",
+      "city": "Stadt",
+      "estimate": "Kosten & Wartezeit, ungefähr",
+      "estimatePlaceholder": "z. B. „Kostenlose Beratung · ca. 2 Wochen“",
+      "contact": "Wie erreicht man sie?",
+      "contactPlaceholder": "Buchungslink, Telefon, Öffnungszeiten ohne Termin…",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Was sollte man vorher wissen? Was macht diesen Ort vertrauenswürdig?",
+      "internationalAccess": "Nimmt Menschen aus dem Ausland auf",
+      "privacyNoteStrong": "Einreichungen bleiben pseudonym.",
+      "privacyNote": "Ein Moderator prüft jeden Eintrag, bevor er öffentlich wird. Hier wird noch nichts gespeichert, dieser Ablauf befindet sich noch in der Gestaltung.",
+      "submit": "Zur Prüfung einreichen",
+      "notPartOfBuild": "Noch nicht Teil dieses Builds"
+    },
+    "stories": {
+      "comingSoon": "Geschichten kommen bald."
+    }
+  },
+  "components": {
+    "resourceCard": {
+      "verified": "Community-verifiziert",
+      "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend"
+    },
+    "mutualAidCard": {
+      "connect": "Verbinden",
+      "respond": "Antworten"
+    },
+    "atlasDetail": {
+      "backToList": "Zurück zur Liste",
+      "verified": "Community-verifiziert",
+      "internationalAccess": "Internationaler Zugang",
+      "contact": "Kontakt",
+      "signInToUnlock": "Anmelden, um Details freizuschalten"
+    },
+    "atlasList": {
+      "noMatches": "Keine Treffer für diese Suche oder diesen Filter."
     }
   }
 }

@@ -1,4 +1,5 @@
 import { guideCategoryIcon, guideCategoryLabel, type GuideEntry } from "@/data/guides"
+import { m } from "@/paraglide/messages"
 import { CheckmarkCircle01Icon, ChevronRightIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
@@ -18,7 +19,7 @@ export function GuideCard({ guide }: GuideCardProps) {
         {guide.verified && (
           <h6 className="flex items-center gap-1 text-success">
             <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3" />
-            Community reviewed
+            {m["pages.guides.communityReviewed"]()}
           </h6>
         )}
       </div>
@@ -27,7 +28,7 @@ export function GuideCard({ guide }: GuideCardProps) {
       <div className="mt-1 flex items-center justify-between">
         <p>{guide.contributor} · {guide.readTime}</p>
         <Button variant="ghost" size="sm" disabled className="gap-1 text-foreground">
-          Read guide
+          {m["pages.guides.readGuide"]()}
           <HugeiconsIcon icon={ChevronRightIcon} />
         </Button>
       </div>

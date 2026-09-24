@@ -1,3 +1,4 @@
+import { m } from "@/paraglide/messages"
 import {
   RESOURCE_CATEGORIES,
   RESOURCE_SUBCATEGORIES_BY_CATEGORY,
@@ -34,21 +35,20 @@ function RouteComponent() {
   return (
     <article className="container mx-auto flex w-full max-w-2xl flex-col gap-6 py-10">
       <div className="flex flex-col gap-2">
-        <h1>Submit a resource</h1>
+        <h1>{m["pages.submit.title"]()}</h1>
         <p className="max-w-lg">
-          Propose a clinic, shelter, legal aid desk, or support space for the directory. Every submission goes
-          through community review before it appears publicly.
+          {m["pages.submit.subtitle"]()}
         </p>
       </div>
 
       <form onSubmit={(event) => event.preventDefault()} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
-          <h6>Resource name</h6>
-          <Input value={name} onChange={(event) => setName(event.target.value)} placeholder='e.g. "Rosa Wellness Clinic"' />
+          <h6>{m["pages.submit.resourceName"]()}</h6>
+          <Input value={name} onChange={(event) => setName(event.target.value)} placeholder={m["pages.submit.resourceNamePlaceholder"]()} />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <h6>Category</h6>
+          <h6>{m["pages.submit.category"]()}</h6>
           <div className="flex flex-wrap gap-1.5">
             {RESOURCE_CATEGORIES.map((item) => (
               <button
@@ -74,7 +74,7 @@ function RouteComponent() {
 
         {subcategories.length > 0 && (
           <div className="flex flex-col gap-1.5">
-            <h6>More specifically</h6>
+            <h6>{m["pages.submit.moreSpecifically"]()}</h6>
             <div className="flex flex-wrap gap-1.5">
               {subcategories.map((item) => (
                 <button
@@ -97,39 +97,39 @@ function RouteComponent() {
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <h6>Country</h6>
+            <h6>{m["pages.submit.country"]()}</h6>
             <Input value={country} onChange={(event) => setCountry(event.target.value)} placeholder="Germany" />
           </div>
           <div className="flex flex-col gap-1.5">
-            <h6>City</h6>
+            <h6>{m["pages.submit.city"]()}</h6>
             <Input value={city} onChange={(event) => setCity(event.target.value)} placeholder="Berlin" />
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <h6>Cost & wait, roughly</h6>
+          <h6>{m["pages.submit.estimate"]()}</h6>
           <Input
             value={estimate}
             onChange={(event) => setEstimate(event.target.value)}
-            placeholder='e.g. "Free consult · ~2 weeks"'
+            placeholder={m["pages.submit.estimatePlaceholder"]()}
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <h6>How does someone reach them?</h6>
+          <h6>{m["pages.submit.contact"]()}</h6>
           <Input
             value={contact}
             onChange={(event) => setContact(event.target.value)}
-            placeholder="Booking link, phone, walk-in hours…"
+            placeholder={m["pages.submit.contactPlaceholder"]()}
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <h6>Description</h6>
+          <h6>{m["pages.submit.description"]()}</h6>
           <Textarea
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder="What should someone know before they go? What makes this place trustworthy?"
+            placeholder={m["pages.submit.descriptionPlaceholder"]()}
             className="min-h-28"
           />
         </div>
@@ -141,22 +141,21 @@ function RouteComponent() {
             onChange={(event) => setInternationalAccess(event.target.checked)}
             className="accent-success"
           />
-          Takes people from outside its own country
+          {m["pages.submit.internationalAccess"]()}
         </label>
 
         <div className="flex items-center gap-3 rounded-3xl border border-border p-5">
           <HugeiconsIcon icon={Shield01Icon} className="size-4.5 shrink-0" />
           <p>
-            <strong className="text-foreground">Submissions stay pseudonymous.</strong> A moderator reviews every
-            entry before it's public. Nothing here is saved yet, this flow is still being designed.
+            <strong className="text-foreground">{m["pages.submit.privacyNoteStrong"]()}</strong> {m["pages.submit.privacyNote"]()}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Button type="submit" disabled className="h-11 rounded-full px-6">
-            Submit for review
+            {m["pages.submit.submit"]()}
           </Button>
-          <p>Not part of this build yet</p>
+          <p>{m["pages.submit.notPartOfBuild"]()}</p>
         </div>
       </form>
     </article>
