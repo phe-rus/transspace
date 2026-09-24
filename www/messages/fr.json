@@ -231,7 +231,10 @@
       "pending": "En attente",
       "approved": "Approuvé",
       "logOut": "Se déconnecter",
-      "anonymous": "Anonyme"
+      "anonymous": "Anonyme",
+      "comingSoonTitle": "Bientôt disponible",
+      "comingSoonBody": "Cette partie de votre compte n'est pas encore construite. Revenez bientôt.",
+      "back": "Retour au profil"
     },
     "submit": {
       "title": "Soumettre une ressource",

@@ -231,7 +231,10 @@
       "pending": "待审核",
       "approved": "已通过",
       "logOut": "退出登录",
-      "anonymous": "匿名"
+      "anonymous": "匿名",
+      "comingSoonTitle": "即将推出",
+      "comingSoonBody": "账户的这部分尚未构建,请稍后再来查看。",
+      "back": "返回个人资料"
     },
     "submit": {
       "title": "提交资源",

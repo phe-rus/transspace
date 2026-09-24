@@ -231,7 +231,10 @@
       "pending": "Ausstehend",
       "approved": "Genehmigt",
       "logOut": "Sitzung abmelden",
-      "anonymous": "Anonym"
+      "anonymous": "Anonym",
+      "comingSoonTitle": "Demnächst verfügbar",
+      "comingSoonBody": "Dieser Teil deines Kontos ist noch nicht fertig. Schau bald wieder vorbei.",
+      "back": "Zurück zum Profil"
     },
     "submit": {
       "title": "Ressource einreichen",

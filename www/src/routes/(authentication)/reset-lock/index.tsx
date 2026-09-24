@@ -3,8 +3,8 @@ import { resetAppLock } from '@/domains/app-lock'
 import { m } from '@/paraglide/messages'
 
 // lands here right after a forced Infra re-sign in (see /api/auth/login
-// ?reset=1). Clears the app lock PIN, then bounces on to /security so a
-// new one can be set, or back to /auth if the freshness proof failed
+// ?reset=1). Clears the app lock PIN, then bounces on to /profile/security
+// so a new one can be set, or back to /auth if the freshness proof failed
 export const Route = createFileRoute('/(authentication)/reset-lock/')({
   beforeLoad: async () => {
     let ok = true
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/(authentication)/reset-lock/')({
     } catch {
       ok = false
     }
-    throw redirect({ to: ok ? '/security' : '/auth' })
+    throw redirect({ to: ok ? '/profile/security' : '/auth' })
   },
   component: RouteComponent,
 })

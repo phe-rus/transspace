@@ -231,7 +231,10 @@
       "pending": "Pending",
       "approved": "Approved",
       "logOut": "Log out session",
-      "anonymous": "Anonymous"
+      "anonymous": "Anonymous",
+      "comingSoonTitle": "Coming soon",
+      "comingSoonBody": "This part of your account isn't built yet. Check back soon.",
+      "back": "Back to profile"
     },
     "submit": {
       "title": "Submit a resource",

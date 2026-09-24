@@ -10,7 +10,9 @@ import { SquareLock02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { m } from '@/paraglide/messages'
 import { getAppLockStatus } from '@/domains/app-lock'
 
-export const Route = createFileRoute('/(protection)/security/')({
+// gated by the parent /profile route's beforeLoad (signed in, onboarded,
+// unlocked), so no separate guard needed here
+export const Route = createFileRoute('/(public)/profile/security/')({
   loader: () => getAppLockStatus(),
   component: RouteComponent,
 })
