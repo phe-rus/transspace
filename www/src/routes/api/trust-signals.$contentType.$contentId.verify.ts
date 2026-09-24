@@ -12,13 +12,10 @@ export const Route = createFileRoute(
                     const body = (await request
                         .json()
                         .catch(() => ({}))) as Record<
-                        string,
-                        unknown
-                    >
+                            string,
+                            unknown
+                        >
                     return verifyTrustSignal({
-                        // the zod validator on verifyTrustSignal is the
-                        // real runtime gate; this cast just satisfies the
-                        // wrapper's loosely-typed JSON body
                         data: { ...body, ...params } as {
                             contentType: string
                             contentId: string
