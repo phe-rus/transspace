@@ -1,7 +1,7 @@
 # 0002. Identity, data and trust foundation
 
 **Date**: 2026-09-24
-**Status**: Proposed
+**Status**: In Progress
 
 This spec was cross checked by an independent model after the first draft; the version below reflects the fixes that check found necessary (a genuinely server enforced duress mode, moderator safety rails, an honest account of what Infra can still learn, and several previously unspecified numbers). Each child spec carries its own note on what changed.
 

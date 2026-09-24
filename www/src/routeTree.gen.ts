@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as authenticationRouteRouteImport } from './routes/(authentication)/route'
 import { Route as protectionRouteRouteImport } from './routes/(protection)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
+import { Route as authenticationAuthRouteRouteImport } from './routes/(authentication)/auth/route'
+import { Route as authenticationOnboardingRouteRouteImport } from './routes/(authentication)/onboarding/route'
+import { Route as authenticationResetLockRouteRouteImport } from './routes/(authentication)/reset-lock/route'
+import { Route as authenticationUnlockRouteRouteImport } from './routes/(authentication)/unlock/route'
+import { Route as protectionSecurityRouteRouteImport } from './routes/(protection)/security/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as publicAtlasRouteRouteImport } from './routes/(public)/atlas/route'
 import { Route as publicGuidesRouteRouteImport } from './routes/(public)/guides/route'
@@ -20,6 +26,16 @@ import { Route as publicRRouteRouteImport } from './routes/(public)/r/route'
 import { Route as publicStoriesRouteRouteImport } from './routes/(public)/stories/route'
 import { Route as publicSubmitRouteRouteImport } from './routes/(public)/submit/route'
 import { Route as publicSupportRouteRouteImport } from './routes/(public)/support/route'
+import { Route as ApiAccountRouteImport } from './routes/api/account'
+import { Route as ApiAppLockRouteImport } from './routes/api/app-lock'
+import { Route as ApiModeratorsRouteImport } from './routes/api/moderators'
+import { Route as ApiProfileRouteImport } from './routes/api/profile'
+import { Route as ApiUploadsRouteImport } from './routes/api/uploads'
+import { Route as authenticationAuthIndexRouteImport } from './routes/(authentication)/auth/index'
+import { Route as authenticationOnboardingIndexRouteImport } from './routes/(authentication)/onboarding/index'
+import { Route as authenticationResetLockIndexRouteImport } from './routes/(authentication)/reset-lock/index'
+import { Route as authenticationUnlockIndexRouteImport } from './routes/(authentication)/unlock/index'
+import { Route as protectionSecurityIndexRouteImport } from './routes/(protection)/security/index'
 import { Route as publicAtlasIndexRouteImport } from './routes/(public)/atlas/index'
 import { Route as publicGuidesIndexRouteImport } from './routes/(public)/guides/index'
 import { Route as publicOpportunitiesIndexRouteImport } from './routes/(public)/opportunities/index'
@@ -36,6 +52,13 @@ import { Route as publicRTravelRouteRouteImport } from './routes/(public)/r/trav
 import { Route as publicStoriesIndexRouteImport } from './routes/(public)/stories/index'
 import { Route as publicSubmitIndexRouteImport } from './routes/(public)/submit/index'
 import { Route as publicSupportIndexRouteImport } from './routes/(public)/support/index'
+import { Route as ApiAppLockResetRouteImport } from './routes/api/app-lock.reset'
+import { Route as ApiAppLockVerifyRouteImport } from './routes/api/app-lock.verify'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
+import { Route as ApiAuthLoginRouteImport } from './routes/api/auth.login'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth.logout'
+import { Route as ApiModeratorsUserLinkIdRouteImport } from './routes/api/moderators.$userLinkId'
+import { Route as ApiUploadsSplatRouteImport } from './routes/api/uploads.$'
 import { Route as publicRResourceIdDetailsRouteRouteImport } from './routes/(public)/r/$resourceId/details/route'
 import { Route as publicRGenderAffirmationHealthIndexRouteImport } from './routes/(public)/r/gender-affirmation-health/index'
 import { Route as publicRGeneralHealthIndexRouteImport } from './routes/(public)/r/general-health/index'
@@ -46,6 +69,10 @@ import { Route as publicRSafeSpaceIndexRouteImport } from './routes/(public)/r/s
 import { Route as publicRTravelIndexRouteImport } from './routes/(public)/r/travel/index'
 import { Route as publicRResourceIdDetailsIndexRouteImport } from './routes/(public)/r/$resourceId/details/index'
 
+const authenticationRouteRoute = authenticationRouteRouteImport.update({
+  id: '/(authentication)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const protectionRouteRoute = protectionRouteRouteImport.update({
   id: '/(protection)',
   getParentRoute: () => rootRouteImport,
@@ -53,6 +80,34 @@ const protectionRouteRoute = protectionRouteRouteImport.update({
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
   getParentRoute: () => rootRouteImport,
+} as any)
+const authenticationAuthRouteRoute = authenticationAuthRouteRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => authenticationRouteRoute,
+} as any)
+const authenticationOnboardingRouteRoute =
+  authenticationOnboardingRouteRouteImport.update({
+    id: '/onboarding',
+    path: '/onboarding',
+    getParentRoute: () => authenticationRouteRoute,
+  } as any)
+const authenticationResetLockRouteRoute =
+  authenticationResetLockRouteRouteImport.update({
+    id: '/reset-lock',
+    path: '/reset-lock',
+    getParentRoute: () => authenticationRouteRoute,
+  } as any)
+const authenticationUnlockRouteRoute =
+  authenticationUnlockRouteRouteImport.update({
+    id: '/unlock',
+    path: '/unlock',
+    getParentRoute: () => authenticationRouteRoute,
+  } as any)
+const protectionSecurityRouteRoute = protectionSecurityRouteRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => protectionRouteRoute,
 } as any)
 const publicIndexRoute = publicIndexRouteImport.update({
   id: '/',
@@ -99,6 +154,59 @@ const publicSupportRouteRoute = publicSupportRouteRouteImport.update({
   id: '/support',
   path: '/support',
   getParentRoute: () => publicRouteRoute,
+} as any)
+const ApiAccountRoute = ApiAccountRouteImport.update({
+  id: '/api/account',
+  path: '/api/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAppLockRoute = ApiAppLockRouteImport.update({
+  id: '/api/app-lock',
+  path: '/api/app-lock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiModeratorsRoute = ApiModeratorsRouteImport.update({
+  id: '/api/moderators',
+  path: '/api/moderators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiProfileRoute = ApiProfileRouteImport.update({
+  id: '/api/profile',
+  path: '/api/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUploadsRoute = ApiUploadsRouteImport.update({
+  id: '/api/uploads',
+  path: '/api/uploads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authenticationAuthIndexRoute = authenticationAuthIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authenticationAuthRouteRoute,
+} as any)
+const authenticationOnboardingIndexRoute =
+  authenticationOnboardingIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticationOnboardingRouteRoute,
+  } as any)
+const authenticationResetLockIndexRoute =
+  authenticationResetLockIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticationResetLockRouteRoute,
+  } as any)
+const authenticationUnlockIndexRoute =
+  authenticationUnlockIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticationUnlockRouteRoute,
+  } as any)
+const protectionSecurityIndexRoute = protectionSecurityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => protectionSecurityRouteRoute,
 } as any)
 const publicAtlasIndexRoute = publicAtlasIndexRouteImport.update({
   id: '/',
@@ -185,6 +293,41 @@ const publicSupportIndexRoute = publicSupportIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicSupportRouteRoute,
 } as any)
+const ApiAppLockResetRoute = ApiAppLockResetRouteImport.update({
+  id: '/reset',
+  path: '/reset',
+  getParentRoute: () => ApiAppLockRoute,
+} as any)
+const ApiAppLockVerifyRoute = ApiAppLockVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => ApiAppLockRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
+  id: '/api/auth/login',
+  path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
+  id: '/api/auth/logout',
+  path: '/api/auth/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiModeratorsUserLinkIdRoute = ApiModeratorsUserLinkIdRouteImport.update({
+  id: '/$userLinkId',
+  path: '/$userLinkId',
+  getParentRoute: () => ApiModeratorsRoute,
+} as any)
+const ApiUploadsSplatRoute = ApiUploadsSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => ApiUploadsRoute,
+} as any)
 const publicRResourceIdDetailsRouteRoute =
   publicRResourceIdDetailsRouteRouteImport.update({
     id: '/details',
@@ -238,6 +381,11 @@ const publicRResourceIdDetailsIndexRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/auth': typeof authenticationAuthRouteRouteWithChildren
+  '/onboarding': typeof authenticationOnboardingRouteRouteWithChildren
+  '/reset-lock': typeof authenticationResetLockRouteRouteWithChildren
+  '/unlock': typeof authenticationUnlockRouteRouteWithChildren
+  '/security': typeof protectionSecurityRouteRouteWithChildren
   '/atlas': typeof publicAtlasRouteRouteWithChildren
   '/guides': typeof publicGuidesRouteRouteWithChildren
   '/opportunities': typeof publicOpportunitiesRouteRouteWithChildren
@@ -246,6 +394,11 @@ export interface FileRoutesByFullPath {
   '/stories': typeof publicStoriesRouteRouteWithChildren
   '/submit': typeof publicSubmitRouteRouteWithChildren
   '/support': typeof publicSupportRouteRouteWithChildren
+  '/api/account': typeof ApiAccountRoute
+  '/api/app-lock': typeof ApiAppLockRouteWithChildren
+  '/api/moderators': typeof ApiModeratorsRouteWithChildren
+  '/api/profile': typeof ApiProfileRoute
+  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/': typeof publicIndexRoute
   '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
   '/r/gender-affirmation-health': typeof publicRGenderAffirmationHealthRouteRouteWithChildren
@@ -255,6 +408,18 @@ export interface FileRoutesByFullPath {
   '/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
   '/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
   '/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/api/app-lock/reset': typeof ApiAppLockResetRoute
+  '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
+  '/api/uploads/$': typeof ApiUploadsSplatRoute
+  '/auth/': typeof authenticationAuthIndexRoute
+  '/onboarding/': typeof authenticationOnboardingIndexRoute
+  '/reset-lock/': typeof authenticationResetLockIndexRoute
+  '/unlock/': typeof authenticationUnlockIndexRoute
+  '/security/': typeof protectionSecurityIndexRoute
   '/atlas/': typeof publicAtlasIndexRoute
   '/guides/': typeof publicGuidesIndexRoute
   '/opportunities/': typeof publicOpportunitiesIndexRoute
@@ -274,8 +439,25 @@ export interface FileRoutesByFullPath {
   '/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/api/account': typeof ApiAccountRoute
+  '/api/app-lock': typeof ApiAppLockRouteWithChildren
+  '/api/moderators': typeof ApiModeratorsRouteWithChildren
+  '/api/profile': typeof ApiProfileRoute
+  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/': typeof publicIndexRoute
   '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
+  '/api/app-lock/reset': typeof ApiAppLockResetRoute
+  '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
+  '/api/uploads/$': typeof ApiUploadsSplatRoute
+  '/auth': typeof authenticationAuthIndexRoute
+  '/onboarding': typeof authenticationOnboardingIndexRoute
+  '/reset-lock': typeof authenticationResetLockIndexRoute
+  '/unlock': typeof authenticationUnlockIndexRoute
+  '/security': typeof protectionSecurityIndexRoute
   '/atlas': typeof publicAtlasIndexRoute
   '/guides': typeof publicGuidesIndexRoute
   '/opportunities': typeof publicOpportunitiesIndexRoute
@@ -295,8 +477,14 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(protection)': typeof protectionRouteRoute
+  '/(authentication)': typeof authenticationRouteRouteWithChildren
+  '/(protection)': typeof protectionRouteRouteWithChildren
   '/(public)': typeof publicRouteRouteWithChildren
+  '/(authentication)/auth': typeof authenticationAuthRouteRouteWithChildren
+  '/(authentication)/onboarding': typeof authenticationOnboardingRouteRouteWithChildren
+  '/(authentication)/reset-lock': typeof authenticationResetLockRouteRouteWithChildren
+  '/(authentication)/unlock': typeof authenticationUnlockRouteRouteWithChildren
+  '/(protection)/security': typeof protectionSecurityRouteRouteWithChildren
   '/(public)/atlas': typeof publicAtlasRouteRouteWithChildren
   '/(public)/guides': typeof publicGuidesRouteRouteWithChildren
   '/(public)/opportunities': typeof publicOpportunitiesRouteRouteWithChildren
@@ -305,6 +493,11 @@ export interface FileRoutesById {
   '/(public)/stories': typeof publicStoriesRouteRouteWithChildren
   '/(public)/submit': typeof publicSubmitRouteRouteWithChildren
   '/(public)/support': typeof publicSupportRouteRouteWithChildren
+  '/api/account': typeof ApiAccountRoute
+  '/api/app-lock': typeof ApiAppLockRouteWithChildren
+  '/api/moderators': typeof ApiModeratorsRouteWithChildren
+  '/api/profile': typeof ApiProfileRoute
+  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/(public)/': typeof publicIndexRoute
   '/(public)/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
   '/(public)/r/gender-affirmation-health': typeof publicRGenderAffirmationHealthRouteRouteWithChildren
@@ -314,6 +507,18 @@ export interface FileRoutesById {
   '/(public)/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
   '/(public)/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
   '/(public)/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/api/app-lock/reset': typeof ApiAppLockResetRoute
+  '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
+  '/api/uploads/$': typeof ApiUploadsSplatRoute
+  '/(authentication)/auth/': typeof authenticationAuthIndexRoute
+  '/(authentication)/onboarding/': typeof authenticationOnboardingIndexRoute
+  '/(authentication)/reset-lock/': typeof authenticationResetLockIndexRoute
+  '/(authentication)/unlock/': typeof authenticationUnlockIndexRoute
+  '/(protection)/security/': typeof protectionSecurityIndexRoute
   '/(public)/atlas/': typeof publicAtlasIndexRoute
   '/(public)/guides/': typeof publicGuidesIndexRoute
   '/(public)/opportunities/': typeof publicOpportunitiesIndexRoute
@@ -335,6 +540,11 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/auth'
+    | '/onboarding'
+    | '/reset-lock'
+    | '/unlock'
+    | '/security'
     | '/atlas'
     | '/guides'
     | '/opportunities'
@@ -343,6 +553,11 @@ export interface FileRouteTypes {
     | '/stories'
     | '/submit'
     | '/support'
+    | '/api/account'
+    | '/api/app-lock'
+    | '/api/moderators'
+    | '/api/profile'
+    | '/api/uploads'
     | '/'
     | '/r/$resourceId'
     | '/r/gender-affirmation-health'
@@ -352,6 +567,18 @@ export interface FileRouteTypes {
     | '/r/mental-health'
     | '/r/safe-space'
     | '/r/travel'
+    | '/api/app-lock/reset'
+    | '/api/app-lock/verify'
+    | '/api/auth/$'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/moderators/$userLinkId'
+    | '/api/uploads/$'
+    | '/auth/'
+    | '/onboarding/'
+    | '/reset-lock/'
+    | '/unlock/'
+    | '/security/'
     | '/atlas/'
     | '/guides/'
     | '/opportunities/'
@@ -371,8 +598,25 @@ export interface FileRouteTypes {
     | '/r/$resourceId/details/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/api/account'
+    | '/api/app-lock'
+    | '/api/moderators'
+    | '/api/profile'
+    | '/api/uploads'
     | '/'
     | '/r/$resourceId'
+    | '/api/app-lock/reset'
+    | '/api/app-lock/verify'
+    | '/api/auth/$'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/moderators/$userLinkId'
+    | '/api/uploads/$'
+    | '/auth'
+    | '/onboarding'
+    | '/reset-lock'
+    | '/unlock'
+    | '/security'
     | '/atlas'
     | '/guides'
     | '/opportunities'
@@ -391,8 +635,14 @@ export interface FileRouteTypes {
     | '/r/$resourceId/details'
   id:
     | '__root__'
+    | '/(authentication)'
     | '/(protection)'
     | '/(public)'
+    | '/(authentication)/auth'
+    | '/(authentication)/onboarding'
+    | '/(authentication)/reset-lock'
+    | '/(authentication)/unlock'
+    | '/(protection)/security'
     | '/(public)/atlas'
     | '/(public)/guides'
     | '/(public)/opportunities'
@@ -401,6 +651,11 @@ export interface FileRouteTypes {
     | '/(public)/stories'
     | '/(public)/submit'
     | '/(public)/support'
+    | '/api/account'
+    | '/api/app-lock'
+    | '/api/moderators'
+    | '/api/profile'
+    | '/api/uploads'
     | '/(public)/'
     | '/(public)/r/$resourceId'
     | '/(public)/r/gender-affirmation-health'
@@ -410,6 +665,18 @@ export interface FileRouteTypes {
     | '/(public)/r/mental-health'
     | '/(public)/r/safe-space'
     | '/(public)/r/travel'
+    | '/api/app-lock/reset'
+    | '/api/app-lock/verify'
+    | '/api/auth/$'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/moderators/$userLinkId'
+    | '/api/uploads/$'
+    | '/(authentication)/auth/'
+    | '/(authentication)/onboarding/'
+    | '/(authentication)/reset-lock/'
+    | '/(authentication)/unlock/'
+    | '/(protection)/security/'
     | '/(public)/atlas/'
     | '/(public)/guides/'
     | '/(public)/opportunities/'
@@ -430,12 +697,28 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  protectionRouteRoute: typeof protectionRouteRoute
+  authenticationRouteRoute: typeof authenticationRouteRouteWithChildren
+  protectionRouteRoute: typeof protectionRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
+  ApiAccountRoute: typeof ApiAccountRoute
+  ApiAppLockRoute: typeof ApiAppLockRouteWithChildren
+  ApiModeratorsRoute: typeof ApiModeratorsRouteWithChildren
+  ApiProfileRoute: typeof ApiProfileRoute
+  ApiUploadsRoute: typeof ApiUploadsRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiAuthLoginRoute: typeof ApiAuthLoginRoute
+  ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(authentication)': {
+      id: '/(authentication)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authenticationRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(protection)': {
       id: '/(protection)'
       path: ''
@@ -449,6 +732,41 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof publicRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(authentication)/auth': {
+      id: '/(authentication)/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof authenticationAuthRouteRouteImport
+      parentRoute: typeof authenticationRouteRoute
+    }
+    '/(authentication)/onboarding': {
+      id: '/(authentication)/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof authenticationOnboardingRouteRouteImport
+      parentRoute: typeof authenticationRouteRoute
+    }
+    '/(authentication)/reset-lock': {
+      id: '/(authentication)/reset-lock'
+      path: '/reset-lock'
+      fullPath: '/reset-lock'
+      preLoaderRoute: typeof authenticationResetLockRouteRouteImport
+      parentRoute: typeof authenticationRouteRoute
+    }
+    '/(authentication)/unlock': {
+      id: '/(authentication)/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof authenticationUnlockRouteRouteImport
+      parentRoute: typeof authenticationRouteRoute
+    }
+    '/(protection)/security': {
+      id: '/(protection)/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof protectionSecurityRouteRouteImport
+      parentRoute: typeof protectionRouteRoute
     }
     '/(public)/': {
       id: '/(public)/'
@@ -512,6 +830,76 @@ declare module '@tanstack/react-router' {
       fullPath: '/support'
       preLoaderRoute: typeof publicSupportRouteRouteImport
       parentRoute: typeof publicRouteRoute
+    }
+    '/api/account': {
+      id: '/api/account'
+      path: '/api/account'
+      fullPath: '/api/account'
+      preLoaderRoute: typeof ApiAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/app-lock': {
+      id: '/api/app-lock'
+      path: '/api/app-lock'
+      fullPath: '/api/app-lock'
+      preLoaderRoute: typeof ApiAppLockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/moderators': {
+      id: '/api/moderators'
+      path: '/api/moderators'
+      fullPath: '/api/moderators'
+      preLoaderRoute: typeof ApiModeratorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/profile': {
+      id: '/api/profile'
+      path: '/api/profile'
+      fullPath: '/api/profile'
+      preLoaderRoute: typeof ApiProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/uploads': {
+      id: '/api/uploads'
+      path: '/api/uploads'
+      fullPath: '/api/uploads'
+      preLoaderRoute: typeof ApiUploadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authentication)/auth/': {
+      id: '/(authentication)/auth/'
+      path: '/'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof authenticationAuthIndexRouteImport
+      parentRoute: typeof authenticationAuthRouteRoute
+    }
+    '/(authentication)/onboarding/': {
+      id: '/(authentication)/onboarding/'
+      path: '/'
+      fullPath: '/onboarding/'
+      preLoaderRoute: typeof authenticationOnboardingIndexRouteImport
+      parentRoute: typeof authenticationOnboardingRouteRoute
+    }
+    '/(authentication)/reset-lock/': {
+      id: '/(authentication)/reset-lock/'
+      path: '/'
+      fullPath: '/reset-lock/'
+      preLoaderRoute: typeof authenticationResetLockIndexRouteImport
+      parentRoute: typeof authenticationResetLockRouteRoute
+    }
+    '/(authentication)/unlock/': {
+      id: '/(authentication)/unlock/'
+      path: '/'
+      fullPath: '/unlock/'
+      preLoaderRoute: typeof authenticationUnlockIndexRouteImport
+      parentRoute: typeof authenticationUnlockRouteRoute
+    }
+    '/(protection)/security/': {
+      id: '/(protection)/security/'
+      path: '/'
+      fullPath: '/security/'
+      preLoaderRoute: typeof protectionSecurityIndexRouteImport
+      parentRoute: typeof protectionSecurityRouteRoute
     }
     '/(public)/atlas/': {
       id: '/(public)/atlas/'
@@ -625,6 +1013,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicSupportIndexRouteImport
       parentRoute: typeof publicSupportRouteRoute
     }
+    '/api/app-lock/reset': {
+      id: '/api/app-lock/reset'
+      path: '/reset'
+      fullPath: '/api/app-lock/reset'
+      preLoaderRoute: typeof ApiAppLockResetRouteImport
+      parentRoute: typeof ApiAppLockRoute
+    }
+    '/api/app-lock/verify': {
+      id: '/api/app-lock/verify'
+      path: '/verify'
+      fullPath: '/api/app-lock/verify'
+      preLoaderRoute: typeof ApiAppLockVerifyRouteImport
+      parentRoute: typeof ApiAppLockRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/login': {
+      id: '/api/auth/login'
+      path: '/api/auth/login'
+      fullPath: '/api/auth/login'
+      preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/logout': {
+      id: '/api/auth/logout'
+      path: '/api/auth/logout'
+      fullPath: '/api/auth/logout'
+      preLoaderRoute: typeof ApiAuthLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/moderators/$userLinkId': {
+      id: '/api/moderators/$userLinkId'
+      path: '/$userLinkId'
+      fullPath: '/api/moderators/$userLinkId'
+      preLoaderRoute: typeof ApiModeratorsUserLinkIdRouteImport
+      parentRoute: typeof ApiModeratorsRoute
+    }
+    '/api/uploads/$': {
+      id: '/api/uploads/$'
+      path: '/$'
+      fullPath: '/api/uploads/$'
+      preLoaderRoute: typeof ApiUploadsSplatRouteImport
+      parentRoute: typeof ApiUploadsRoute
+    }
     '/(public)/r/$resourceId/details': {
       id: '/(public)/r/$resourceId/details'
       path: '/details'
@@ -690,6 +1127,107 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface authenticationAuthRouteRouteChildren {
+  authenticationAuthIndexRoute: typeof authenticationAuthIndexRoute
+}
+
+const authenticationAuthRouteRouteChildren: authenticationAuthRouteRouteChildren =
+  {
+    authenticationAuthIndexRoute: authenticationAuthIndexRoute,
+  }
+
+const authenticationAuthRouteRouteWithChildren =
+  authenticationAuthRouteRoute._addFileChildren(
+    authenticationAuthRouteRouteChildren,
+  )
+
+interface authenticationOnboardingRouteRouteChildren {
+  authenticationOnboardingIndexRoute: typeof authenticationOnboardingIndexRoute
+}
+
+const authenticationOnboardingRouteRouteChildren: authenticationOnboardingRouteRouteChildren =
+  {
+    authenticationOnboardingIndexRoute: authenticationOnboardingIndexRoute,
+  }
+
+const authenticationOnboardingRouteRouteWithChildren =
+  authenticationOnboardingRouteRoute._addFileChildren(
+    authenticationOnboardingRouteRouteChildren,
+  )
+
+interface authenticationResetLockRouteRouteChildren {
+  authenticationResetLockIndexRoute: typeof authenticationResetLockIndexRoute
+}
+
+const authenticationResetLockRouteRouteChildren: authenticationResetLockRouteRouteChildren =
+  {
+    authenticationResetLockIndexRoute: authenticationResetLockIndexRoute,
+  }
+
+const authenticationResetLockRouteRouteWithChildren =
+  authenticationResetLockRouteRoute._addFileChildren(
+    authenticationResetLockRouteRouteChildren,
+  )
+
+interface authenticationUnlockRouteRouteChildren {
+  authenticationUnlockIndexRoute: typeof authenticationUnlockIndexRoute
+}
+
+const authenticationUnlockRouteRouteChildren: authenticationUnlockRouteRouteChildren =
+  {
+    authenticationUnlockIndexRoute: authenticationUnlockIndexRoute,
+  }
+
+const authenticationUnlockRouteRouteWithChildren =
+  authenticationUnlockRouteRoute._addFileChildren(
+    authenticationUnlockRouteRouteChildren,
+  )
+
+interface authenticationRouteRouteChildren {
+  authenticationAuthRouteRoute: typeof authenticationAuthRouteRouteWithChildren
+  authenticationOnboardingRouteRoute: typeof authenticationOnboardingRouteRouteWithChildren
+  authenticationResetLockRouteRoute: typeof authenticationResetLockRouteRouteWithChildren
+  authenticationUnlockRouteRoute: typeof authenticationUnlockRouteRouteWithChildren
+}
+
+const authenticationRouteRouteChildren: authenticationRouteRouteChildren = {
+  authenticationAuthRouteRoute: authenticationAuthRouteRouteWithChildren,
+  authenticationOnboardingRouteRoute:
+    authenticationOnboardingRouteRouteWithChildren,
+  authenticationResetLockRouteRoute:
+    authenticationResetLockRouteRouteWithChildren,
+  authenticationUnlockRouteRoute: authenticationUnlockRouteRouteWithChildren,
+}
+
+const authenticationRouteRouteWithChildren =
+  authenticationRouteRoute._addFileChildren(authenticationRouteRouteChildren)
+
+interface protectionSecurityRouteRouteChildren {
+  protectionSecurityIndexRoute: typeof protectionSecurityIndexRoute
+}
+
+const protectionSecurityRouteRouteChildren: protectionSecurityRouteRouteChildren =
+  {
+    protectionSecurityIndexRoute: protectionSecurityIndexRoute,
+  }
+
+const protectionSecurityRouteRouteWithChildren =
+  protectionSecurityRouteRoute._addFileChildren(
+    protectionSecurityRouteRouteChildren,
+  )
+
+interface protectionRouteRouteChildren {
+  protectionSecurityRouteRoute: typeof protectionSecurityRouteRouteWithChildren
+}
+
+const protectionRouteRouteChildren: protectionRouteRouteChildren = {
+  protectionSecurityRouteRoute: protectionSecurityRouteRouteWithChildren,
+}
+
+const protectionRouteRouteWithChildren = protectionRouteRoute._addFileChildren(
+  protectionRouteRouteChildren,
+)
 
 interface publicAtlasRouteRouteChildren {
   publicAtlasIndexRoute: typeof publicAtlasIndexRoute
@@ -950,9 +1488,56 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
+interface ApiAppLockRouteChildren {
+  ApiAppLockResetRoute: typeof ApiAppLockResetRoute
+  ApiAppLockVerifyRoute: typeof ApiAppLockVerifyRoute
+}
+
+const ApiAppLockRouteChildren: ApiAppLockRouteChildren = {
+  ApiAppLockResetRoute: ApiAppLockResetRoute,
+  ApiAppLockVerifyRoute: ApiAppLockVerifyRoute,
+}
+
+const ApiAppLockRouteWithChildren = ApiAppLockRoute._addFileChildren(
+  ApiAppLockRouteChildren,
+)
+
+interface ApiModeratorsRouteChildren {
+  ApiModeratorsUserLinkIdRoute: typeof ApiModeratorsUserLinkIdRoute
+}
+
+const ApiModeratorsRouteChildren: ApiModeratorsRouteChildren = {
+  ApiModeratorsUserLinkIdRoute: ApiModeratorsUserLinkIdRoute,
+}
+
+const ApiModeratorsRouteWithChildren = ApiModeratorsRoute._addFileChildren(
+  ApiModeratorsRouteChildren,
+)
+
+interface ApiUploadsRouteChildren {
+  ApiUploadsSplatRoute: typeof ApiUploadsSplatRoute
+}
+
+const ApiUploadsRouteChildren: ApiUploadsRouteChildren = {
+  ApiUploadsSplatRoute: ApiUploadsSplatRoute,
+}
+
+const ApiUploadsRouteWithChildren = ApiUploadsRoute._addFileChildren(
+  ApiUploadsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  protectionRouteRoute: protectionRouteRoute,
+  authenticationRouteRoute: authenticationRouteRouteWithChildren,
+  protectionRouteRoute: protectionRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
+  ApiAccountRoute: ApiAccountRoute,
+  ApiAppLockRoute: ApiAppLockRouteWithChildren,
+  ApiModeratorsRoute: ApiModeratorsRouteWithChildren,
+  ApiProfileRoute: ApiProfileRoute,
+  ApiUploadsRoute: ApiUploadsRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiAuthLoginRoute: ApiAuthLoginRoute,
+  ApiAuthLogoutRoute: ApiAuthLogoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

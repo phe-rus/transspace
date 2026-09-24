@@ -13,32 +13,65 @@
       "health": {
         "label": "Health",
         "items": {
-          "healthcareProviders": { "label": "Healthcare providers", "description": "Pharmacies and full-spectrum clinics." },
-          "genderAffirmingCare": { "label": "Gender-affirming care", "description": "Hormone therapy and gender clinics." },
-          "mentalHealth": { "label": "Mental health & HIV", "description": "Counseling, peer support, and testing." },
-          "generalHealth": { "label": "General health", "description": "Routine checkups and everyday care." }
+          "healthcareProviders": {
+            "label": "Healthcare providers",
+            "description": "Pharmacies and full-spectrum clinics."
+          },
+          "genderAffirmingCare": {
+            "label": "Gender-affirming care",
+            "description": "Hormone therapy and gender clinics."
+          },
+          "mentalHealth": {
+            "label": "Mental health & HIV",
+            "description": "Counseling, peer support, and testing."
+          },
+          "generalHealth": {
+            "label": "General health",
+            "description": "Routine checkups and everyday care."
+          }
         }
       },
       "safety": {
         "label": "Safety",
         "items": {
-          "safeSpaces": { "label": "Safe spaces", "description": "Vetted shelters and cooperative housing." },
-          "legalAid": { "label": "Legal aid", "description": "Name change, asylum, and legal aid." },
-          "travel": { "label": "Travel & mobility", "description": "Border crossing and ID document notes." }
+          "safeSpaces": {
+            "label": "Safe spaces",
+            "description": "Vetted shelters and cooperative housing."
+          },
+          "legalAid": {
+            "label": "Legal aid",
+            "description": "Name change, asylum, and legal aid."
+          },
+          "travel": {
+            "label": "Travel & mobility",
+            "description": "Border crossing and ID document notes."
+          }
         }
       },
       "getInvolved": {
         "label": "Get involved",
         "items": {
-          "storySubmissions": { "label": "Story submissions", "description": "Share what worked in your community." },
-          "communitySupport": { "label": "Community support", "description": "Mutual aid and local organizing." }
+          "storySubmissions": {
+            "label": "Story submissions",
+            "description": "Share what worked in your community."
+          },
+          "communitySupport": {
+            "label": "Community support",
+            "description": "Mutual aid and local organizing."
+          }
         }
       },
       "grow": {
         "label": "Grow",
         "items": {
-          "jobsAndCareers": { "label": "Jobs & careers", "description": "Inclusive employers and career support." },
-          "skillsAndLearning": { "label": "Skills & learning", "description": "Workshops and community-led courses." }
+          "jobsAndCareers": {
+            "label": "Jobs & careers",
+            "description": "Inclusive employers and career support."
+          },
+          "skillsAndLearning": {
+            "label": "Skills & learning",
+            "description": "Workshops and community-led courses."
+          }
         }
       }
     },
@@ -222,6 +255,63 @@
     },
     "stories": {
       "comingSoon": "Stories is coming soon."
+    },
+    "auth": {
+      "signIn": {
+        "eyebrow": "Sign in",
+        "title": "One identity, kept separate from everyone",
+        "subtitle": "Sign in through Infra, the shared identity service. Transspace never sees or stores your email, name, or password — only that you signed in.",
+        "cta": "Continue with Infra",
+        "privacyNote": "You will choose a separate, pseudonymous name for Transspace after this."
+      },
+      "onboarding": {
+        "eyebrow": "Welcome",
+        "title": "Choose how you show up here",
+        "subtitle": "Your name here is not your name out there. Pick a display name and an avatar before you continue.",
+        "displayNameLabel": "Display name",
+        "displayNamePlaceholder": "How should the community know you?",
+        "displayNameError": "2 to 32 characters, and cannot reference a reserved term.",
+        "avatarLabel": "Avatar",
+        "bioLabel": "Bio",
+        "bioPlaceholder": "Optional — a line about you.",
+        "pronounsLabel": "Pronouns",
+        "pronounsPlaceholder": "Optional",
+        "topicsLabel": "Topics you care about",
+        "topicsHint": "Optional, pick as many as you like.",
+        "submit": "Continue",
+        "genericError": "Something did not save. Check the fields above and try again."
+      },
+      "unlock": {
+        "eyebrow": "Locked",
+        "title": "Enter your unlock code",
+        "subtitle": "This device is locked for your privacy.",
+        "pinLabel": "PIN",
+        "submit": "Unlock",
+        "invalid": "That code was not recognized.",
+        "cooldown": "Too many attempts. Try again in a moment.",
+        "forgot": "Forgot your PIN?"
+      },
+      "resetLock": {
+        "title": "Confirming with Infra",
+        "subtitle": "One moment — clearing your app lock now that you have signed back in."
+      },
+      "security": {
+        "eyebrow": "App lock",
+        "title": "Local unlock code",
+        "subtitle": "A short code that locks Transspace on this device, separate from your Infra sign in.",
+        "currentPinLabel": "Current PIN",
+        "pinLabel": "New PIN",
+        "pinHint": "At least 6 digits. No repeating or sequential digits.",
+        "duressPinLabel": "Duress PIN (optional)",
+        "duressPinHint": "A second code that shows an empty, harmless version of your private data. It cannot hide your public profile.",
+        "clearDuress": "Remove duress PIN",
+        "save": "Save",
+        "saved": "Saved.",
+        "forgotPin": "Forgot your PIN? Sign in again to reset it.",
+        "lockedNotice": "Unlock the app before changing these settings.",
+        "weakPinError": "PIN must be at least 6 digits and not an obvious pattern.",
+        "samePinError": "The duress PIN must be different from your real PIN."
+      }
     }
   },
   "components": {

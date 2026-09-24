@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { ProfileActivityRow } from "@/components/profile/activity-row"
 import { ProfileSettingRow } from "@/components/profile/setting-row"
 import { mySubmissions, savedResources } from "@/data/profile-activity"
@@ -19,6 +20,18 @@ export const Route = createFileRoute("/(public)/profile/")({
 })
 
 function RouteComponent() {
+  const [signingOut, setSigningOut] = useState(false)
+
+  async function handleLogOut() {
+    setSigningOut(true)
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    })
+    window.location.href = "/"
+  }
+
   return (
     <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-5xl">
       <div className="flex w-full max-w-xl flex-col items-center gap-9">
@@ -51,7 +64,7 @@ function RouteComponent() {
 
         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
           <ProfileSettingRow icon={Settings01Icon} title={m["pages.profile.accountSettingsTitle"]()} subtitle={m["pages.profile.accountSettingsSubtitle"]()} />
-          <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} />
+          <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} to="/security" />
           <ProfileSettingRow icon={HelpCircleIcon} title={m["pages.profile.helpAndSupportTitle"]()} subtitle={m["pages.profile.helpAndSupportSubtitle"]()} />
           <ProfileSettingRow icon={UserMultiple02Icon} title={m["pages.profile.communitiesTitle"]()} subtitle={m["pages.profile.communitiesSubtitle"]()} />
         </div>
@@ -75,7 +88,8 @@ function RouteComponent() {
 
         <Button
           variant="outline"
-          disabled
+          disabled={signingOut}
+          onClick={handleLogOut}
           className="gap-1.5 rounded-full border-destructive/40 px-6 text-destructive"
         >
           <HugeiconsIcon icon={Logout05Icon} />

@@ -206,12 +206,22 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-2 md:flex"
                     >
-                        <Avatar
-                            className='border-0! size-6! ring-0!'
-                        >
-                            <AvatarImage src="/avatar/orange.jpg" />
-                            <AvatarFallback>AV</AvatarFallback>
-                        </Avatar>
+                        {false ?
+                            <Avatar
+                                className='border-0! size-6! ring-0!'
+                            >
+                                <AvatarImage src="/avatar/orange.jpg" />
+                                <AvatarFallback>AV</AvatarFallback>
+                            </Avatar> :
+                            <Link
+                                to="/auth"
+                                className={cn(buttonVariants({
+                                    variant: 'secondary'
+                                }))}
+                            >
+                                Login to transspace
+                            </Link>
+                        }
                     </motion.div>
 
                     <motion.div variants={fadeDown}>

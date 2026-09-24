@@ -67,32 +67,32 @@ code in `www/src/components/headers/`, `www/src/components/footers/`, `www/src/c
 No database or API layer exists yet (`www/src/routes/api/` is empty). Every entity, resources, categories, countries, guides, stories, opportunities, businesses, submissions, accounts, needs a schema and a Workers API surface before any content vertical is real instead of hardcoded.
 **Done when:** a data model and API layer exist that the resource directory (and later verticals) can read and write against, with migrations applied and types generated.
 - [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend.md)
-- [ ] Build it: `/develop data model & backend`
-  - [ ] D1 and Drizzle wired in with a migration workflow matching Infra's own (AC-1)
-  - [ ] Moderator system: table, grant/revoke, a floor of two, an append only audit log (AC-2)
-  - [ ] R2 upload module: sniffed allowlist, SVG sanitizing, quota computed by listing (AC-3)
-  - [ ] Shared pagination utility and Cloudflare Rate Limiting wired to write versus read endpoints (AC-4, AC-5)
-  - [ ] Server function domain folder convention plus a matching REST shell established (AC-6)
+- [x] Build it: `/develop data model & backend`
+  - [x] D1 and Drizzle wired in with a migration workflow matching Infra's own (AC-1)
+  - [x] Moderator system: table, grant/revoke, a floor of two, an append only audit log (AC-2) — migration and logic done; the one-off moderator seed is blocked on feature 7 (a real `user_link` row needs a completed OAuth sign in)
+  - [x] R2 upload module: sniffed allowlist, SVG sanitizing, quota computed by listing (AC-3)
+  - [x] Shared pagination utility and Cloudflare Rate Limiting wired to write versus read endpoints (AC-4, AC-5) — `TURNSTILE_SITE_KEY`/`TURNSTILE_SECRET_KEY` still need real values via `wrangler secret put`
+  - [x] Server function domain folder convention plus a matching REST shell established (AC-6)
 - [ ] Verify it: `/check verify data model & backend`
 - [ ] Test it: `/test data model & backend`
 - [ ] Review it (fresh model): `/check review data model & backend`
 - [ ] Document it: `/document data model & backend`
-spec [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend.md)
+spec [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend.md) · code in `www/src/db/`, `www/src/schemas/`, `www/src/domains/{moderators,uploads}/`, `www/src/lib/{pagination,uploads,rate-limit,turnstile,moderators,moderation-audit,http}.ts`, `www/src/middleware/`, `www/src/routes/api/`
 
 ### 7. Authentication & identity · GA
 OAuth-based sign in with a private account identity kept separate from a pseudonymous, public Q2Q profile (display name, avatar, topics, region). No accounts or sessions exist yet; the `(protection)` route is an empty stub.
 **Done when:** a person can sign in via OAuth, gets a private account plus a pseudonymous public profile, and protected routes actually gate on session state.
 - [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md)
 - [ ] Build it: `/develop authentication & identity`
-  - [ ] Registered as an Infra OAuth client and the thin Better Auth `genericOAuth` sign in/callback flow wired end to end (AC-1)
-  - [ ] `user_link` and `profile` migrations, plus the onboarding gate for a new person (AC-2, AC-3)
-  - [ ] Sign out, including sign out everywhere (AC-4)
-  - [ ] Local app lock: PIN settings, unlock prompt, and the server side decoy session state (AC-5, AC-6, AC-7, AC-8)
+  - [ ] Registered as an Infra OAuth client and the thin Better Auth `genericOAuth` sign in/callback flow wired end to end (AC-1) — code side complete (`/api/auth/login`, `/api/auth/$` catch-all, `genericOAuth` config); the Infra console registration itself is still being finalized (redirect URI needs the `/api/auth/callback/infra` provider-id suffix) and real `INFRA_OIDC_ISSUER_URL`/`INFRA_OAUTH_CLIENT_ID`/`INFRA_OAUTH_CLIENT_SECRET` values are still placeholders in `.dev.vars`
+  - [x] `user_link` and `profile` migrations, plus the onboarding gate for a new person (AC-2, AC-3)
+  - [x] Sign out, including sign out everywhere (AC-4)
+  - [x] Local app lock: PIN settings, unlock prompt, and the server side decoy session state (AC-5, AC-6, AC-7, AC-8)
 - [ ] Verify it: `/check verify authentication & identity`
 - [ ] Test it: `/test authentication & identity`
 - [ ] Review it (fresh model): `/check review authentication & identity`
 - [ ] Document it: `/document authentication & identity`
-spec [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md)
+spec [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md) · code in `www/src/lib/auth.ts`, `www/src/schemas/{auth,profile,app-lock}.ts`, `www/src/domains/{auth,profile,app-lock,account}/`, `www/src/middleware/session.ts`, `www/src/routes/api/{auth.$,auth.login,auth.logout,profile,app-lock,app-lock.verify,app-lock.reset,account}.ts`, `www/src/routes/(authentication)/`, `www/src/routes/(protection)/`
 
 ### 8. Trust & verification signals · GA
 A shared way to show why a piece of content can be trusted (community submitted, community reviewed, references available, professional/verified, last reviewed), so every content type carries the same signals instead of a generic star rating.
