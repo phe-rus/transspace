@@ -2,7 +2,6 @@ import { betterAuth } from "better-auth/minimal"
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2"
 import { genericOAuth } from "better-auth/plugins/generic-oauth"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
-import { env } from "cloudflare:workers"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
 import * as authSchema from "@/schemas/auth"
@@ -10,7 +9,29 @@ import { account as authAccount } from "@/schemas/auth"
 import { userLink } from "@/schemas/user-link"
 import { profile } from "@/schemas/profile"
 
-const isProduction = env.NODE_ENV === "production"
+// this file's own config is app-level, not a Cloudflare binding, so it
+// reads import.meta.env (Vite SSR, .env.local locally) falling back to
+// process.env, not `env` from "cloudflare:workers" — that stays reserved
+// for genuinely Workers-native bindings (D1, R2, rate limiters).
+const authEnv = {
+    BETTER_AUTH_SECRET:
+        import.meta.env.BETTER_AUTH_SECRET ?? process.env.BETTER_AUTH_SECRET,
+    BETTER_AUTH_URL:
+        import.meta.env.BETTER_AUTH_URL ?? process.env.BETTER_AUTH_URL,
+    INFRA_OIDC_ISSUER_URL:
+        import.meta.env.INFRA_OIDC_ISSUER_URL ??
+        process.env.INFRA_OIDC_ISSUER_URL,
+    INFRA_OAUTH_CLIENT_ID:
+        import.meta.env.INFRA_OAUTH_CLIENT_ID ??
+        process.env.INFRA_OAUTH_CLIENT_ID,
+    INFRA_OAUTH_CLIENT_SECRET:
+        import.meta.env.INFRA_OAUTH_CLIENT_SECRET ??
+        process.env.INFRA_OAUTH_CLIENT_SECRET,
+    COOKIE_DOMAIN:
+        import.meta.env.COOKIE_DOMAIN ?? process.env.COOKIE_DOMAIN,
+}
+
+const isProduction = import.meta.env.PROD
 async function clearInfraTokens(accountId: string) {
     await db
         .update(authAccount)
@@ -19,8 +40,8 @@ async function clearInfraTokens(accountId: string) {
 }
 
 export const auth = betterAuth({
-    baseURL: env.BETTER_AUTH_URL,
-    secret: env.BETTER_AUTH_SECRET,
+    baseURL: authEnv.BETTER_AUTH_URL,
+    secret: authEnv.BETTER_AUTH_SECRET,
     database: drizzleAdapter(db, {
         provider: "sqlite",
         camelCase: true,
@@ -37,7 +58,7 @@ export const auth = betterAuth({
         },
         crossSubDomainCookies: {
             enabled: isProduction,
-            domain: isProduction ? env.COOKIE_DOMAIN : undefined,
+            domain: isProduction ? authEnv.COOKIE_DOMAIN : undefined,
         },
     },
     session: {
@@ -112,13 +133,13 @@ export const auth = betterAuth({
             config: [
                 {
                     providerId: "infra",
-                    clientId: env.INFRA_OAUTH_CLIENT_ID,
-                    clientSecret: env.INFRA_OAUTH_CLIENT_SECRET || undefined,
-                    discoveryUrl: env.INFRA_OIDC_ISSUER_URL,
-                    scopes: ["openid", "offline_access"],
+                    clientId: authEnv.INFRA_OAUTH_CLIENT_ID,
+                    clientSecret: authEnv.INFRA_OAUTH_CLIENT_SECRET || undefined,
+                    discoveryUrl: authEnv.INFRA_OIDC_ISSUER_URL,
+                    scopes: ["openid"],
                     pkce: true,
                     authentication: "post",
-                    overrideUserInfo: true,
+                    overrideUserInfo: false,
                     mapProfileToUser: () => ({}),
                 },
             ],
