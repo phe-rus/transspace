@@ -9,26 +9,13 @@ import { account as authAccount } from "@/schemas/auth"
 import { userLink } from "@/schemas/user-link"
 import { profile } from "@/schemas/profile"
 
-// this file's own config is app-level, not a Cloudflare binding, so it
-// reads import.meta.env (Vite SSR, .env.local locally) falling back to
-// process.env, not `env` from "cloudflare:workers" — that stays reserved
-// for genuinely Workers-native bindings (D1, R2, rate limiters).
 const authEnv = {
-    BETTER_AUTH_SECRET:
-        import.meta.env.BETTER_AUTH_SECRET ?? process.env.BETTER_AUTH_SECRET,
-    BETTER_AUTH_URL:
-        import.meta.env.BETTER_AUTH_URL ?? process.env.BETTER_AUTH_URL,
-    INFRA_OIDC_ISSUER_URL:
-        import.meta.env.INFRA_OIDC_ISSUER_URL ??
-        process.env.INFRA_OIDC_ISSUER_URL,
-    INFRA_OAUTH_CLIENT_ID:
-        import.meta.env.INFRA_OAUTH_CLIENT_ID ??
-        process.env.INFRA_OAUTH_CLIENT_ID,
-    INFRA_OAUTH_CLIENT_SECRET:
-        import.meta.env.INFRA_OAUTH_CLIENT_SECRET ??
-        process.env.INFRA_OAUTH_CLIENT_SECRET,
-    COOKIE_DOMAIN:
-        import.meta.env.COOKIE_DOMAIN ?? process.env.COOKIE_DOMAIN,
+    BETTER_AUTH_SECRET: import.meta.env.BETTER_AUTH_SECRET ?? process.env.BETTER_AUTH_SECRET,
+    BETTER_AUTH_URL: import.meta.env.BETTER_AUTH_URL ?? process.env.BETTER_AUTH_URL,
+    INFRA_OIDC_ISSUER_URL: import.meta.env.INFRA_OIDC_ISSUER_URL ?? process.env.INFRA_OIDC_ISSUER_URL,
+    INFRA_OAUTH_CLIENT_ID: import.meta.env.INFRA_OAUTH_CLIENT_ID ?? process.env.INFRA_OAUTH_CLIENT_ID,
+    INFRA_OAUTH_CLIENT_SECRET: import.meta.env.INFRA_OAUTH_CLIENT_SECRET ?? process.env.INFRA_OAUTH_CLIENT_SECRET,
+    COOKIE_DOMAIN: import.meta.env.COOKIE_DOMAIN ?? process.env.COOKIE_DOMAIN,
 }
 
 const isProduction = import.meta.env.PROD

@@ -15,7 +15,7 @@ export const authSessionMiddleware = createMiddleware()
     })
 
 
-export const getCurrentSesion = createServerFn()
+export const getCurrentSesion = createServerFn({ method: "GET" })
     .middleware([authSessionMiddleware])
     .handler(async ({ context }) => {
         return context.sessions
