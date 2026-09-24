@@ -1,4 +1,5 @@
 import { LanguageSelect } from "@/components/languages"
+import { NotFoundComponent } from "@/components/notFoundComponent"
 import { getclientURL } from "@/lib/getURL"
 import { getLocale } from "@/paraglide/runtime"
 import { seo } from "@/seo/seo"
@@ -25,12 +26,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
     locale: getLocale(),
     styles: tailwindcss
   }),
-  notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
-      <p>The requested page could not be found.</p>
-    </main>
-  ),
+  notFoundComponent: NotFoundComponent,
   shellComponent: RootDocument,
 })
 

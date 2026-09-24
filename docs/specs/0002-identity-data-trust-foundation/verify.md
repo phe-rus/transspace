@@ -31,7 +31,7 @@ _None — this is a backend-only build with no UI surface yet._
 ~~Every write and self-service endpoint currently fails closed...~~ Resolved: `src/middleware/session.ts`'s `getCurrentUserLinkId()`/`getCurrentSession()` now read a real Better Auth session (see the feature 7 section below). The remaining gap is external, not code: the Infra OAuth client registration is still being finalized (redirect URI, real secret values in `.dev.vars`), so an actual end-to-end sign in hasn't been run yet.
 
 # Verify: authentication & identity · spec 0001 · updated 2026-09-24
-_Steps derived from spec 0001 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones. Several UI steps require a real, registered Infra OAuth client and real `INFRA_OIDC_ISSUER_URL`/`INFRA_OAUTH_CLIENT_ID`/`INFRA_OAUTH_CLIENT_SECRET` values in `.dev.vars` — currently placeholders (see spec 0001's Configuration required, and this build's report)._
+_Steps derived from spec 0001 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones. A real sign in against production Infra (`infra.pherus.org`) has now been completed and verified during this build; see the build report for the exact fixes that were needed (redirect URI provider-id suffix, `baseURL`, immutable-headers redirect, the onboarding gate only firing under `(protection)`, and a real email/name leaking into `user` despite `mapProfileToUser`)._
 
 ## UI / manual
 - [ ] Visit `/auth` with no session → renders a single "Continue with Infra" link/button; no password field appears here or on any other Transspace-rendered page → AC-1
@@ -50,13 +50,13 @@ _Steps derived from spec 0001 acceptance criteria. `/check verify` runs these; `
 - [ ] Call sign out with `everywhere: true` from two different sessions for the same person → both are signed out → AC-4
 
 ## Commands
-- [x] `bunx wrangler d1 execute transspace --local --command "SELECT name FROM sqlite_master WHERE type='table'"` → `user`, `session`, `account`, `verification`, `profile`, `appLock` present — confirmed during this build
-- [ ] After a full sign in + sign out cycle: `bunx wrangler d1 execute transspace --local --command "SELECT name, email, image FROM user"` → `name`/`email`/`image` are `NULL` for every row → AC-3
-- [ ] `bunx wrangler d1 execute transspace --local --command "SELECT accessToken, refreshToken, idToken FROM account"` → all `NULL` for every row → AC-3
-- [x] `curl -X POST http://localhost:3000/api/profile` with no session cookie → 401 — confirmed during this build → Security model
+- [x] `bunx wrangler d1 execute transspace --local --command "SELECT name FROM sqlite_master WHERE type='table'"` → `user`, `session`, `account`, `verification`, `profile`, `appLock` present, confirmed during this build
+- [x] After a full sign in: `bunx wrangler d1 execute transspace --local --command "SELECT name, email, image FROM user"` → `name`/`email` are a fixed placeholder ("Transspace user") and a random `@no-reply.invalid` address, never Infra's real values (a `user.create.before` hook substitutes them, since the schema's `name`/`email` columns are NOT NULL and can't just be nulled); `image` is `NULL` → AC-3, confirmed during this build after catching and fixing a real leak (a genuine email/name from Infra was stored before this hook existed)
+- [x] `bunx wrangler d1 execute transspace --local --command "SELECT accessToken, refreshToken, idToken FROM account"` → all `NULL` for every row → AC-3, confirmed during this build
+- [x] `curl -X POST http://localhost:3000/api/profile` with no session cookie → 401, confirmed during this build → Security model
 - [ ] `curl -X POST http://localhost:3000/api/app-lock` with someone else's id anywhere in the body → still only ever touches the caller's own row (the session's own id is used, any id in the body is ignored) → Security model
 - [ ] With a PIN already set, submit `{currentPin, duressPin}` equal to the existing real PIN (no new `pin` in the same call) → 422 "Duress PIN must differ from the PIN"; the reverse (new `pin` equal to an existing duress PIN) → same rejection → AC-5, key invariants (caught a gap during this build where only a same-request pin/duressPin collision was checked, not a collision against the other slot's already-stored value)
-- [x] `curl http://localhost:3000/api/auth/login` with `INFRA_OIDC_ISSUER_URL` unset/unreachable → 503 "Identity service unavailable, try again shortly" — confirmed during this build → AC-1
+- [x] `curl http://localhost:3000/api/auth/login` with `INFRA_OIDC_ISSUER_URL` unset/unreachable → 503 "Identity service unavailable, try again shortly", confirmed during this build → AC-1
 
 ## Acceptance-criteria coverage
 - AC-1: PKCE via `genericOAuth`, no password field, 503 on discovery failure · covered by the sign-in and login-endpoint steps

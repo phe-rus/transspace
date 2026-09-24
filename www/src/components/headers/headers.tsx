@@ -21,7 +21,7 @@ import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-export const Headers = () => {
+export const Headers = ({ signedIn }: { signedIn: boolean }) => {
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const [resourcesOpen, setResourcesOpen] = useState(false)
     const [navHeight, setNavHeight] = useState(40)
@@ -62,7 +62,7 @@ export const Headers = () => {
         { label: m["navigation.items.map"](), to: "/atlas" },
         { label: m["navigation.items.communities"](), to: "/r" },
         { label: m["navigation.items.support"](), to: "/support" },
-        { label: m["navigation.items.profile"](), to: "/profile" },
+        ...(signedIn ? [{ label: m["navigation.items.profile"](), to: "/profile" }] : []),
     ], [])
 
     const resourceGroups = useMemo(() => [
@@ -179,7 +179,7 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-1 md:flex"
                     >
-                        <Link
+                        {signedIn && <Link
                             to='/submit'
                             className={cn(buttonVariants({
                                 variant: 'default',
@@ -190,7 +190,7 @@ export const Headers = () => {
                         >
                             <HugeiconsIcon icon={Shield01Icon} />
                             Submit a resource
-                        </Link>
+                        </Link>}
 
                         <Button
                             size="icon"
@@ -206,13 +206,15 @@ export const Headers = () => {
                         variants={fadeDown}
                         className="hidden items-center gap-2 md:flex"
                     >
-                        {false ?
-                            <Avatar
-                                className='border-0! size-6! ring-0!'
-                            >
-                                <AvatarImage src="/avatar/orange.jpg" />
-                                <AvatarFallback>AV</AvatarFallback>
-                            </Avatar> :
+                        {signedIn ?
+                            <Link to="/profile" aria-label={m["navigation.items.profile"]()}>
+                                <Avatar
+                                    className='border-0! size-6! ring-0!'
+                                >
+                                    <AvatarImage src="/avatar/orange.jpg" />
+                                    <AvatarFallback>AV</AvatarFallback>
+                                </Avatar>
+                            </Link> :
                             <Link
                                 to="/auth"
                                 className={cn(buttonVariants({

@@ -13,7 +13,7 @@ import { logModerationAction } from "@/lib/moderation-audit"
 // spec 0001 Build plan step 9 + Data model sketch's deleted_at handling.
 // Content already submitted elsewhere is untouched by this spec (spec
 // 0001 API surface). A moderator revoke here still respects the floor of
-// two (spec 0002 key invariants) — that invariant is general, not just
+// two (spec 0002 key invariants); that invariant is general, not just
 // the dedicated revoke endpoint's concern.
 export const deleteAccount = createServerFn({ method: "POST" })
     .middleware([SessionMiddleware])

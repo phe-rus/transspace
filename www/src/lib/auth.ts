@@ -153,7 +153,7 @@ export const auth = betterAuth({
                 },
             ],
         }),
-        // must be last (better-auth/tanstack-start docs) — routes cookie
+        // must be last (better-auth/tanstack-start docs): routes cookie
         // writes from the plugins above through TanStack Start's own SSR
         // cookie handling
         tanstackStartCookies(),

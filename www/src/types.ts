@@ -23,11 +23,17 @@ export type RequestContext = {
 // RequestContext above) and `Cloudflare.Env` (what `cloudflare:workers`'s
 // own `env` export is actually typed as) need the augmentation.
 interface WorkerSecrets {
+    // wrangler.jsonc has no `vars` block, so `wrangler types` only ever
+    // types whatever happens to be in .dev.vars at generation time; that
+    // makes NODE_ENV unreliable there (it lives in .env.local, not
+    // .dev.vars) even though it's a standard var, not a secret. Declared
+    // here for the same reason as the others below.
+    NODE_ENV: string
     TURNSTILE_SITE_KEY: string
     TURNSTILE_SECRET_KEY: string
     BETTER_AUTH_SECRET: string
     // not in spec 0001's own "Configuration required" list, but required
-    // in practice — see lib/auth.ts's baseURL comment
+    // in practice, see lib/auth.ts's baseURL comment
     BETTER_AUTH_URL: string
     INFRA_OIDC_ISSUER_URL: string
     INFRA_OAUTH_CLIENT_ID: string

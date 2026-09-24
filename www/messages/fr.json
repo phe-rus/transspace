@@ -13,32 +13,65 @@
       "health": {
         "label": "Santé",
         "items": {
-          "healthcareProviders": { "label": "Professionnels de santé", "description": "Pharmacies et cliniques polyvalentes." },
-          "genderAffirmingCare": { "label": "Soins d'affirmation de genre", "description": "Traitement hormonal et cliniques de genre." },
-          "mentalHealth": { "label": "Santé mentale & VIH", "description": "Conseil, soutien par les pairs et dépistage." },
-          "generalHealth": { "label": "Santé générale", "description": "Bilans de routine et soins du quotidien." }
+          "healthcareProviders": {
+            "label": "Professionnels de santé",
+            "description": "Pharmacies et cliniques polyvalentes."
+          },
+          "genderAffirmingCare": {
+            "label": "Soins d'affirmation de genre",
+            "description": "Traitement hormonal et cliniques de genre."
+          },
+          "mentalHealth": {
+            "label": "Santé mentale & VIH",
+            "description": "Conseil, soutien par les pairs et dépistage."
+          },
+          "generalHealth": {
+            "label": "Santé générale",
+            "description": "Bilans de routine et soins du quotidien."
+          }
         }
       },
       "safety": {
         "label": "Sécurité",
         "items": {
-          "safeSpaces": { "label": "Espaces sûrs", "description": "Refuges vérifiés et logements coopératifs." },
-          "legalAid": { "label": "Aide juridique", "description": "Changement de nom, asile et aide juridique." },
-          "travel": { "label": "Voyage & mobilité", "description": "Notes sur le passage des frontières et les papiers d'identité." }
+          "safeSpaces": {
+            "label": "Espaces sûrs",
+            "description": "Refuges vérifiés et logements coopératifs."
+          },
+          "legalAid": {
+            "label": "Aide juridique",
+            "description": "Changement de nom, asile et aide juridique."
+          },
+          "travel": {
+            "label": "Voyage & mobilité",
+            "description": "Notes sur le passage des frontières et les papiers d'identité."
+          }
         }
       },
       "getInvolved": {
         "label": "S'impliquer",
         "items": {
-          "storySubmissions": { "label": "Soumissions de témoignages", "description": "Partagez ce qui a fonctionné dans votre communauté." },
-          "communitySupport": { "label": "Soutien communautaire", "description": "Entraide et organisation locale." }
+          "storySubmissions": {
+            "label": "Soumissions de témoignages",
+            "description": "Partagez ce qui a fonctionné dans votre communauté."
+          },
+          "communitySupport": {
+            "label": "Soutien communautaire",
+            "description": "Entraide et organisation locale."
+          }
         }
       },
       "grow": {
         "label": "Évoluer",
         "items": {
-          "jobsAndCareers": { "label": "Emplois & carrières", "description": "Employeurs inclusifs et accompagnement de carrière." },
-          "skillsAndLearning": { "label": "Compétences & apprentissage", "description": "Ateliers et cours animés par la communauté." }
+          "jobsAndCareers": {
+            "label": "Emplois & carrières",
+            "description": "Employeurs inclusifs et accompagnement de carrière."
+          },
+          "skillsAndLearning": {
+            "label": "Compétences & apprentissage",
+            "description": "Ateliers et cours animés par la communauté."
+          }
         }
       }
     },
@@ -222,6 +255,63 @@
     },
     "stories": {
       "comingSoon": "Les témoignages arrivent bientôt."
+    },
+    "auth": {
+      "signIn": {
+        "eyebrow": "Connexion",
+        "title": "Une identité, séparée de tout le reste",
+        "subtitle": "Connectez-vous via Infra, le service d'identité partagé. Transspace ne voit ni ne stocke jamais votre e-mail, votre nom ou votre mot de passe, seulement le fait que vous vous êtes connecté.",
+        "cta": "Continuer avec Infra",
+        "privacyNote": "Vous choisirez ensuite un nom pseudonyme distinct pour Transspace."
+      },
+      "onboarding": {
+        "eyebrow": "Bienvenue",
+        "title": "Choisissez comment vous vous présentez ici",
+        "subtitle": "Votre nom ici n'est pas votre nom ailleurs. Choisissez un nom d'affichage et un avatar avant de continuer.",
+        "displayNameLabel": "Nom d'affichage",
+        "displayNamePlaceholder": "Comment la communauté doit-elle vous connaître ?",
+        "displayNameError": "2 à 32 caractères, et ne peut pas faire référence à un terme réservé.",
+        "avatarLabel": "Avatar",
+        "bioLabel": "Bio",
+        "bioPlaceholder": "Facultatif, une ligne à propos de vous.",
+        "pronounsLabel": "Pronoms",
+        "pronounsPlaceholder": "Facultatif",
+        "topicsLabel": "Sujets qui vous tiennent à cœur",
+        "topicsHint": "Facultatif, choisissez-en autant que vous le souhaitez.",
+        "submit": "Continuer",
+        "genericError": "Quelque chose n'a pas été enregistré. Vérifiez les champs ci-dessus et réessayez."
+      },
+      "unlock": {
+        "eyebrow": "Verrouillé",
+        "title": "Entrez votre code de déverrouillage",
+        "subtitle": "Cet appareil est verrouillé pour votre confidentialité.",
+        "pinLabel": "Code PIN",
+        "submit": "Déverrouiller",
+        "invalid": "Ce code n'a pas été reconnu.",
+        "cooldown": "Trop de tentatives. Réessayez dans un instant.",
+        "forgot": "Code PIN oublié ?"
+      },
+      "resetLock": {
+        "title": "Confirmation avec Infra",
+        "subtitle": "Un instant, réinitialisation de votre verrouillage d'application maintenant que vous vous êtes reconnecté."
+      },
+      "security": {
+        "eyebrow": "Verrouillage de l'application",
+        "title": "Code de déverrouillage local",
+        "subtitle": "Un code court qui verrouille Transspace sur cet appareil, indépendamment de votre connexion Infra.",
+        "currentPinLabel": "Code PIN actuel",
+        "pinLabel": "Nouveau code PIN",
+        "pinHint": "Au moins 6 chiffres. Pas de chiffres répétés ou consécutifs.",
+        "duressPinLabel": "Code PIN de détresse (facultatif)",
+        "duressPinHint": "Un second code qui affiche une version vide et inoffensive de vos données privées. Il ne peut pas masquer votre profil public.",
+        "clearDuress": "Supprimer le code PIN de détresse",
+        "save": "Enregistrer",
+        "saved": "Enregistré.",
+        "forgotPin": "Code PIN oublié ? Reconnectez-vous pour le réinitialiser.",
+        "lockedNotice": "Déverrouillez l'application avant de modifier ces paramètres.",
+        "weakPinError": "Le code PIN doit comporter au moins 6 chiffres et ne pas suivre un schéma évident.",
+        "samePinError": "Le code PIN de détresse doit être différent de votre code PIN réel."
+      }
     }
   },
   "components": {

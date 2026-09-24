@@ -260,7 +260,7 @@
       "signIn": {
         "eyebrow": "Sign in",
         "title": "One identity, kept separate from everyone",
-        "subtitle": "Sign in through Infra, the shared identity service. Transspace never sees or stores your email, name, or password — only that you signed in.",
+        "subtitle": "Sign in through Infra, the shared identity service. Transspace never sees or stores your email, name, or password, only that you signed in.",
         "cta": "Continue with Infra",
         "privacyNote": "You will choose a separate, pseudonymous name for Transspace after this."
       },
@@ -273,7 +273,7 @@
         "displayNameError": "2 to 32 characters, and cannot reference a reserved term.",
         "avatarLabel": "Avatar",
         "bioLabel": "Bio",
-        "bioPlaceholder": "Optional — a line about you.",
+        "bioPlaceholder": "Optional, a line about you.",
         "pronounsLabel": "Pronouns",
         "pronounsPlaceholder": "Optional",
         "topicsLabel": "Topics you care about",
@@ -293,7 +293,7 @@
       },
       "resetLock": {
         "title": "Confirming with Infra",
-        "subtitle": "One moment — clearing your app lock now that you have signed back in."
+        "subtitle": "One moment, clearing your app lock now that you have signed back in."
       },
       "security": {
         "eyebrow": "App lock",

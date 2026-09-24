@@ -5,7 +5,7 @@ const scryptAsync = promisify(scrypt)
 const KEY_LENGTH = 64
 // same shape as a real hash (32 hex chars of salt, 128 of key) so a
 // missing pin_hash/duress_pin_hash still costs a real scrypt derivation
-// rather than short circuiting — timing must not reveal that a slot is
+// rather than short circuiting: timing must not reveal that a slot is
 // unset (spec 0001 AC-7)
 const DUMMY_HASH = `${"0".repeat(32)}:${"0".repeat(128)}`
 

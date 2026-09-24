@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { loginRedirectUrl } from "@/domains/auth"
 
-// GET, no auth — the entry point (spec 0001 API surface). A bare link, no
+// GET, no auth: the entry point (spec 0001 API surface). A bare link, no
 // client JS required: everything happens via server side redirects.
 export const Route = createFileRoute("/api/auth/login")({
     server: {

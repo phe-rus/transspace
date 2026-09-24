@@ -13,32 +13,65 @@
       "health": {
         "label": "健康",
         "items": {
-          "healthcareProviders": { "label": "医疗服务提供者", "description": "药房和综合诊所。" },
-          "genderAffirmingCare": { "label": "性别肯定护理", "description": "激素治疗和性别诊所。" },
-          "mentalHealth": { "label": "心理健康与艾滋病", "description": "咨询、同伴支持和检测。" },
-          "generalHealth": { "label": "普通健康", "description": "常规检查和日常护理。" }
+          "healthcareProviders": {
+            "label": "医疗服务提供者",
+            "description": "药房和综合诊所。"
+          },
+          "genderAffirmingCare": {
+            "label": "性别肯定护理",
+            "description": "激素治疗和性别诊所。"
+          },
+          "mentalHealth": {
+            "label": "心理健康与艾滋病",
+            "description": "咨询、同伴支持和检测。"
+          },
+          "generalHealth": {
+            "label": "普通健康",
+            "description": "常规检查和日常护理。"
+          }
         }
       },
       "safety": {
         "label": "安全",
         "items": {
-          "safeSpaces": { "label": "安全空间", "description": "经过审核的庇护所和合作住房。" },
-          "legalAid": { "label": "法律援助", "description": "更名、庇护和法律援助。" },
-          "travel": { "label": "旅行与流动", "description": "边境通行与身份证件须知。" }
+          "safeSpaces": {
+            "label": "安全空间",
+            "description": "经过审核的庇护所和合作住房。"
+          },
+          "legalAid": {
+            "label": "法律援助",
+            "description": "更名、庇护和法律援助。"
+          },
+          "travel": {
+            "label": "旅行与流动",
+            "description": "边境通行与身份证件须知。"
+          }
         }
       },
       "getInvolved": {
         "label": "参与",
         "items": {
-          "storySubmissions": { "label": "投稿故事", "description": "分享在你的社区中行之有效的经验。" },
-          "communitySupport": { "label": "社区互助", "description": "互助与本地组织。" }
+          "storySubmissions": {
+            "label": "投稿故事",
+            "description": "分享在你的社区中行之有效的经验。"
+          },
+          "communitySupport": {
+            "label": "社区互助",
+            "description": "互助与本地组织。"
+          }
         }
       },
       "grow": {
         "label": "成长",
         "items": {
-          "jobsAndCareers": { "label": "工作与职业", "description": "包容性雇主与职业支持。" },
-          "skillsAndLearning": { "label": "技能与学习", "description": "工作坊和社区主导的课程。" }
+          "jobsAndCareers": {
+            "label": "工作与职业",
+            "description": "包容性雇主与职业支持。"
+          },
+          "skillsAndLearning": {
+            "label": "技能与学习",
+            "description": "工作坊和社区主导的课程。"
+          }
         }
       }
     },
@@ -222,6 +255,63 @@
     },
     "stories": {
       "comingSoon": "故事版块即将上线。"
+    },
+    "auth": {
+      "signIn": {
+        "eyebrow": "登录",
+        "title": "一个身份,与其他一切分开",
+        "subtitle": "通过 Infra(共享身份服务)登录。Transspace 绝不会查看或存储您的电子邮件、姓名或密码,只知道您已登录。",
+        "cta": "使用 Infra 继续",
+        "privacyNote": "之后您将为 Transspace 选择一个独立的匿名用户名。"
+      },
+      "onboarding": {
+        "eyebrow": "欢迎",
+        "title": "选择您在这里的展示方式",
+        "subtitle": "您在这里的名字不是您在外面的名字。请在继续之前选择一个显示名称和头像。",
+        "displayNameLabel": "显示名称",
+        "displayNamePlaceholder": "您希望社区如何称呼您?",
+        "displayNameError": "2 到 32 个字符,且不能引用保留词。",
+        "avatarLabel": "头像",
+        "bioLabel": "简介",
+        "bioPlaceholder": "可选,写一句关于您自己的话。",
+        "pronounsLabel": "代词",
+        "pronounsPlaceholder": "可选",
+        "topicsLabel": "您关心的话题",
+        "topicsHint": "可选,可以选择任意数量。",
+        "submit": "继续",
+        "genericError": "有些内容未能保存。请检查上方字段后重试。"
+      },
+      "unlock": {
+        "eyebrow": "已锁定",
+        "title": "输入您的解锁码",
+        "subtitle": "为保护您的隐私,此设备已被锁定。",
+        "pinLabel": "PIN 码",
+        "submit": "解锁",
+        "invalid": "该代码无法识别。",
+        "cooldown": "尝试次数过多,请稍后再试。",
+        "forgot": "忘记 PIN 码了吗?"
+      },
+      "resetLock": {
+        "title": "正在与 Infra 确认",
+        "subtitle": "请稍候,您重新登录后正在清除应用锁。"
+      },
+      "security": {
+        "eyebrow": "应用锁",
+        "title": "本地解锁码",
+        "subtitle": "一个用于在此设备上锁定 Transspace 的短代码,与您的 Infra 登录无关。",
+        "currentPinLabel": "当前 PIN 码",
+        "pinLabel": "新 PIN 码",
+        "pinHint": "至少 6 位数字,不能是重复或连续的数字。",
+        "duressPinLabel": "胁迫 PIN 码(可选)",
+        "duressPinHint": "第二个代码,用于显示您私人数据的空白、无害版本。它无法隐藏您的公开个人资料。",
+        "clearDuress": "移除胁迫 PIN 码",
+        "save": "保存",
+        "saved": "已保存。",
+        "forgotPin": "忘记 PIN 码了吗?请重新登录以重置。",
+        "lockedNotice": "请先解锁应用,然后再更改这些设置。",
+        "weakPinError": "PIN 码必须至少 6 位数字,且不能是明显的模式。",
+        "samePinError": "胁迫 PIN 码必须与您的真实 PIN 码不同。"
+      }
     }
   },
   "components": {

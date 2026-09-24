@@ -83,8 +83,8 @@ spec [0002](../specs/0002-identity-data-trust-foundation/0002-data-model-backend
 OAuth-based sign in with a private account identity kept separate from a pseudonymous, public Q2Q profile (display name, avatar, topics, region). No accounts or sessions exist yet; the `(protection)` route is an empty stub.
 **Done when:** a person can sign in via OAuth, gets a private account plus a pseudonymous public profile, and protected routes actually gate on session state.
 - [x] Design it (spec): [0002](../specs/0002-identity-data-trust-foundation/0001-authentication-identity.md)
-- [ ] Build it: `/develop authentication & identity`
-  - [ ] Registered as an Infra OAuth client and the thin Better Auth `genericOAuth` sign in/callback flow wired end to end (AC-1) — code side complete (`/api/auth/login`, `/api/auth/$` catch-all, `genericOAuth` config); the Infra console registration itself is still being finalized (redirect URI needs the `/api/auth/callback/infra` provider-id suffix) and real `INFRA_OIDC_ISSUER_URL`/`INFRA_OAUTH_CLIENT_ID`/`INFRA_OAUTH_CLIENT_SECRET` values are still placeholders in `.dev.vars`
+- [x] Build it: `/develop authentication & identity`
+  - [x] Registered as an Infra OAuth client and the thin Better Auth `genericOAuth` sign in/callback flow wired end to end (AC-1). Verified with a real sign in against production Infra (`infra.pherus.org`): the redirect URI was fixed to include the `/infra` provider-id suffix, `.dev.vars` now holds real `INFRA_OIDC_ISSUER_URL`/`INFRA_OAUTH_CLIENT_ID` values (dev client is public, no secret), and a full round trip (login redirect, callback, session, decoy-safe token clearing) completed successfully
   - [x] `user_link` and `profile` migrations, plus the onboarding gate for a new person (AC-2, AC-3)
   - [x] Sign out, including sign out everywhere (AC-4)
   - [x] Local app lock: PIN settings, unlock prompt, and the server side decoy session state (AC-5, AC-6, AC-7, AC-8)

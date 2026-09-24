@@ -13,32 +13,65 @@
       "health": {
         "label": "Gesundheit",
         "items": {
-          "healthcareProviders": { "label": "Gesundheitsdienstleister", "description": "Apotheken und Vollversorgungskliniken." },
-          "genderAffirmingCare": { "label": "Geschlechtsangleichende Versorgung", "description": "Hormontherapie und Gender-Kliniken." },
-          "mentalHealth": { "label": "Psychische Gesundheit & HIV", "description": "Beratung, Peer-Support und Tests." },
-          "generalHealth": { "label": "Allgemeine Gesundheit", "description": "Routineuntersuchungen und Alltagsversorgung." }
+          "healthcareProviders": {
+            "label": "Gesundheitsdienstleister",
+            "description": "Apotheken und Vollversorgungskliniken."
+          },
+          "genderAffirmingCare": {
+            "label": "Geschlechtsangleichende Versorgung",
+            "description": "Hormontherapie und Gender-Kliniken."
+          },
+          "mentalHealth": {
+            "label": "Psychische Gesundheit & HIV",
+            "description": "Beratung, Peer-Support und Tests."
+          },
+          "generalHealth": {
+            "label": "Allgemeine Gesundheit",
+            "description": "Routineuntersuchungen und Alltagsversorgung."
+          }
         }
       },
       "safety": {
         "label": "Sicherheit",
         "items": {
-          "safeSpaces": { "label": "Sichere Räume", "description": "Geprüfte Unterkünfte und Wohnkooperativen." },
-          "legalAid": { "label": "Rechtshilfe", "description": "Namensänderung, Asyl und Rechtshilfe." },
-          "travel": { "label": "Reisen & Mobilität", "description": "Hinweise zu Grenzübertritten und Ausweisdokumenten." }
+          "safeSpaces": {
+            "label": "Sichere Räume",
+            "description": "Geprüfte Unterkünfte und Wohnkooperativen."
+          },
+          "legalAid": {
+            "label": "Rechtshilfe",
+            "description": "Namensänderung, Asyl und Rechtshilfe."
+          },
+          "travel": {
+            "label": "Reisen & Mobilität",
+            "description": "Hinweise zu Grenzübertritten und Ausweisdokumenten."
+          }
         }
       },
       "getInvolved": {
         "label": "Mitmachen",
         "items": {
-          "storySubmissions": { "label": "Geschichten einreichen", "description": "Teile, was in deiner Community funktioniert hat." },
-          "communitySupport": { "label": "Gemeinschaftliche Unterstützung", "description": "Gegenseitige Hilfe und lokale Organisierung." }
+          "storySubmissions": {
+            "label": "Geschichten einreichen",
+            "description": "Teile, was in deiner Community funktioniert hat."
+          },
+          "communitySupport": {
+            "label": "Gemeinschaftliche Unterstützung",
+            "description": "Gegenseitige Hilfe und lokale Organisierung."
+          }
         }
       },
       "grow": {
         "label": "Weiterkommen",
         "items": {
-          "jobsAndCareers": { "label": "Jobs & Karriere", "description": "Inklusive Arbeitgeber und Karriereunterstützung." },
-          "skillsAndLearning": { "label": "Fähigkeiten & Lernen", "description": "Workshops und von der Community geleitete Kurse." }
+          "jobsAndCareers": {
+            "label": "Jobs & Karriere",
+            "description": "Inklusive Arbeitgeber und Karriereunterstützung."
+          },
+          "skillsAndLearning": {
+            "label": "Fähigkeiten & Lernen",
+            "description": "Workshops und von der Community geleitete Kurse."
+          }
         }
       }
     },
@@ -222,6 +255,63 @@
     },
     "stories": {
       "comingSoon": "Geschichten kommen bald."
+    },
+    "auth": {
+      "signIn": {
+        "eyebrow": "Anmelden",
+        "title": "Eine Identität, getrennt von allem anderen",
+        "subtitle": "Melde dich über Infra an, den gemeinsamen Identitätsdienst. Transspace sieht oder speichert niemals deine E-Mail-Adresse, deinen Namen oder dein Passwort, nur dass du dich angemeldet hast.",
+        "cta": "Mit Infra fortfahren",
+        "privacyNote": "Danach wählst du einen separaten, pseudonymen Namen für Transspace."
+      },
+      "onboarding": {
+        "eyebrow": "Willkommen",
+        "title": "Wähle, wie du hier auftrittst",
+        "subtitle": "Dein Name hier ist nicht dein Name da draußen. Wähle einen Anzeigenamen und einen Avatar, bevor du fortfährst.",
+        "displayNameLabel": "Anzeigename",
+        "displayNamePlaceholder": "Wie soll die Community dich kennen?",
+        "displayNameError": "2 bis 32 Zeichen, darf sich nicht auf einen reservierten Begriff beziehen.",
+        "avatarLabel": "Avatar",
+        "bioLabel": "Bio",
+        "bioPlaceholder": "Optional, eine Zeile über dich.",
+        "pronounsLabel": "Pronomen",
+        "pronounsPlaceholder": "Optional",
+        "topicsLabel": "Themen, die dir wichtig sind",
+        "topicsHint": "Optional, wähle so viele wie du möchtest.",
+        "submit": "Weiter",
+        "genericError": "Etwas konnte nicht gespeichert werden. Überprüfe die Felder oben und versuche es erneut."
+      },
+      "unlock": {
+        "eyebrow": "Gesperrt",
+        "title": "Gib deinen Entsperrcode ein",
+        "subtitle": "Dieses Gerät ist zu deinem Schutz gesperrt.",
+        "pinLabel": "PIN",
+        "submit": "Entsperren",
+        "invalid": "Dieser Code wurde nicht erkannt.",
+        "cooldown": "Zu viele Versuche. Versuche es gleich noch einmal.",
+        "forgot": "PIN vergessen?"
+      },
+      "resetLock": {
+        "title": "Bestätigung mit Infra",
+        "subtitle": "Einen Moment, deine App-Sperre wird zurückgesetzt, nachdem du dich erneut angemeldet hast."
+      },
+      "security": {
+        "eyebrow": "App-Sperre",
+        "title": "Lokaler Entsperrcode",
+        "subtitle": "Ein kurzer Code, der Transspace auf diesem Gerät sperrt, unabhängig von deiner Infra-Anmeldung.",
+        "currentPinLabel": "Aktuelle PIN",
+        "pinLabel": "Neue PIN",
+        "pinHint": "Mindestens 6 Ziffern. Keine sich wiederholenden oder aufeinanderfolgenden Ziffern.",
+        "duressPinLabel": "Notfall-PIN (optional)",
+        "duressPinHint": "Ein zweiter Code, der eine leere, harmlose Version deiner privaten Daten anzeigt. Er kann dein öffentliches Profil nicht verbergen.",
+        "clearDuress": "Notfall-PIN entfernen",
+        "save": "Speichern",
+        "saved": "Gespeichert.",
+        "forgotPin": "PIN vergessen? Melde dich erneut an, um sie zurückzusetzen.",
+        "lockedNotice": "Entsperre die App, bevor du diese Einstellungen änderst.",
+        "weakPinError": "Die PIN muss mindestens 6 Ziffern haben und darf kein offensichtliches Muster sein.",
+        "samePinError": "Die Notfall-PIN muss sich von deiner echten PIN unterscheiden."
+      }
     }
   },
   "components": {
