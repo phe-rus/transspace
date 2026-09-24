@@ -21,7 +21,7 @@ import { Map, MapClusterLayer, MapControls } from "@pherus/ui/map"
 import { createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
 
-export const Route = createFileRoute("/(public)/atlas")({
+export const Route = createFileRoute("/(public)/atlas/")({
   component: RouteComponent,
 })
 

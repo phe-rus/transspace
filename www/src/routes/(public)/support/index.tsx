@@ -5,7 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/(public)/r/community/support")({
+export const Route = createFileRoute("/(public)/support/")({
   component: RouteComponent,
 })
 

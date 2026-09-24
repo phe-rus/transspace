@@ -2,6 +2,7 @@ import type { AtlasResource } from "@/data/atlas-resources"
 import { resourceCategoryColor, resourceCategoryIcon, resourceCategoryLabel } from "@/data/resource-categories"
 import { CheckmarkCircle01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { Link } from "@tanstack/react-router"
 
 export interface ResourceCardProps {
   resource: AtlasResource
@@ -9,7 +10,11 @@ export interface ResourceCardProps {
 
 export function ResourceCard({ resource }: ResourceCardProps) {
   return (
-    <article className="flex gap-4 rounded-4xl border border-border bg-card p-5 transition-colors hover:bg-muted">
+    <Link
+      to="/r/$resourceId/details"
+      params={{ resourceId: resource.id }}
+      className="flex gap-4 rounded-4xl border border-border bg-card p-5 transition-colors hover:bg-muted"
+    >
       <span
         className="flex size-12 shrink-0 items-center justify-center rounded-2xl"
         style={{ backgroundColor: `${resourceCategoryColor[resource.category]}1a` }}
@@ -41,6 +46,6 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           <p>{resource.estimate}</p>
         </div>
       </div>
-    </article>
+    </Link>
   )
 }

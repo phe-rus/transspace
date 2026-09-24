@@ -2,13 +2,13 @@ import { ResourceCard } from "@/components/resources/resource-card"
 import { atlasResources } from "@/data/atlas-resources"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/(public)/r/housing/safe-spaces")({
+export const Route = createFileRoute("/(public)/r/safe-space/")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const resources = atlasResources.filter(
-    (resource) => resource.category === "housing" && resource.subcategory === "safe-spaces",
+    (resource) => resource.category === "housing" && resource.subcategory === "safe-space",
   )
 
   return (

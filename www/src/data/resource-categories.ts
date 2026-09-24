@@ -1,4 +1,5 @@
 import {
+  Airplane01Icon,
   Alert01Icon,
   Hospital01Icon,
   Home01Icon,
@@ -14,7 +15,7 @@ import {
  * rather than inventing a separate palette, since MapLibre paint
  * properties need literal color strings and can't read a CSS var().
  */
-export const RESOURCE_CATEGORIES = ["health", "legal", "housing", "community", "crisis"] as const
+export const RESOURCE_CATEGORIES = ["health", "legal", "housing", "community", "crisis", "travel"] as const
 
 export type ResourceCategory = (typeof RESOURCE_CATEGORIES)[number]
 
@@ -24,6 +25,7 @@ export const resourceCategoryColor: Record<ResourceCategory, string> = {
   housing: "#10b981", // matches --success (--color-emerald-500)
   community: "#D4736E", // matches the existing hero/accent token exception
   crisis: "#ef4444", // close to --destructive
+  travel: "#8b5cf6", // matches --color-violet-500
 }
 
 export const resourceCategoryLabel: Record<ResourceCategory, string> = {
@@ -32,6 +34,7 @@ export const resourceCategoryLabel: Record<ResourceCategory, string> = {
   housing: "Housing & safe spaces",
   community: "Community",
   crisis: "Crisis support",
+  travel: "Travel & mobility",
 }
 
 export const resourceCategoryIcon: Record<ResourceCategory, typeof Hospital01Icon> = {
@@ -40,19 +43,23 @@ export const resourceCategoryIcon: Record<ResourceCategory, typeof Hospital01Ico
   housing: Home01Icon,
   community: UserGroup02Icon,
   crisis: Alert01Icon,
+  travel: Airplane01Icon,
 }
 
 /**
  * Finer-grained slugs within a category, used for the header mega-menu's
- * deep links (e.g. /r/health/providers). Each category has at least one;
- * `crisis` has none since nothing in the nav links there yet.
+ * deep links. Routes for these live flat under `/r/` (e.g. `/r/mental-health`,
+ * not `/r/health/mental-health`) — `www/src/routes/(public)/r/` has no
+ * per-category subfolders. `legal`, `crisis`, and `travel` have none: each
+ * is a single page filtered on category alone.
  */
 export const RESOURCE_SUBCATEGORIES_BY_CATEGORY = {
-  health: ["providers", "mental-and-hiv"],
-  housing: ["safe-spaces"],
-  legal: ["immigration"],
+  health: ["healthcare-providers", "gender-affirmation-health", "mental-health", "general-health"],
+  housing: ["safe-space"],
+  legal: [],
   community: ["support"],
   crisis: [],
+  travel: [],
 } as const satisfies Record<ResourceCategory, readonly string[]>
 
 export type ResourceSubcategory =

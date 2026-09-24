@@ -118,7 +118,7 @@ function RouteComponent() {
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
           <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
             <h6>Trust signals</h6>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">

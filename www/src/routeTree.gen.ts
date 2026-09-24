@@ -12,17 +12,39 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as protectionRouteRouteImport } from './routes/(protection)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
-import { Route as publicAtlasRouteImport } from './routes/(public)/atlas'
-import { Route as publicGuidesRouteImport } from './routes/(public)/guides'
-import { Route as publicOpportunitiesRouteImport } from './routes/(public)/opportunities'
+import { Route as publicAtlasRouteRouteImport } from './routes/(public)/atlas/route'
+import { Route as publicGuidesRouteRouteImport } from './routes/(public)/guides/route'
+import { Route as publicOpportunitiesRouteRouteImport } from './routes/(public)/opportunities/route'
+import { Route as publicProfileRouteRouteImport } from './routes/(public)/profile/route'
 import { Route as publicRRouteRouteImport } from './routes/(public)/r/route'
-import { Route as publicStoriesRouteImport } from './routes/(public)/stories'
+import { Route as publicStoriesRouteRouteImport } from './routes/(public)/stories/route'
+import { Route as publicSubmitRouteRouteImport } from './routes/(public)/submit/route'
+import { Route as publicSupportRouteRouteImport } from './routes/(public)/support/route'
+import { Route as publicAtlasIndexRouteImport } from './routes/(public)/atlas/index'
+import { Route as publicGuidesIndexRouteImport } from './routes/(public)/guides/index'
+import { Route as publicOpportunitiesIndexRouteImport } from './routes/(public)/opportunities/index'
+import { Route as publicProfileIndexRouteImport } from './routes/(public)/profile/index'
 import { Route as publicRIndexRouteImport } from './routes/(public)/r/index'
-import { Route as publicRCommunitySupportRouteImport } from './routes/(public)/r/community/support'
-import { Route as publicRHealthMentalAndHivRouteImport } from './routes/(public)/r/health/mental-and-hiv'
-import { Route as publicRHealthProvidersRouteImport } from './routes/(public)/r/health/providers'
-import { Route as publicRHousingSafeSpacesRouteImport } from './routes/(public)/r/housing/safe-spaces'
-import { Route as publicRLegalImmigrationRouteImport } from './routes/(public)/r/legal/immigration'
+import { Route as publicRResourceIdRouteRouteImport } from './routes/(public)/r/$resourceId/route'
+import { Route as publicRGenderAffirmationHealthRouteRouteImport } from './routes/(public)/r/gender-affirmation-health/route'
+import { Route as publicRGeneralHealthRouteRouteImport } from './routes/(public)/r/general-health/route'
+import { Route as publicRHealthcareProvidersRouteRouteImport } from './routes/(public)/r/healthcare-providers/route'
+import { Route as publicRLegalRouteRouteImport } from './routes/(public)/r/legal/route'
+import { Route as publicRMentalHealthRouteRouteImport } from './routes/(public)/r/mental-health/route'
+import { Route as publicRSafeSpaceRouteRouteImport } from './routes/(public)/r/safe-space/route'
+import { Route as publicRTravelRouteRouteImport } from './routes/(public)/r/travel/route'
+import { Route as publicStoriesIndexRouteImport } from './routes/(public)/stories/index'
+import { Route as publicSubmitIndexRouteImport } from './routes/(public)/submit/index'
+import { Route as publicSupportIndexRouteImport } from './routes/(public)/support/index'
+import { Route as publicRResourceIdDetailsRouteRouteImport } from './routes/(public)/r/$resourceId/details/route'
+import { Route as publicRGenderAffirmationHealthIndexRouteImport } from './routes/(public)/r/gender-affirmation-health/index'
+import { Route as publicRGeneralHealthIndexRouteImport } from './routes/(public)/r/general-health/index'
+import { Route as publicRHealthcareProvidersIndexRouteImport } from './routes/(public)/r/healthcare-providers/index'
+import { Route as publicRLegalIndexRouteImport } from './routes/(public)/r/legal/index'
+import { Route as publicRMentalHealthIndexRouteImport } from './routes/(public)/r/mental-health/index'
+import { Route as publicRSafeSpaceIndexRouteImport } from './routes/(public)/r/safe-space/index'
+import { Route as publicRTravelIndexRouteImport } from './routes/(public)/r/travel/index'
+import { Route as publicRResourceIdDetailsIndexRouteImport } from './routes/(public)/r/$resourceId/details/index'
 
 const protectionRouteRoute = protectionRouteRouteImport.update({
   id: '/(protection)',
@@ -37,19 +59,25 @@ const publicIndexRoute = publicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const publicAtlasRoute = publicAtlasRouteImport.update({
+const publicAtlasRouteRoute = publicAtlasRouteRouteImport.update({
   id: '/atlas',
   path: '/atlas',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const publicGuidesRoute = publicGuidesRouteImport.update({
+const publicGuidesRouteRoute = publicGuidesRouteRouteImport.update({
   id: '/guides',
   path: '/guides',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const publicOpportunitiesRoute = publicOpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
+const publicOpportunitiesRouteRoute =
+  publicOpportunitiesRouteRouteImport.update({
+    id: '/opportunities',
+    path: '/opportunities',
+    getParentRoute: () => publicRouteRoute,
+  } as any)
+const publicProfileRouteRoute = publicProfileRouteRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => publicRouteRoute,
 } as any)
 const publicRRouteRoute = publicRRouteRouteImport.update({
@@ -57,132 +85,348 @@ const publicRRouteRoute = publicRRouteRouteImport.update({
   path: '/r',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const publicStoriesRoute = publicStoriesRouteImport.update({
+const publicStoriesRouteRoute = publicStoriesRouteRouteImport.update({
   id: '/stories',
   path: '/stories',
   getParentRoute: () => publicRouteRoute,
+} as any)
+const publicSubmitRouteRoute = publicSubmitRouteRouteImport.update({
+  id: '/submit',
+  path: '/submit',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicSupportRouteRoute = publicSupportRouteRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicAtlasIndexRoute = publicAtlasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicAtlasRouteRoute,
+} as any)
+const publicGuidesIndexRoute = publicGuidesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicGuidesRouteRoute,
+} as any)
+const publicOpportunitiesIndexRoute =
+  publicOpportunitiesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicOpportunitiesRouteRoute,
+  } as any)
+const publicProfileIndexRoute = publicProfileIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicProfileRouteRoute,
 } as any)
 const publicRIndexRoute = publicRIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => publicRRouteRoute,
 } as any)
-const publicRCommunitySupportRoute = publicRCommunitySupportRouteImport.update({
-  id: '/community/support',
-  path: '/community/support',
+const publicRResourceIdRouteRoute = publicRResourceIdRouteRouteImport.update({
+  id: '/$resourceId',
+  path: '/$resourceId',
   getParentRoute: () => publicRRouteRoute,
 } as any)
-const publicRHealthMentalAndHivRoute =
-  publicRHealthMentalAndHivRouteImport.update({
-    id: '/health/mental-and-hiv',
-    path: '/health/mental-and-hiv',
+const publicRGenderAffirmationHealthRouteRoute =
+  publicRGenderAffirmationHealthRouteRouteImport.update({
+    id: '/gender-affirmation-health',
+    path: '/gender-affirmation-health',
     getParentRoute: () => publicRRouteRoute,
   } as any)
-const publicRHealthProvidersRoute = publicRHealthProvidersRouteImport.update({
-  id: '/health/providers',
-  path: '/health/providers',
-  getParentRoute: () => publicRRouteRoute,
-} as any)
-const publicRHousingSafeSpacesRoute =
-  publicRHousingSafeSpacesRouteImport.update({
-    id: '/housing/safe-spaces',
-    path: '/housing/safe-spaces',
+const publicRGeneralHealthRouteRoute =
+  publicRGeneralHealthRouteRouteImport.update({
+    id: '/general-health',
+    path: '/general-health',
     getParentRoute: () => publicRRouteRoute,
   } as any)
-const publicRLegalImmigrationRoute = publicRLegalImmigrationRouteImport.update({
-  id: '/legal/immigration',
-  path: '/legal/immigration',
+const publicRHealthcareProvidersRouteRoute =
+  publicRHealthcareProvidersRouteRouteImport.update({
+    id: '/healthcare-providers',
+    path: '/healthcare-providers',
+    getParentRoute: () => publicRRouteRoute,
+  } as any)
+const publicRLegalRouteRoute = publicRLegalRouteRouteImport.update({
+  id: '/legal',
+  path: '/legal',
   getParentRoute: () => publicRRouteRoute,
 } as any)
+const publicRMentalHealthRouteRoute =
+  publicRMentalHealthRouteRouteImport.update({
+    id: '/mental-health',
+    path: '/mental-health',
+    getParentRoute: () => publicRRouteRoute,
+  } as any)
+const publicRSafeSpaceRouteRoute = publicRSafeSpaceRouteRouteImport.update({
+  id: '/safe-space',
+  path: '/safe-space',
+  getParentRoute: () => publicRRouteRoute,
+} as any)
+const publicRTravelRouteRoute = publicRTravelRouteRouteImport.update({
+  id: '/travel',
+  path: '/travel',
+  getParentRoute: () => publicRRouteRoute,
+} as any)
+const publicStoriesIndexRoute = publicStoriesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicStoriesRouteRoute,
+} as any)
+const publicSubmitIndexRoute = publicSubmitIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicSubmitRouteRoute,
+} as any)
+const publicSupportIndexRoute = publicSupportIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicSupportRouteRoute,
+} as any)
+const publicRResourceIdDetailsRouteRoute =
+  publicRResourceIdDetailsRouteRouteImport.update({
+    id: '/details',
+    path: '/details',
+    getParentRoute: () => publicRResourceIdRouteRoute,
+  } as any)
+const publicRGenderAffirmationHealthIndexRoute =
+  publicRGenderAffirmationHealthIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRGenderAffirmationHealthRouteRoute,
+  } as any)
+const publicRGeneralHealthIndexRoute =
+  publicRGeneralHealthIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRGeneralHealthRouteRoute,
+  } as any)
+const publicRHealthcareProvidersIndexRoute =
+  publicRHealthcareProvidersIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRHealthcareProvidersRouteRoute,
+  } as any)
+const publicRLegalIndexRoute = publicRLegalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicRLegalRouteRoute,
+} as any)
+const publicRMentalHealthIndexRoute =
+  publicRMentalHealthIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRMentalHealthRouteRoute,
+  } as any)
+const publicRSafeSpaceIndexRoute = publicRSafeSpaceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicRSafeSpaceRouteRoute,
+} as any)
+const publicRTravelIndexRoute = publicRTravelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicRTravelRouteRoute,
+} as any)
+const publicRResourceIdDetailsIndexRoute =
+  publicRResourceIdDetailsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => publicRResourceIdDetailsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/atlas': typeof publicAtlasRouteRouteWithChildren
+  '/guides': typeof publicGuidesRouteRouteWithChildren
+  '/opportunities': typeof publicOpportunitiesRouteRouteWithChildren
+  '/profile': typeof publicProfileRouteRouteWithChildren
   '/r': typeof publicRRouteRouteWithChildren
-  '/atlas': typeof publicAtlasRoute
-  '/guides': typeof publicGuidesRoute
-  '/opportunities': typeof publicOpportunitiesRoute
-  '/stories': typeof publicStoriesRoute
+  '/stories': typeof publicStoriesRouteRouteWithChildren
+  '/submit': typeof publicSubmitRouteRouteWithChildren
+  '/support': typeof publicSupportRouteRouteWithChildren
   '/': typeof publicIndexRoute
+  '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
+  '/r/gender-affirmation-health': typeof publicRGenderAffirmationHealthRouteRouteWithChildren
+  '/r/general-health': typeof publicRGeneralHealthRouteRouteWithChildren
+  '/r/healthcare-providers': typeof publicRHealthcareProvidersRouteRouteWithChildren
+  '/r/legal': typeof publicRLegalRouteRouteWithChildren
+  '/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
+  '/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
+  '/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/atlas/': typeof publicAtlasIndexRoute
+  '/guides/': typeof publicGuidesIndexRoute
+  '/opportunities/': typeof publicOpportunitiesIndexRoute
+  '/profile/': typeof publicProfileIndexRoute
   '/r/': typeof publicRIndexRoute
-  '/r/community/support': typeof publicRCommunitySupportRoute
-  '/r/health/mental-and-hiv': typeof publicRHealthMentalAndHivRoute
-  '/r/health/providers': typeof publicRHealthProvidersRoute
-  '/r/housing/safe-spaces': typeof publicRHousingSafeSpacesRoute
-  '/r/legal/immigration': typeof publicRLegalImmigrationRoute
+  '/stories/': typeof publicStoriesIndexRoute
+  '/submit/': typeof publicSubmitIndexRoute
+  '/support/': typeof publicSupportIndexRoute
+  '/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
+  '/r/gender-affirmation-health/': typeof publicRGenderAffirmationHealthIndexRoute
+  '/r/general-health/': typeof publicRGeneralHealthIndexRoute
+  '/r/healthcare-providers/': typeof publicRHealthcareProvidersIndexRoute
+  '/r/legal/': typeof publicRLegalIndexRoute
+  '/r/mental-health/': typeof publicRMentalHealthIndexRoute
+  '/r/safe-space/': typeof publicRSafeSpaceIndexRoute
+  '/r/travel/': typeof publicRTravelIndexRoute
+  '/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/atlas': typeof publicAtlasRoute
-  '/guides': typeof publicGuidesRoute
-  '/opportunities': typeof publicOpportunitiesRoute
-  '/stories': typeof publicStoriesRoute
   '/': typeof publicIndexRoute
+  '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
+  '/atlas': typeof publicAtlasIndexRoute
+  '/guides': typeof publicGuidesIndexRoute
+  '/opportunities': typeof publicOpportunitiesIndexRoute
+  '/profile': typeof publicProfileIndexRoute
   '/r': typeof publicRIndexRoute
-  '/r/community/support': typeof publicRCommunitySupportRoute
-  '/r/health/mental-and-hiv': typeof publicRHealthMentalAndHivRoute
-  '/r/health/providers': typeof publicRHealthProvidersRoute
-  '/r/housing/safe-spaces': typeof publicRHousingSafeSpacesRoute
-  '/r/legal/immigration': typeof publicRLegalImmigrationRoute
+  '/stories': typeof publicStoriesIndexRoute
+  '/submit': typeof publicSubmitIndexRoute
+  '/support': typeof publicSupportIndexRoute
+  '/r/gender-affirmation-health': typeof publicRGenderAffirmationHealthIndexRoute
+  '/r/general-health': typeof publicRGeneralHealthIndexRoute
+  '/r/healthcare-providers': typeof publicRHealthcareProvidersIndexRoute
+  '/r/legal': typeof publicRLegalIndexRoute
+  '/r/mental-health': typeof publicRMentalHealthIndexRoute
+  '/r/safe-space': typeof publicRSafeSpaceIndexRoute
+  '/r/travel': typeof publicRTravelIndexRoute
+  '/r/$resourceId/details': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(protection)': typeof protectionRouteRoute
   '/(public)': typeof publicRouteRouteWithChildren
+  '/(public)/atlas': typeof publicAtlasRouteRouteWithChildren
+  '/(public)/guides': typeof publicGuidesRouteRouteWithChildren
+  '/(public)/opportunities': typeof publicOpportunitiesRouteRouteWithChildren
+  '/(public)/profile': typeof publicProfileRouteRouteWithChildren
   '/(public)/r': typeof publicRRouteRouteWithChildren
-  '/(public)/atlas': typeof publicAtlasRoute
-  '/(public)/guides': typeof publicGuidesRoute
-  '/(public)/opportunities': typeof publicOpportunitiesRoute
-  '/(public)/stories': typeof publicStoriesRoute
+  '/(public)/stories': typeof publicStoriesRouteRouteWithChildren
+  '/(public)/submit': typeof publicSubmitRouteRouteWithChildren
+  '/(public)/support': typeof publicSupportRouteRouteWithChildren
   '/(public)/': typeof publicIndexRoute
+  '/(public)/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
+  '/(public)/r/gender-affirmation-health': typeof publicRGenderAffirmationHealthRouteRouteWithChildren
+  '/(public)/r/general-health': typeof publicRGeneralHealthRouteRouteWithChildren
+  '/(public)/r/healthcare-providers': typeof publicRHealthcareProvidersRouteRouteWithChildren
+  '/(public)/r/legal': typeof publicRLegalRouteRouteWithChildren
+  '/(public)/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
+  '/(public)/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
+  '/(public)/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/(public)/atlas/': typeof publicAtlasIndexRoute
+  '/(public)/guides/': typeof publicGuidesIndexRoute
+  '/(public)/opportunities/': typeof publicOpportunitiesIndexRoute
+  '/(public)/profile/': typeof publicProfileIndexRoute
   '/(public)/r/': typeof publicRIndexRoute
-  '/(public)/r/community/support': typeof publicRCommunitySupportRoute
-  '/(public)/r/health/mental-and-hiv': typeof publicRHealthMentalAndHivRoute
-  '/(public)/r/health/providers': typeof publicRHealthProvidersRoute
-  '/(public)/r/housing/safe-spaces': typeof publicRHousingSafeSpacesRoute
-  '/(public)/r/legal/immigration': typeof publicRLegalImmigrationRoute
+  '/(public)/stories/': typeof publicStoriesIndexRoute
+  '/(public)/submit/': typeof publicSubmitIndexRoute
+  '/(public)/support/': typeof publicSupportIndexRoute
+  '/(public)/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
+  '/(public)/r/gender-affirmation-health/': typeof publicRGenderAffirmationHealthIndexRoute
+  '/(public)/r/general-health/': typeof publicRGeneralHealthIndexRoute
+  '/(public)/r/healthcare-providers/': typeof publicRHealthcareProvidersIndexRoute
+  '/(public)/r/legal/': typeof publicRLegalIndexRoute
+  '/(public)/r/mental-health/': typeof publicRMentalHealthIndexRoute
+  '/(public)/r/safe-space/': typeof publicRSafeSpaceIndexRoute
+  '/(public)/r/travel/': typeof publicRTravelIndexRoute
+  '/(public)/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/r'
     | '/atlas'
     | '/guides'
     | '/opportunities'
+    | '/profile'
+    | '/r'
     | '/stories'
+    | '/submit'
+    | '/support'
     | '/'
+    | '/r/$resourceId'
+    | '/r/gender-affirmation-health'
+    | '/r/general-health'
+    | '/r/healthcare-providers'
+    | '/r/legal'
+    | '/r/mental-health'
+    | '/r/safe-space'
+    | '/r/travel'
+    | '/atlas/'
+    | '/guides/'
+    | '/opportunities/'
+    | '/profile/'
     | '/r/'
-    | '/r/community/support'
-    | '/r/health/mental-and-hiv'
-    | '/r/health/providers'
-    | '/r/housing/safe-spaces'
-    | '/r/legal/immigration'
+    | '/stories/'
+    | '/submit/'
+    | '/support/'
+    | '/r/$resourceId/details'
+    | '/r/gender-affirmation-health/'
+    | '/r/general-health/'
+    | '/r/healthcare-providers/'
+    | '/r/legal/'
+    | '/r/mental-health/'
+    | '/r/safe-space/'
+    | '/r/travel/'
+    | '/r/$resourceId/details/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
+    | '/r/$resourceId'
     | '/atlas'
     | '/guides'
     | '/opportunities'
-    | '/stories'
-    | '/'
+    | '/profile'
     | '/r'
-    | '/r/community/support'
-    | '/r/health/mental-and-hiv'
-    | '/r/health/providers'
-    | '/r/housing/safe-spaces'
-    | '/r/legal/immigration'
+    | '/stories'
+    | '/submit'
+    | '/support'
+    | '/r/gender-affirmation-health'
+    | '/r/general-health'
+    | '/r/healthcare-providers'
+    | '/r/legal'
+    | '/r/mental-health'
+    | '/r/safe-space'
+    | '/r/travel'
+    | '/r/$resourceId/details'
   id:
     | '__root__'
     | '/(protection)'
     | '/(public)'
-    | '/(public)/r'
     | '/(public)/atlas'
     | '/(public)/guides'
     | '/(public)/opportunities'
+    | '/(public)/profile'
+    | '/(public)/r'
     | '/(public)/stories'
+    | '/(public)/submit'
+    | '/(public)/support'
     | '/(public)/'
+    | '/(public)/r/$resourceId'
+    | '/(public)/r/gender-affirmation-health'
+    | '/(public)/r/general-health'
+    | '/(public)/r/healthcare-providers'
+    | '/(public)/r/legal'
+    | '/(public)/r/mental-health'
+    | '/(public)/r/safe-space'
+    | '/(public)/r/travel'
+    | '/(public)/atlas/'
+    | '/(public)/guides/'
+    | '/(public)/opportunities/'
+    | '/(public)/profile/'
     | '/(public)/r/'
-    | '/(public)/r/community/support'
-    | '/(public)/r/health/mental-and-hiv'
-    | '/(public)/r/health/providers'
-    | '/(public)/r/housing/safe-spaces'
-    | '/(public)/r/legal/immigration'
+    | '/(public)/stories/'
+    | '/(public)/submit/'
+    | '/(public)/support/'
+    | '/(public)/r/$resourceId/details'
+    | '/(public)/r/gender-affirmation-health/'
+    | '/(public)/r/general-health/'
+    | '/(public)/r/healthcare-providers/'
+    | '/(public)/r/legal/'
+    | '/(public)/r/mental-health/'
+    | '/(public)/r/safe-space/'
+    | '/(public)/r/travel/'
+    | '/(public)/r/$resourceId/details/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -217,21 +461,28 @@ declare module '@tanstack/react-router' {
       id: '/(public)/atlas'
       path: '/atlas'
       fullPath: '/atlas'
-      preLoaderRoute: typeof publicAtlasRouteImport
+      preLoaderRoute: typeof publicAtlasRouteRouteImport
       parentRoute: typeof publicRouteRoute
     }
     '/(public)/guides': {
       id: '/(public)/guides'
       path: '/guides'
       fullPath: '/guides'
-      preLoaderRoute: typeof publicGuidesRouteImport
+      preLoaderRoute: typeof publicGuidesRouteRouteImport
       parentRoute: typeof publicRouteRoute
     }
     '/(public)/opportunities': {
       id: '/(public)/opportunities'
       path: '/opportunities'
       fullPath: '/opportunities'
-      preLoaderRoute: typeof publicOpportunitiesRouteImport
+      preLoaderRoute: typeof publicOpportunitiesRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/profile': {
+      id: '/(public)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof publicProfileRouteRouteImport
       parentRoute: typeof publicRouteRoute
     }
     '/(public)/r': {
@@ -245,8 +496,50 @@ declare module '@tanstack/react-router' {
       id: '/(public)/stories'
       path: '/stories'
       fullPath: '/stories'
-      preLoaderRoute: typeof publicStoriesRouteImport
+      preLoaderRoute: typeof publicStoriesRouteRouteImport
       parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/submit': {
+      id: '/(public)/submit'
+      path: '/submit'
+      fullPath: '/submit'
+      preLoaderRoute: typeof publicSubmitRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/support': {
+      id: '/(public)/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof publicSupportRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/atlas/': {
+      id: '/(public)/atlas/'
+      path: '/'
+      fullPath: '/atlas/'
+      preLoaderRoute: typeof publicAtlasIndexRouteImport
+      parentRoute: typeof publicAtlasRouteRoute
+    }
+    '/(public)/guides/': {
+      id: '/(public)/guides/'
+      path: '/'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof publicGuidesIndexRouteImport
+      parentRoute: typeof publicGuidesRouteRoute
+    }
+    '/(public)/opportunities/': {
+      id: '/(public)/opportunities/'
+      path: '/'
+      fullPath: '/opportunities/'
+      preLoaderRoute: typeof publicOpportunitiesIndexRouteImport
+      parentRoute: typeof publicOpportunitiesRouteRoute
+    }
+    '/(public)/profile/': {
+      id: '/(public)/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof publicProfileIndexRouteImport
+      parentRoute: typeof publicProfileRouteRoute
     }
     '/(public)/r/': {
       id: '/(public)/r/'
@@ -255,81 +548,401 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicRIndexRouteImport
       parentRoute: typeof publicRRouteRoute
     }
-    '/(public)/r/community/support': {
-      id: '/(public)/r/community/support'
-      path: '/community/support'
-      fullPath: '/r/community/support'
-      preLoaderRoute: typeof publicRCommunitySupportRouteImport
+    '/(public)/r/$resourceId': {
+      id: '/(public)/r/$resourceId'
+      path: '/$resourceId'
+      fullPath: '/r/$resourceId'
+      preLoaderRoute: typeof publicRResourceIdRouteRouteImport
       parentRoute: typeof publicRRouteRoute
     }
-    '/(public)/r/health/mental-and-hiv': {
-      id: '/(public)/r/health/mental-and-hiv'
-      path: '/health/mental-and-hiv'
-      fullPath: '/r/health/mental-and-hiv'
-      preLoaderRoute: typeof publicRHealthMentalAndHivRouteImport
+    '/(public)/r/gender-affirmation-health': {
+      id: '/(public)/r/gender-affirmation-health'
+      path: '/gender-affirmation-health'
+      fullPath: '/r/gender-affirmation-health'
+      preLoaderRoute: typeof publicRGenderAffirmationHealthRouteRouteImport
       parentRoute: typeof publicRRouteRoute
     }
-    '/(public)/r/health/providers': {
-      id: '/(public)/r/health/providers'
-      path: '/health/providers'
-      fullPath: '/r/health/providers'
-      preLoaderRoute: typeof publicRHealthProvidersRouteImport
+    '/(public)/r/general-health': {
+      id: '/(public)/r/general-health'
+      path: '/general-health'
+      fullPath: '/r/general-health'
+      preLoaderRoute: typeof publicRGeneralHealthRouteRouteImport
       parentRoute: typeof publicRRouteRoute
     }
-    '/(public)/r/housing/safe-spaces': {
-      id: '/(public)/r/housing/safe-spaces'
-      path: '/housing/safe-spaces'
-      fullPath: '/r/housing/safe-spaces'
-      preLoaderRoute: typeof publicRHousingSafeSpacesRouteImport
+    '/(public)/r/healthcare-providers': {
+      id: '/(public)/r/healthcare-providers'
+      path: '/healthcare-providers'
+      fullPath: '/r/healthcare-providers'
+      preLoaderRoute: typeof publicRHealthcareProvidersRouteRouteImport
       parentRoute: typeof publicRRouteRoute
     }
-    '/(public)/r/legal/immigration': {
-      id: '/(public)/r/legal/immigration'
-      path: '/legal/immigration'
-      fullPath: '/r/legal/immigration'
-      preLoaderRoute: typeof publicRLegalImmigrationRouteImport
+    '/(public)/r/legal': {
+      id: '/(public)/r/legal'
+      path: '/legal'
+      fullPath: '/r/legal'
+      preLoaderRoute: typeof publicRLegalRouteRouteImport
       parentRoute: typeof publicRRouteRoute
+    }
+    '/(public)/r/mental-health': {
+      id: '/(public)/r/mental-health'
+      path: '/mental-health'
+      fullPath: '/r/mental-health'
+      preLoaderRoute: typeof publicRMentalHealthRouteRouteImport
+      parentRoute: typeof publicRRouteRoute
+    }
+    '/(public)/r/safe-space': {
+      id: '/(public)/r/safe-space'
+      path: '/safe-space'
+      fullPath: '/r/safe-space'
+      preLoaderRoute: typeof publicRSafeSpaceRouteRouteImport
+      parentRoute: typeof publicRRouteRoute
+    }
+    '/(public)/r/travel': {
+      id: '/(public)/r/travel'
+      path: '/travel'
+      fullPath: '/r/travel'
+      preLoaderRoute: typeof publicRTravelRouteRouteImport
+      parentRoute: typeof publicRRouteRoute
+    }
+    '/(public)/stories/': {
+      id: '/(public)/stories/'
+      path: '/'
+      fullPath: '/stories/'
+      preLoaderRoute: typeof publicStoriesIndexRouteImport
+      parentRoute: typeof publicStoriesRouteRoute
+    }
+    '/(public)/submit/': {
+      id: '/(public)/submit/'
+      path: '/'
+      fullPath: '/submit/'
+      preLoaderRoute: typeof publicSubmitIndexRouteImport
+      parentRoute: typeof publicSubmitRouteRoute
+    }
+    '/(public)/support/': {
+      id: '/(public)/support/'
+      path: '/'
+      fullPath: '/support/'
+      preLoaderRoute: typeof publicSupportIndexRouteImport
+      parentRoute: typeof publicSupportRouteRoute
+    }
+    '/(public)/r/$resourceId/details': {
+      id: '/(public)/r/$resourceId/details'
+      path: '/details'
+      fullPath: '/r/$resourceId/details'
+      preLoaderRoute: typeof publicRResourceIdDetailsRouteRouteImport
+      parentRoute: typeof publicRResourceIdRouteRoute
+    }
+    '/(public)/r/gender-affirmation-health/': {
+      id: '/(public)/r/gender-affirmation-health/'
+      path: '/'
+      fullPath: '/r/gender-affirmation-health/'
+      preLoaderRoute: typeof publicRGenderAffirmationHealthIndexRouteImport
+      parentRoute: typeof publicRGenderAffirmationHealthRouteRoute
+    }
+    '/(public)/r/general-health/': {
+      id: '/(public)/r/general-health/'
+      path: '/'
+      fullPath: '/r/general-health/'
+      preLoaderRoute: typeof publicRGeneralHealthIndexRouteImport
+      parentRoute: typeof publicRGeneralHealthRouteRoute
+    }
+    '/(public)/r/healthcare-providers/': {
+      id: '/(public)/r/healthcare-providers/'
+      path: '/'
+      fullPath: '/r/healthcare-providers/'
+      preLoaderRoute: typeof publicRHealthcareProvidersIndexRouteImport
+      parentRoute: typeof publicRHealthcareProvidersRouteRoute
+    }
+    '/(public)/r/legal/': {
+      id: '/(public)/r/legal/'
+      path: '/'
+      fullPath: '/r/legal/'
+      preLoaderRoute: typeof publicRLegalIndexRouteImport
+      parentRoute: typeof publicRLegalRouteRoute
+    }
+    '/(public)/r/mental-health/': {
+      id: '/(public)/r/mental-health/'
+      path: '/'
+      fullPath: '/r/mental-health/'
+      preLoaderRoute: typeof publicRMentalHealthIndexRouteImport
+      parentRoute: typeof publicRMentalHealthRouteRoute
+    }
+    '/(public)/r/safe-space/': {
+      id: '/(public)/r/safe-space/'
+      path: '/'
+      fullPath: '/r/safe-space/'
+      preLoaderRoute: typeof publicRSafeSpaceIndexRouteImport
+      parentRoute: typeof publicRSafeSpaceRouteRoute
+    }
+    '/(public)/r/travel/': {
+      id: '/(public)/r/travel/'
+      path: '/'
+      fullPath: '/r/travel/'
+      preLoaderRoute: typeof publicRTravelIndexRouteImport
+      parentRoute: typeof publicRTravelRouteRoute
+    }
+    '/(public)/r/$resourceId/details/': {
+      id: '/(public)/r/$resourceId/details/'
+      path: '/'
+      fullPath: '/r/$resourceId/details/'
+      preLoaderRoute: typeof publicRResourceIdDetailsIndexRouteImport
+      parentRoute: typeof publicRResourceIdDetailsRouteRoute
     }
   }
 }
 
+interface publicAtlasRouteRouteChildren {
+  publicAtlasIndexRoute: typeof publicAtlasIndexRoute
+}
+
+const publicAtlasRouteRouteChildren: publicAtlasRouteRouteChildren = {
+  publicAtlasIndexRoute: publicAtlasIndexRoute,
+}
+
+const publicAtlasRouteRouteWithChildren =
+  publicAtlasRouteRoute._addFileChildren(publicAtlasRouteRouteChildren)
+
+interface publicGuidesRouteRouteChildren {
+  publicGuidesIndexRoute: typeof publicGuidesIndexRoute
+}
+
+const publicGuidesRouteRouteChildren: publicGuidesRouteRouteChildren = {
+  publicGuidesIndexRoute: publicGuidesIndexRoute,
+}
+
+const publicGuidesRouteRouteWithChildren =
+  publicGuidesRouteRoute._addFileChildren(publicGuidesRouteRouteChildren)
+
+interface publicOpportunitiesRouteRouteChildren {
+  publicOpportunitiesIndexRoute: typeof publicOpportunitiesIndexRoute
+}
+
+const publicOpportunitiesRouteRouteChildren: publicOpportunitiesRouteRouteChildren =
+  {
+    publicOpportunitiesIndexRoute: publicOpportunitiesIndexRoute,
+  }
+
+const publicOpportunitiesRouteRouteWithChildren =
+  publicOpportunitiesRouteRoute._addFileChildren(
+    publicOpportunitiesRouteRouteChildren,
+  )
+
+interface publicProfileRouteRouteChildren {
+  publicProfileIndexRoute: typeof publicProfileIndexRoute
+}
+
+const publicProfileRouteRouteChildren: publicProfileRouteRouteChildren = {
+  publicProfileIndexRoute: publicProfileIndexRoute,
+}
+
+const publicProfileRouteRouteWithChildren =
+  publicProfileRouteRoute._addFileChildren(publicProfileRouteRouteChildren)
+
+interface publicRResourceIdDetailsRouteRouteChildren {
+  publicRResourceIdDetailsIndexRoute: typeof publicRResourceIdDetailsIndexRoute
+}
+
+const publicRResourceIdDetailsRouteRouteChildren: publicRResourceIdDetailsRouteRouteChildren =
+  {
+    publicRResourceIdDetailsIndexRoute: publicRResourceIdDetailsIndexRoute,
+  }
+
+const publicRResourceIdDetailsRouteRouteWithChildren =
+  publicRResourceIdDetailsRouteRoute._addFileChildren(
+    publicRResourceIdDetailsRouteRouteChildren,
+  )
+
+interface publicRResourceIdRouteRouteChildren {
+  publicRResourceIdDetailsRouteRoute: typeof publicRResourceIdDetailsRouteRouteWithChildren
+}
+
+const publicRResourceIdRouteRouteChildren: publicRResourceIdRouteRouteChildren =
+  {
+    publicRResourceIdDetailsRouteRoute:
+      publicRResourceIdDetailsRouteRouteWithChildren,
+  }
+
+const publicRResourceIdRouteRouteWithChildren =
+  publicRResourceIdRouteRoute._addFileChildren(
+    publicRResourceIdRouteRouteChildren,
+  )
+
+interface publicRGenderAffirmationHealthRouteRouteChildren {
+  publicRGenderAffirmationHealthIndexRoute: typeof publicRGenderAffirmationHealthIndexRoute
+}
+
+const publicRGenderAffirmationHealthRouteRouteChildren: publicRGenderAffirmationHealthRouteRouteChildren =
+  {
+    publicRGenderAffirmationHealthIndexRoute:
+      publicRGenderAffirmationHealthIndexRoute,
+  }
+
+const publicRGenderAffirmationHealthRouteRouteWithChildren =
+  publicRGenderAffirmationHealthRouteRoute._addFileChildren(
+    publicRGenderAffirmationHealthRouteRouteChildren,
+  )
+
+interface publicRGeneralHealthRouteRouteChildren {
+  publicRGeneralHealthIndexRoute: typeof publicRGeneralHealthIndexRoute
+}
+
+const publicRGeneralHealthRouteRouteChildren: publicRGeneralHealthRouteRouteChildren =
+  {
+    publicRGeneralHealthIndexRoute: publicRGeneralHealthIndexRoute,
+  }
+
+const publicRGeneralHealthRouteRouteWithChildren =
+  publicRGeneralHealthRouteRoute._addFileChildren(
+    publicRGeneralHealthRouteRouteChildren,
+  )
+
+interface publicRHealthcareProvidersRouteRouteChildren {
+  publicRHealthcareProvidersIndexRoute: typeof publicRHealthcareProvidersIndexRoute
+}
+
+const publicRHealthcareProvidersRouteRouteChildren: publicRHealthcareProvidersRouteRouteChildren =
+  {
+    publicRHealthcareProvidersIndexRoute: publicRHealthcareProvidersIndexRoute,
+  }
+
+const publicRHealthcareProvidersRouteRouteWithChildren =
+  publicRHealthcareProvidersRouteRoute._addFileChildren(
+    publicRHealthcareProvidersRouteRouteChildren,
+  )
+
+interface publicRLegalRouteRouteChildren {
+  publicRLegalIndexRoute: typeof publicRLegalIndexRoute
+}
+
+const publicRLegalRouteRouteChildren: publicRLegalRouteRouteChildren = {
+  publicRLegalIndexRoute: publicRLegalIndexRoute,
+}
+
+const publicRLegalRouteRouteWithChildren =
+  publicRLegalRouteRoute._addFileChildren(publicRLegalRouteRouteChildren)
+
+interface publicRMentalHealthRouteRouteChildren {
+  publicRMentalHealthIndexRoute: typeof publicRMentalHealthIndexRoute
+}
+
+const publicRMentalHealthRouteRouteChildren: publicRMentalHealthRouteRouteChildren =
+  {
+    publicRMentalHealthIndexRoute: publicRMentalHealthIndexRoute,
+  }
+
+const publicRMentalHealthRouteRouteWithChildren =
+  publicRMentalHealthRouteRoute._addFileChildren(
+    publicRMentalHealthRouteRouteChildren,
+  )
+
+interface publicRSafeSpaceRouteRouteChildren {
+  publicRSafeSpaceIndexRoute: typeof publicRSafeSpaceIndexRoute
+}
+
+const publicRSafeSpaceRouteRouteChildren: publicRSafeSpaceRouteRouteChildren = {
+  publicRSafeSpaceIndexRoute: publicRSafeSpaceIndexRoute,
+}
+
+const publicRSafeSpaceRouteRouteWithChildren =
+  publicRSafeSpaceRouteRoute._addFileChildren(
+    publicRSafeSpaceRouteRouteChildren,
+  )
+
+interface publicRTravelRouteRouteChildren {
+  publicRTravelIndexRoute: typeof publicRTravelIndexRoute
+}
+
+const publicRTravelRouteRouteChildren: publicRTravelRouteRouteChildren = {
+  publicRTravelIndexRoute: publicRTravelIndexRoute,
+}
+
+const publicRTravelRouteRouteWithChildren =
+  publicRTravelRouteRoute._addFileChildren(publicRTravelRouteRouteChildren)
+
 interface publicRRouteRouteChildren {
+  publicRResourceIdRouteRoute: typeof publicRResourceIdRouteRouteWithChildren
+  publicRGenderAffirmationHealthRouteRoute: typeof publicRGenderAffirmationHealthRouteRouteWithChildren
+  publicRGeneralHealthRouteRoute: typeof publicRGeneralHealthRouteRouteWithChildren
+  publicRHealthcareProvidersRouteRoute: typeof publicRHealthcareProvidersRouteRouteWithChildren
+  publicRLegalRouteRoute: typeof publicRLegalRouteRouteWithChildren
+  publicRMentalHealthRouteRoute: typeof publicRMentalHealthRouteRouteWithChildren
+  publicRSafeSpaceRouteRoute: typeof publicRSafeSpaceRouteRouteWithChildren
+  publicRTravelRouteRoute: typeof publicRTravelRouteRouteWithChildren
   publicRIndexRoute: typeof publicRIndexRoute
-  publicRCommunitySupportRoute: typeof publicRCommunitySupportRoute
-  publicRHealthMentalAndHivRoute: typeof publicRHealthMentalAndHivRoute
-  publicRHealthProvidersRoute: typeof publicRHealthProvidersRoute
-  publicRHousingSafeSpacesRoute: typeof publicRHousingSafeSpacesRoute
-  publicRLegalImmigrationRoute: typeof publicRLegalImmigrationRoute
 }
 
 const publicRRouteRouteChildren: publicRRouteRouteChildren = {
+  publicRResourceIdRouteRoute: publicRResourceIdRouteRouteWithChildren,
+  publicRGenderAffirmationHealthRouteRoute:
+    publicRGenderAffirmationHealthRouteRouteWithChildren,
+  publicRGeneralHealthRouteRoute: publicRGeneralHealthRouteRouteWithChildren,
+  publicRHealthcareProvidersRouteRoute:
+    publicRHealthcareProvidersRouteRouteWithChildren,
+  publicRLegalRouteRoute: publicRLegalRouteRouteWithChildren,
+  publicRMentalHealthRouteRoute: publicRMentalHealthRouteRouteWithChildren,
+  publicRSafeSpaceRouteRoute: publicRSafeSpaceRouteRouteWithChildren,
+  publicRTravelRouteRoute: publicRTravelRouteRouteWithChildren,
   publicRIndexRoute: publicRIndexRoute,
-  publicRCommunitySupportRoute: publicRCommunitySupportRoute,
-  publicRHealthMentalAndHivRoute: publicRHealthMentalAndHivRoute,
-  publicRHealthProvidersRoute: publicRHealthProvidersRoute,
-  publicRHousingSafeSpacesRoute: publicRHousingSafeSpacesRoute,
-  publicRLegalImmigrationRoute: publicRLegalImmigrationRoute,
 }
 
 const publicRRouteRouteWithChildren = publicRRouteRoute._addFileChildren(
   publicRRouteRouteChildren,
 )
 
+interface publicStoriesRouteRouteChildren {
+  publicStoriesIndexRoute: typeof publicStoriesIndexRoute
+}
+
+const publicStoriesRouteRouteChildren: publicStoriesRouteRouteChildren = {
+  publicStoriesIndexRoute: publicStoriesIndexRoute,
+}
+
+const publicStoriesRouteRouteWithChildren =
+  publicStoriesRouteRoute._addFileChildren(publicStoriesRouteRouteChildren)
+
+interface publicSubmitRouteRouteChildren {
+  publicSubmitIndexRoute: typeof publicSubmitIndexRoute
+}
+
+const publicSubmitRouteRouteChildren: publicSubmitRouteRouteChildren = {
+  publicSubmitIndexRoute: publicSubmitIndexRoute,
+}
+
+const publicSubmitRouteRouteWithChildren =
+  publicSubmitRouteRoute._addFileChildren(publicSubmitRouteRouteChildren)
+
+interface publicSupportRouteRouteChildren {
+  publicSupportIndexRoute: typeof publicSupportIndexRoute
+}
+
+const publicSupportRouteRouteChildren: publicSupportRouteRouteChildren = {
+  publicSupportIndexRoute: publicSupportIndexRoute,
+}
+
+const publicSupportRouteRouteWithChildren =
+  publicSupportRouteRoute._addFileChildren(publicSupportRouteRouteChildren)
+
 interface publicRouteRouteChildren {
+  publicAtlasRouteRoute: typeof publicAtlasRouteRouteWithChildren
+  publicGuidesRouteRoute: typeof publicGuidesRouteRouteWithChildren
+  publicOpportunitiesRouteRoute: typeof publicOpportunitiesRouteRouteWithChildren
+  publicProfileRouteRoute: typeof publicProfileRouteRouteWithChildren
   publicRRouteRoute: typeof publicRRouteRouteWithChildren
-  publicAtlasRoute: typeof publicAtlasRoute
-  publicGuidesRoute: typeof publicGuidesRoute
-  publicOpportunitiesRoute: typeof publicOpportunitiesRoute
-  publicStoriesRoute: typeof publicStoriesRoute
+  publicStoriesRouteRoute: typeof publicStoriesRouteRouteWithChildren
+  publicSubmitRouteRoute: typeof publicSubmitRouteRouteWithChildren
+  publicSupportRouteRoute: typeof publicSupportRouteRouteWithChildren
   publicIndexRoute: typeof publicIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicAtlasRouteRoute: publicAtlasRouteRouteWithChildren,
+  publicGuidesRouteRoute: publicGuidesRouteRouteWithChildren,
+  publicOpportunitiesRouteRoute: publicOpportunitiesRouteRouteWithChildren,
+  publicProfileRouteRoute: publicProfileRouteRouteWithChildren,
   publicRRouteRoute: publicRRouteRouteWithChildren,
-  publicAtlasRoute: publicAtlasRoute,
-  publicGuidesRoute: publicGuidesRoute,
-  publicOpportunitiesRoute: publicOpportunitiesRoute,
-  publicStoriesRoute: publicStoriesRoute,
+  publicStoriesRouteRoute: publicStoriesRouteRouteWithChildren,
+  publicSubmitRouteRoute: publicSubmitRouteRouteWithChildren,
+  publicSupportRouteRoute: publicSupportRouteRouteWithChildren,
   publicIndexRoute: publicIndexRoute,
 }
 

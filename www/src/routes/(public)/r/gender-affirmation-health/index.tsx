@@ -2,18 +2,20 @@ import { ResourceCard } from "@/components/resources/resource-card"
 import { atlasResources } from "@/data/atlas-resources"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/(public)/r/legal/")({
+export const Route = createFileRoute("/(public)/r/gender-affirmation-health/")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const resources = atlasResources.filter((resource) => resource.category === "legal")
+  const resources = atlasResources.filter(
+    (resource) => resource.category === "health" && resource.subcategory === "gender-affirmation-health",
+  )
 
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-3xl">
       <div className="flex flex-col gap-2">
-        <h1>Legal & immigration</h1>
-        <p>Name change, gender marker updates, asylum casework, and legal aid for LGBTQIA+ people.</p>
+        <h1>Gender-affirming care</h1>
+        <p>Hormone therapy, surgery referrals, and gender clinics the community has used and vouched for.</p>
       </div>
 
       <div className="flex flex-col gap-3.5">
@@ -23,7 +25,7 @@ function RouteComponent() {
 
         {resources.length === 0 && (
           <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-            <p>No legal aid listed yet.</p>
+            <p>No providers listed yet.</p>
           </div>
         )}
       </div>

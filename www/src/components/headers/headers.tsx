@@ -17,7 +17,7 @@ import {
 import { fadeDown, staggerChildren as stagger } from "@pherus/ui/lib/motion"
 import { cn } from "@pherus/ui/lib/utils"
 import { Link } from "@tanstack/react-router"
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
@@ -28,6 +28,7 @@ export const Headers = () => {
     const headerRef = useRef<HTMLElement>(null)
     const openTimeout = useRef<number | undefined>(undefined)
     const closeTimeout = useRef<number | undefined>(undefined)
+    const reduceMotion = useReducedMotion()
 
     useEffect(() => {
         const measure = () => {
@@ -60,8 +61,8 @@ export const Headers = () => {
     const navItems = useMemo(() => [
         { label: "Map", to: "/atlas" },
         { label: "Communities", to: "/r" },
-        { label: "Support", to: "/r" },
-        { label: "Profile", to: "/r" },
+        { label: "Support", to: "/support" },
+        { label: "Profile", to: "/profile" },
     ], [])
 
     const resourceGroups = useMemo(() => [
@@ -69,16 +70,19 @@ export const Headers = () => {
             label: "Health",
             icon: Stethoscope02Icon,
             items: [
-                { label: "Healthcare providers", description: "Gender-affirming practitioners and clinics.", to: "/r/health/providers" },
-                { label: "Mental health & HIV", description: "Counseling, peer support, and testing.", to: "/r/health/mental-and-hiv" },
+                { label: "Healthcare providers", description: "Pharmacies and full-spectrum clinics.", to: "/r/healthcare-providers" },
+                { label: "Gender-affirming care", description: "Hormone therapy and gender clinics.", to: "/r/gender-affirmation-health" },
+                { label: "Mental health & HIV", description: "Counseling, peer support, and testing.", to: "/r/mental-health" },
+                { label: "General health", description: "Routine checkups and everyday care.", to: "/r/general-health" },
             ],
         },
         {
             label: "Safety",
             icon: Shield01Icon,
             items: [
-                { label: "Safe spaces & housing", description: "Vetted shelters and cooperative housing.", to: "/r/housing/safe-spaces" },
-                { label: "Legal & immigration", description: "Name change, asylum, and legal aid.", to: "/r/legal/immigration" },
+                { label: "Safe spaces", description: "Vetted shelters and cooperative housing.", to: "/r/safe-space" },
+                { label: "Legal aid", description: "Name change, asylum, and legal aid.", to: "/r/legal" },
+                { label: "Travel & mobility", description: "Border crossing and ID document notes.", to: "/r/travel" },
             ],
         },
         {
@@ -86,7 +90,7 @@ export const Headers = () => {
             icon: UserGroup02Icon,
             items: [
                 { label: "Story submissions", description: "Share what worked in your community.", to: "/stories" },
-                { label: "Community support", description: "Mutual aid and local organizing.", to: "/r/community/support" },
+                { label: "Community support", description: "Mutual aid and local organizing.", to: "/support" },
             ],
         },
         {
@@ -98,6 +102,16 @@ export const Headers = () => {
             ],
         },
     ], [])
+
+    const mobileGroupVariants: Variants = useMemo(() => ({
+        hidden: { opacity: 0, y: reduceMotion ? 0 : -6 },
+        show: { opacity: 1, y: 0, transition: { duration: reduceMotion ? 0 : 0.3, ease: "easeOut" } },
+    }), [reduceMotion])
+
+    const mobileStagger: Variants = useMemo(() => ({
+        hidden: {},
+        show: { transition: { staggerChildren: reduceMotion ? 0 : 0.05 } },
+    }), [reduceMotion])
 
     return (
         <motion.header
@@ -219,7 +233,7 @@ export const Headers = () => {
                                 <DrawerBackdrop />
                                 <DrawerViewport side="right">
                                     <DrawerPopup side="right">
-                                        <DrawerContent>
+                                        <DrawerContent className="overflow-hidden">
                                             <div className="flex items-center justify-between">
                                                 <DrawerTitle>{m["navigation.title"]()}</DrawerTitle>
                                                 <DrawerClose
@@ -234,28 +248,62 @@ export const Headers = () => {
                                                     }
                                                 />
                                             </div>
-                                            <nav className="flex flex-col gap-1">
-                                                <Link
-                                                    to="/r"
-                                                    onClick={() => setMobileNavOpen(false)}
-                                                    className="rounded-lg px-2 py-2 text-sm"
-                                                >
-                                                    {m["navigation.items.resources"]()}
-                                                </Link>
-                                                {navItems.map((item) => (
-                                                    <Link
-                                                        key={item.label}
-                                                        to={item.to}
-                                                        onClick={() => setMobileNavOpen(false)}
-                                                        className="rounded-lg px-2 py-2 text-sm"
-                                                        activeProps={{
-                                                            className: "text-primary",
-                                                        }}
+
+                                            <motion.nav
+                                                variants={mobileStagger}
+                                                initial="hidden"
+                                                animate={mobileNavOpen ? "show" : "hidden"}
+                                                className="no-scrollbar flex flex-1 flex-col gap-5 overflow-y-auto"
+                                            >
+                                                {resourceGroups.map((group) => (
+                                                    <motion.div
+                                                        key={group.label}
+                                                        variants={mobileGroupVariants}
+                                                        className="flex flex-col gap-0.5"
                                                     >
-                                                        {item.label}
-                                                    </Link>
+                                                        <h6 className="flex items-center gap-1.5 px-2.5 text-muted-foreground">
+                                                            <HugeiconsIcon icon={group.icon} className="size-3.5" />
+                                                            {group.label}
+                                                        </h6>
+                                                        {group.items.map((item) => (
+                                                            <Link
+                                                                key={item.label}
+                                                                to={item.to}
+                                                                onClick={() => setMobileNavOpen(false)}
+                                                                className="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-muted"
+                                                                activeProps={{ className: "bg-muted" }}
+                                                            >
+                                                                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+                                                                    <HugeiconsIcon icon={group.icon} className="size-3.5" />
+                                                                </span>
+                                                                <span className="flex min-w-0 flex-col">
+                                                                    <strong className="text-sm text-foreground">{item.label}</strong>
+                                                                    <p className="text-xs">{item.description}</p>
+                                                                </span>
+                                                            </Link>
+                                                        ))}
+                                                    </motion.div>
                                                 ))}
-                                            </nav>
+
+                                                <motion.div
+                                                    variants={mobileGroupVariants}
+                                                    className="flex flex-col gap-1 border-t border-border pt-4 pb-1"
+                                                >
+                                                    {navItems.map((item) => (
+                                                        <Link
+                                                            key={item.label}
+                                                            to={item.to}
+                                                            onClick={() => setMobileNavOpen(false)}
+                                                            className="rounded-lg px-2.5 py-2 text-sm"
+                                                            activeProps={{
+                                                                className: "text-primary",
+                                                            }}
+                                                        >
+                                                            {item.label}
+                                                        </Link>
+                                                    ))}
+                                                </motion.div>
+                                            </motion.nav>
                                         </DrawerContent>
                                     </DrawerPopup>
                                 </DrawerViewport>
