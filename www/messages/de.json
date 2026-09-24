@@ -230,7 +230,8 @@
       "mySubmissions": "Meine Einreichungen",
       "pending": "Ausstehend",
       "approved": "Genehmigt",
-      "logOut": "Sitzung abmelden"
+      "logOut": "Sitzung abmelden",
+      "anonymous": "Anonym"
     },
     "submit": {
       "title": "Ressource einreichen",

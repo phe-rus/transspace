@@ -230,7 +230,8 @@
       "mySubmissions": "我的提交",
       "pending": "待审核",
       "approved": "已通过",
-      "logOut": "退出登录"
+      "logOut": "退出登录",
+      "anonymous": "匿名"
     },
     "submit": {
       "title": "提交资源",

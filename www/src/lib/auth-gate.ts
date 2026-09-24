@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start"
+import { queryOptions } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
 import { profile } from "@/schemas/profile"
@@ -41,3 +42,12 @@ export const getAuthGateStatus = createServerFn({
 
     return { signedIn: true, onboarded, locked: hasPinSet && !isUnlocked }
 })
+
+// shared across every route guard (public, protection, the auth landing
+// page) and the header, so it's fetched once per navigation and read
+// from the query cache everywhere else, not re-fetched per consumer
+export const authGateQueryOptions = () =>
+    queryOptions({
+        queryKey: ["auth-gate"],
+        queryFn: () => getAuthGateStatus(),
+    })

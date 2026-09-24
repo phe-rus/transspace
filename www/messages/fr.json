@@ -230,7 +230,8 @@
       "mySubmissions": "Mes contributions",
       "pending": "En attente",
       "approved": "Approuvé",
-      "logOut": "Se déconnecter"
+      "logOut": "Se déconnecter",
+      "anonymous": "Anonyme"
     },
     "submit": {
       "title": "Soumettre une ressource",

@@ -1,4 +1,6 @@
 import { m } from "@/paraglide/messages"
+import { authGateQueryOptions } from "@/lib/auth-gate"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { ArrowDown01Icon, Menu03Icon, MessageIcon, Rocket01Icon, Shield01Icon, Stethoscope02Icon, UserGroup02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@pherus/ui/avatar"
@@ -21,7 +23,12 @@ import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-export const Headers = ({ signedIn }: { signedIn: boolean }) => {
+export const Headers = () => {
+    // reads from the query cache the (public)/(protection) route guards
+    // already populated for this navigation via queryClient.query(), so
+    // this is a cache hit, not a second fetch
+    const { data: authStatus } = useSuspenseQuery(authGateQueryOptions())
+    const signedIn = authStatus.signedIn
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const [resourcesOpen, setResourcesOpen] = useState(false)
     const [navHeight, setNavHeight] = useState(40)

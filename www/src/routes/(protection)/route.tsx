@@ -1,13 +1,16 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { getAuthGateStatus } from '@/lib/auth-gate'
+import { authGateQueryOptions } from '@/lib/auth-gate'
 
 // the real session guard (spec 0001 Build plan step 4, AC-1, AC-2): no
 // session -> /auth; signed in but locked -> /unlock; signed in but not
 // yet onboarded -> /onboarding; only then does anything under
 // (protection) render.
 export const Route = createFileRoute('/(protection)')({
-  beforeLoad: async () => {
-    const status = await getAuthGateStatus()
+  beforeLoad: async ({ context }) => {
+    const status = await context.queryClient.query({
+      ...authGateQueryOptions(),
+      staleTime: 'static',
+    })
     if (!status.signedIn) {
       throw redirect({ to: '/auth' })
     }

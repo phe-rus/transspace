@@ -14,12 +14,24 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { createFileRoute } from "@tanstack/react-router"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { profileQueryOptions } from "@/domains/profile"
 
 export const Route = createFileRoute("/(public)/profile/")({
+  // the parent route's beforeLoad already guarantees signed in, onboarded,
+  // unlocked; getProfile() itself still goes through the shared decoy
+  // accessor, so a duress session sees the same generic empty shape here
+  // as it does everywhere else (spec 0001 AC-6)
+  loader: ({ context }) =>
+    context.queryClient.query({
+      ...profileQueryOptions(),
+      staleTime: "static",
+    }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { data: profile } = useSuspenseQuery(profileQueryOptions())
   const [signingOut, setSigningOut] = useState(false)
 
   async function handleLogOut() {
@@ -32,14 +44,25 @@ function RouteComponent() {
     window.location.href = "/"
   }
 
+  const displayName = profile.displayName ?? m["pages.profile.anonymous"]()
+  const initial = displayName.charAt(0).toUpperCase()
+
   return (
     <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-5xl">
       <div className="flex w-full max-w-xl flex-col items-center gap-9">
         <div className="flex flex-col items-center gap-1">
           <div className="relative">
-            <div className="flex size-24 items-center justify-center rounded-full border border-border bg-card text-2xl font-semibold text-muted-foreground">
-              R
-            </div>
+            {profile.avatarSlug ? (
+              <img
+                src={`/avatar/${profile.avatarSlug}.jpg`}
+                alt=""
+                className="size-24 rounded-full border border-border object-cover"
+              />
+            ) : (
+              <div className="flex size-24 items-center justify-center rounded-full border border-border bg-card text-2xl font-semibold text-muted-foreground">
+                {initial}
+              </div>
+            )}
             <Button
               size="icon-sm"
               variant="outline"
@@ -50,15 +73,19 @@ function RouteComponent() {
               <HugeiconsIcon icon={Edit02Icon} />
             </Button>
           </div>
-          <h1 className="mt-3">River</h1>
-          <h6>Community contributor · they/them</h6>
+          <h1 className="mt-3">{displayName}</h1>
+          {profile.pronouns && <h6>{profile.pronouns}</h6>}
         </div>
 
         <div className="w-full rounded-3xl border border-border bg-card px-7 py-6 text-center">
           <h6>{m["pages.profile.privacyNarrative"]()}</h6>
           <p className="mt-2.5 italic">
-            "I share what I've learned so someone else doesn't have to find it the hard way. My name here is not my
-            name out there."
+            {profile.bio || (
+              <>
+                "I share what I've learned so someone else doesn't have to find it the hard way. My name here is not
+                my name out there."
+              </>
+            )}
           </p>
         </div>
 

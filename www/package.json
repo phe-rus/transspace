@@ -14,10 +14,13 @@
     "type-gen": "wrangler types",
     "postinstall": "bun run type-gen",
     "translate": "inlang machine translate --project project.inlang",
+    "auth:gen": "bun x auth@latest generate --config=./src/lib/auth.ts --output=./src/schemas/auth.ts --yes",
     "db:gen": "bunx drizzle-kit generate --config=drizzle.config.ts",
     "db:local": "bunx wrangler d1 migrations apply transspace --local",
     "db:remote": "bunx wrangler d1 migrations apply transspace --remote",
-    "db:studio": "bunx drizzle-kit studio --config=drizzle.config.ts"
+    "db:studio": "bunx drizzle-kit studio --config=drizzle.config.ts",
+    "local": "bun run auth:gen && bun run db:gen && bun run db:local",
+    "remote": "bun run local && bun run db:remote"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.5",
@@ -43,8 +46,8 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.58.0",
     "@inlang/cli": "^3.3.4",
-    "@inlang/paraglide-js": "^2.25.0",
-    "@rolldown/plugin-babel": "^0.2.3",
+    "@inlang/paraglide-js": "^2.25.4",
+    "@rolldown/plugin-babel": "^0.2.4",
     "@tailwindcss/vite": "^4",
     "@tanstack/devtools-vite": "latest",
     "@tanstack/eslint-config": "latest",
@@ -56,8 +59,9 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "drizzle-kit": "^1.0.0-rc.4",
     "eslint": "^10",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8",
+    "vite": "^8.3.0",
     "web-vitals": "^6.2.1",
     "wrangler": "^4.137.0"
   }

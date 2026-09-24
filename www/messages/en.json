@@ -230,7 +230,8 @@
       "mySubmissions": "My submissions",
       "pending": "Pending",
       "approved": "Approved",
-      "logOut": "Log out session"
+      "logOut": "Log out session",
+      "anonymous": "Anonymous"
     },
     "submit": {
       "title": "Submit a resource",

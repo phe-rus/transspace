@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start"
+import { queryOptions } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
 import { profile } from "@/schemas/profile"
@@ -45,6 +46,12 @@ export const getProfile = createServerFn({ method: "GET" })
             DECOY_PROFILE
         )
     )
+
+export const profileQueryOptions = () =>
+    queryOptions({
+        queryKey: ["profile"],
+        queryFn: () => getProfile(),
+    })
 
 // validated manually (not via .validator()) so a bad avatar_slug/topic/
 // display name reaches the caller as the 422 spec 0001's API surface

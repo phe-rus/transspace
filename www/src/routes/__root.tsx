@@ -1,6 +1,7 @@
 import { LanguageSelect } from "@/components/languages"
 import { NotFoundComponent } from "@/components/notFoundComponent"
 import { getclientURL } from "@/lib/getURL"
+import { currentOptions } from "@/middleware/auth-session"
 import { getLocale } from "@/paraglide/runtime"
 import { seo } from "@/seo/seo"
 import type { RouterAppContext } from "@/types"
@@ -27,6 +28,13 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
     styles: tailwindcss
   }),
   notFoundComponent: NotFoundComponent,
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const session = await queryClient.query({
+      ...currentOptions(),
+      staleTime: "static",
+    })
+    return { session: session }
+  },
   shellComponent: RootDocument,
 })
 
