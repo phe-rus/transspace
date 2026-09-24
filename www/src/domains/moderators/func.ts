@@ -7,6 +7,7 @@ import { logModerationAction } from "@/lib/moderation-audit"
 import { paginationSchema, toPage } from "@/lib/pagination"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
 import { assertTurnstileVerified } from "@/lib/turnstile"
+import { assertNotDecoy } from "@/lib/private-data"
 import {
     grantModeratorSchema,
     MODERATOR_FLOOR,
@@ -31,7 +32,9 @@ export const listModerators = createServerFn({ method: "GET" })
 export const grantModerator = createServerFn({ method: "POST" })
     .middleware([ModeratorMiddleware])
     .validator(grantModeratorSchema)
-    .handler(async ({ data, context: { userLinkId } }) => {
+    .handler(async ({ data, context }) => {
+        const { userLinkId } = context
+        assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         if (data.targetUserLinkId === userLinkId) {
@@ -56,7 +59,9 @@ export const grantModerator = createServerFn({ method: "POST" })
 export const revokeModerator = createServerFn({ method: "POST" })
     .middleware([ModeratorMiddleware])
     .validator(revokeModeratorSchema)
-    .handler(async ({ data, context: { userLinkId } }) => {
+    .handler(async ({ data, context }) => {
+        const { userLinkId } = context
+        assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db

@@ -1,38 +1,110 @@
 import { m } from "@/paraglide/messages"
-import { ArrowRightIcon, FavouriteIcon, MapsIcon, SearchIcon, Shield01Icon, UserGroupIcon } from "@hugeicons/core-free-icons"
+import { getLocale } from "@/paraglide/runtime"
+import { listResourcesQueryOptions } from "@/domains/resources"
+import { profileQueryOptions } from "@/domains/profile"
+import { authGateQueryOptions } from "@/lib/auth-gate"
+import { visitorCountryQueryOptions } from "@/lib/request-geo"
+import { ArrowRightIcon, FavouriteIcon, MapsIcon, SearchIcon, Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { fadeUp, staggerChildren as stagger } from "@pherus/ui/lib/motion"
 import { cn } from "@pherus/ui/lib/utils"
 import { Link, createFileRoute } from "@tanstack/react-router"
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { motion } from "motion/react"
-import { useMemo } from "react"
+
+const heroResourcesFilters = { limit: 50 }
 
 export const Route = createFileRoute("/(public)/")({
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.query({
+        ...listResourcesQueryOptions(heroResourcesFilters),
+        staleTime: "static",
+      }),
+      context.queryClient.query({
+        ...authGateQueryOptions(),
+        staleTime: "static",
+      }),
+      context.queryClient.query({
+        ...visitorCountryQueryOptions(),
+        staleTime: "static",
+      }),
+    ]),
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const signedIn = true
+  const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
+  const signedIn = authGate.signedIn
+  // not prefetched in the loader on purpose: getProfile() 404s until
+  // onboarding completes, and a thrown Response inside a dehydrated
+  // query's error state can't be serialized into the SSR stream (the
+  // same crash the resource detail page's not-found case hit); a
+  // plain, non-suspense client fetch here just resolves to "no data"
+  // instead
+  const { data: profile } = useQuery({
+    ...profileQueryOptions(),
+    enabled: signedIn && authGate.onboarded,
+    retry: false,
+  })
 
-  const trending = useMemo(() => [
-    {
-      tag: "Events",
-      meta: "1.2k",
-      title: "Safe haven evening social at The Archivist",
-      footer: "Posted 2h ago",
-    },
-    {
-      tag: "Health",
-      title: "Mental health check in, sharing our wins this week",
-      footer: "42 new replies",
-    },
-    {
-      tag: "Advice",
-      title: "Best private housing cooperatives for queer youth",
-      footer: "Top discussion",
-    },
-  ], [])
+  const { data: heroResources } = useSuspenseQuery(
+    listResourcesQueryOptions(heroResourcesFilters),
+  )
+  // an honest lower bound, not a fabricated figure: the list endpoint
+  // paginates rather than counting, so a full page plus a next cursor
+  // reads as "at least N", never a false precise total (spec
+  // 0003-resource-directory Consequences: the home hero's old copy
+  // claimed a specific count and a "vetted access" tier that were
+  // never real)
+  const heroResourceCount = heroResources.nextCursor
+    ? `${heroResources.items.length}+`
+    : `${heroResources.items.length}`
+
+  const { data: visitorCountry } = useSuspenseQuery(visitorCountryQueryOptions())
+  // country only, never anything finer (spec 0003-resource-directory
+  // AC-6 carve-out): Cloudflare's edge already attaches this to every
+  // request the same way any network intermediary would see it, unlike
+  // an exact address or coordinate, which stays gated everywhere else
+  // in this app. Intl.DisplayNames turns the ISO code into a localized
+  // name with no extra dependency or lookup table; shown as "Name, CODE"
+  // to match the codebase's other "specific, category" label pattern
+  // (e.g. ResourceCard's "city, country").
+  const visitorCountryName = (() => {
+    const code = visitorCountry.countryCode
+    if (!code) return null
+    try {
+      const name = new Intl.DisplayNames([getLocale()], {
+        type: "region",
+      }).of(code)
+      return name ? `${name}, ${code}` : code
+    } catch {
+      return code
+    }
+  })()
+
+  // when the visitor's own country isn't available (e.g. local dev
+  // with no real Cloudflare edge in front), fall back to an honest,
+  // real-data signal instead of showing nothing: the country with the
+  // most published resources right now
+  const topCountryName = (() => {
+    const counts = new Map<string, number>()
+    for (const item of heroResources.items) {
+      counts.set(item.countryName, (counts.get(item.countryName) ?? 0) + 1)
+    }
+    let best: string | null = null
+    let bestCount = 0
+    for (const [name, count] of counts) {
+      if (count > bestCount) {
+        best = name
+        bestCount = count
+      }
+    }
+    return best
+  })()
+
+  const heroLocationName = visitorCountryName ?? topCountryName
 
   return (
     <article className="flex flex-col py-10">
@@ -46,7 +118,11 @@ function RouteComponent() {
           {signedIn
             ? (
               <>
-                <h1>{m["pages.home.welcomeBackTitle"]()}</h1>
+                <h1>
+                  {m["pages.home.welcomeBackTitle"]({
+                    name: profile?.displayName ? `, ${profile.displayName}` : "",
+                  })}
+                </h1>
                 <p>{m["pages.home.welcomeBackSubtitle"]()}</p>
               </>
             )
@@ -73,41 +149,45 @@ function RouteComponent() {
               {m["pages.home.localStatus"]()}
             </h6>
             <div>
-              <h2>Berlin, DE</h2>
-              <p>{m["pages.home.areaSummary"]()}</p>
+              {heroLocationName && <h2>{heroLocationName}</h2>}
+              <p>{m["pages.home.areaSummary"]({ count: heroResourceCount })}</p>
             </div>
-            <Button size="sm" className="w-fit rounded-full" nativeButton={false} render={<Link to="/r" />}>
+            <Button size="sm" className="w-fit rounded-full" nativeButton={false} render={<Link to="/atlas" />}>
               <HugeiconsIcon icon={MapsIcon} className="size-3.5" />
               {m["pages.home.openTheMap"]()}
             </Button>
           </motion.div>
 
           <div className="flex flex-1 flex-col gap-5">
-            <motion.div
-              variants={fadeUp}
-              className={cn(
-                "flex flex-1 flex-col justify-center cursor-pointer",
-                'rounded-3xl border border-border/35 bg-card/35 p-5',
-                'shadow hover:shadow-md shadow-primary/15'
-              )}
-            >
-              <HugeiconsIcon icon={SearchIcon} className="size-5" />
-              <h3>{m["pages.home.exploreTitle"]()}</h3>
-              <p>{m["pages.home.exploreSubtitle"]()}</p>
-            </motion.div>
+            <Link to="/r" className="contents">
+              <motion.div
+                variants={fadeUp}
+                className={cn(
+                  "flex flex-1 flex-col justify-center cursor-pointer",
+                  'rounded-3xl border border-border/35 bg-card/35 p-5',
+                  'shadow hover:shadow-md shadow-primary/15'
+                )}
+              >
+                <HugeiconsIcon icon={SearchIcon} className="size-5" />
+                <h3>{m["pages.home.exploreTitle"]()}</h3>
+                <p>{m["pages.home.exploreSubtitle"]()}</p>
+              </motion.div>
+            </Link>
 
-            <motion.div
-              variants={fadeUp}
-              className={cn(
-                "flex flex-1 flex-col justify-center cursor-pointer",
-                'rounded-3xl border border-border/35 bg-card/35 p-5',
-                'shadow hover:shadow-md shadow-primary/15'
-              )}
-            >
-              <HugeiconsIcon icon={FavouriteIcon} className="size-5 text-destructive" />
-              <h3 className="text-destructive">{m["pages.home.crisisSupportTitle"]()}</h3>
-              <p>{m["pages.home.crisisSupportSubtitle"]()}</p>
-            </motion.div>
+            <Link to="/support" className="contents">
+              <motion.div
+                variants={fadeUp}
+                className={cn(
+                  "flex flex-1 flex-col justify-center cursor-pointer",
+                  'rounded-3xl border border-border/35 bg-card/35 p-5',
+                  'shadow hover:shadow-md shadow-primary/15'
+                )}
+              >
+                <HugeiconsIcon icon={FavouriteIcon} className="size-5 text-destructive" />
+                <h3 className="text-destructive">{m["pages.home.crisisSupportTitle"]()}</h3>
+                <p>{m["pages.home.crisisSupportSubtitle"]()}</p>
+              </motion.div>
+            </Link>
           </div>
         </div>
 
@@ -124,35 +204,17 @@ function RouteComponent() {
               <h2>{m["pages.home.trendingTitle"]()}</h2>
               <p>{m["pages.home.trendingSubtitle"]()}</p>
             </div>
-            <a className="flex items-center gap-1">
+            <Link to="/r" className="flex items-center gap-1">
               {m["pages.home.joinCommunity"]()}
               <HugeiconsIcon icon={ArrowRightIcon} className="size-3.5" />
-            </a>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
-            {trending.map((item) => (
-              <article
-                key={item.title}
-                className={cn(
-                  "flex flex-col gap-2 rounded-3xl border border-border/35 bg-card/55",
-                  'p-5'
-                )}
-              >
-                <h6 className="flex items-center gap-1.5">
-                  <span>{item.tag}</span>
-                  {item.meta && (
-                    <>
-                      <span>·</span>
-                      <HugeiconsIcon icon={UserGroupIcon} className="size-3" />
-                      <span>{item.meta}</span>
-                    </>
-                  )}
-                </h6>
-                <h3>{item.title}</h3>
-                <p className="mt-auto">{item.footer}</p>
-              </article>
-            ))}
+          {/* no community/discussion data model exists yet (not part of
+              the resource directory build); this is an honest empty
+              state, not a placeholder for fabricated posts */}
+          <div className="flex min-h-16 items-center justify-center rounded-3xl border border-dashed border-border/35 p-5 text-center">
+            <p>{m["pages.home.trendingEmpty"]()}</p>
           </div>
         </motion.div>
 

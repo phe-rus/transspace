@@ -83,28 +83,54 @@ function getClientKey(): string {
     return getRequestHeaders().get("cf-connecting-ip") ?? "anonymous"
 }
 
+export type TrustSignalRow = {
+    submittedAt: Date
+    communityReviewed: boolean
+    coSignCount: number
+    referencesAvailable: boolean
+    professionalVerified: boolean
+    disputed: boolean
+    lastReviewedAt: Date | null
+}
+
+// plain function, not a server function: lets another domain (e.g.
+// resources) compose this in-process without paying its own read rate
+// limit a second time or turning a merely-absent row into a 404 for a
+// bigger response it's only a part of (spec 0003-resource-directory
+// Build plan task 2)
+export async function readTrustSignal(
+    contentType: ContentType,
+    contentId: string
+): Promise<TrustSignalRow | null> {
+    const [row] = await db
+        .select({
+            submittedAt: trustSignal.submittedAt,
+            communityReviewed: trustSignal.communityReviewed,
+            coSignCount: trustSignal.coSignCount,
+            referencesAvailable: trustSignal.referencesAvailable,
+            professionalVerified: trustSignal.professionalVerified,
+            disputed: trustSignal.disputed,
+            lastReviewedAt: trustSignal.lastReviewedAt,
+        })
+        .from(trustSignal)
+        .where(
+            and(
+                eq(trustSignal.contentType, contentType),
+                eq(trustSignal.contentId, contentId)
+            )
+        )
+    return row ?? null
+}
+
 export const getTrustSignal = createServerFn({ method: "GET" })
     .validator(getTrustSignalSchema)
     .handler(async ({ data }) => {
         assertValidContentType(data.contentType)
         await assertReadRateLimit(getClientKey())
-        const [row] = await db
-            .select({
-                submittedAt: trustSignal.submittedAt,
-                communityReviewed: trustSignal.communityReviewed,
-                coSignCount: trustSignal.coSignCount,
-                referencesAvailable: trustSignal.referencesAvailable,
-                professionalVerified: trustSignal.professionalVerified,
-                disputed: trustSignal.disputed,
-                lastReviewedAt: trustSignal.lastReviewedAt,
-            })
-            .from(trustSignal)
-            .where(
-                and(
-                    eq(trustSignal.contentType, data.contentType),
-                    eq(trustSignal.contentId, data.contentId)
-                )
-            )
+        const row = await readTrustSignal(
+            data.contentType,
+            data.contentId
+        )
         if (!row) {
             throw new Response("Not found", { status: 404 })
         }

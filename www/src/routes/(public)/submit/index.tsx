@@ -6,31 +6,84 @@ import {
   resourceCategoryLabel,
   type ResourceCategory,
 } from "@/data/resource-categories"
+import { submitResource } from "@/domains/resources"
+import { authGateQueryOptions } from "@/lib/auth-gate"
+import { TurnstileWidget } from "@/components/turnstile-widget"
 import { Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { Input } from "@pherus/ui/input"
 import { cn } from "@pherus/ui/lib/utils"
 import { Textarea } from "@pherus/ui/textarea"
-import { createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { useState } from "react"
 
 export const Route = createFileRoute("/(public)/submit/")({
+  loader: ({ context }) =>
+    context.queryClient.query({
+      ...authGateQueryOptions(),
+      staleTime: "static",
+    }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
+
+  if (!authGate.signedIn) {
+    return (
+      <article className="container mx-auto flex min-h-[40vh] w-full max-w-2xl flex-col items-center justify-center gap-3 py-10 text-center">
+        <h1>{m["pages.submit.title"]()}</h1>
+        <p>{m["pages.submit.signInRequired"]()}</p>
+        <Button nativeButton={false} render={<Link to="/auth" />} className="rounded-full">
+          {m["pages.submit.signIn"]()}
+        </Button>
+      </article>
+    )
+  }
+
+  return <SubmitForm />
+}
+
+function SubmitForm() {
   const [name, setName] = useState("")
   const [category, setCategory] = useState<ResourceCategory | null>(null)
   const [subcategory, setSubcategory] = useState<string | null>(null)
-  const [country, setCountry] = useState("")
+  const [countryName, setCountryName] = useState("")
   const [city, setCity] = useState("")
   const [estimate, setEstimate] = useState("")
+  const [isFree, setIsFree] = useState(false)
   const [contact, setContact] = useState("")
   const [description, setDescription] = useState("")
   const [internationalAccess, setInternationalAccess] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
   const subcategories = category ? RESOURCE_SUBCATEGORIES_BY_CATEGORY[category] : []
+
+  const mutation = useMutation({
+    mutationFn: submitResource,
+  })
+
+  const canSubmit =
+    name.trim().length > 0 &&
+    category !== null &&
+    countryName.trim().length > 0 &&
+    city.trim().length > 0 &&
+    description.trim().length > 0 &&
+    Boolean(turnstileToken)
+
+  if (mutation.isSuccess) {
+    return (
+      <article className="container mx-auto flex min-h-[40vh] w-full max-w-2xl flex-col items-center justify-center gap-3 py-10 text-center">
+        <h1>{m["pages.submit.successTitle"]()}</h1>
+        <p>{m["pages.submit.successBody"]()}</p>
+        <Button variant="outline" nativeButton={false} render={<Link to="/r" />} className="rounded-full">
+          {m["pages.resources.detail.backToResources"]()}
+        </Button>
+      </article>
+    )
+  }
 
   return (
     <article className="container mx-auto flex w-full max-w-2xl flex-col gap-6 py-10">
@@ -41,7 +94,28 @@ function RouteComponent() {
         </p>
       </div>
 
-      <form onSubmit={(event) => event.preventDefault()} className="flex flex-col gap-5">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          if (!category || !turnstileToken) return
+          mutation.mutate({
+            data: {
+              name,
+              category,
+              subcategory: subcategory ?? undefined,
+              countryName,
+              city,
+              description,
+              estimate: estimate || undefined,
+              contact: contact || undefined,
+              internationalAccess,
+              isFree,
+              turnstileToken,
+            },
+          })
+        }}
+        className="flex flex-col gap-5"
+      >
         <div className="flex flex-col gap-1.5">
           <h6>{m["pages.submit.resourceName"]()}</h6>
           <Input value={name} onChange={(event) => setName(event.target.value)} placeholder={m["pages.submit.resourceNamePlaceholder"]()} />
@@ -98,7 +172,7 @@ function RouteComponent() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <h6>{m["pages.submit.country"]()}</h6>
-            <Input value={country} onChange={(event) => setCountry(event.target.value)} placeholder="Germany" />
+            <Input value={countryName} onChange={(event) => setCountryName(event.target.value)} placeholder="Germany" />
           </div>
           <div className="flex flex-col gap-1.5">
             <h6>{m["pages.submit.city"]()}</h6>
@@ -114,6 +188,16 @@ function RouteComponent() {
             placeholder={m["pages.submit.estimatePlaceholder"]()}
           />
         </div>
+
+        <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={isFree}
+            onChange={(event) => setIsFree(event.target.checked)}
+            className="accent-success"
+          />
+          {m["pages.submit.isFree"]()}
+        </label>
 
         <div className="flex flex-col gap-1.5">
           <h6>{m["pages.submit.contact"]()}</h6>
@@ -151,11 +235,17 @@ function RouteComponent() {
           </p>
         </div>
 
+        <TurnstileWidget onToken={setTurnstileToken} />
+
+        {mutation.isError && (
+          <p className="text-sm text-destructive">{m["pages.submit.submitError"]()}</p>
+        )}
+
         <div className="flex items-center gap-3">
-          <Button type="submit" disabled className="h-11 rounded-full px-6">
-            {m["pages.submit.submit"]()}
+          <Button type="submit" disabled={!canSubmit || mutation.isPending} className="h-11 rounded-full px-6">
+            {mutation.isPending ? m["pages.submit.submitting"]() : m["pages.submit.submit"]()}
           </Button>
-          <p>{m["pages.submit.notPartOfBuild"]()}</p>
+          {!turnstileToken && <p>{m["pages.submit.verificationPending"]()}</p>}
         </div>
       </form>
     </article>

@@ -20,7 +20,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 6 | Data model & backend | Foundation | in-progress |
 | 7 | Authentication & identity | Foundation | in-progress |
 | 8 | Trust & verification signals | Foundation | in-progress |
-| 9 | Resource directory | Slice 1 | planned |
+| 9 | Resource directory | Slice 1 | in-progress |
 | 10 | Accounts & saved resources | Slice 1 | planned |
 | 11 | Contribution & moderation flow | Slice 2 | planned |
 | 12 | Resource Atlas | Slice 3 | planned |
@@ -112,10 +112,21 @@ spec [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification
 
 ## Slice 1: Resource directory
 
-### 9. Resource directory · needs a decision
+### 9. Resource directory · GA
 Browse and search resources by need and category (health care, transition support, mental health, legal, immigration, housing). The landing page hero and category cards already exist with hardcoded data, and `/resources` is an empty stub; this feature wires the real thing. This is the walking skeleton, success for this build is measured by real directory usage.
 **Done when:** a person can search or browse by category, see real results backed by the data model, open a resource detail page with its trust signals, and empty/no-result states render.
-- [ ] Design it (spec): `/architect resource directory`
+- [x] Design it (spec): [0003](../specs/0003-resource-directory/index.md)
+- [x] Build it: `/develop resource directory`
+  - [x] `country`/`resource` migrations and the trust-signals domain refactor (`readTrustSignal`), satisfies AC-1, AC-2, AC-3, AC-7
+  - [x] Country find-or-create helper and the submit endpoint (atomic, decoy-blocked), satisfies AC-3, AC-5, AC-7, AC-8
+  - [x] List and detail read endpoints (search, filters, trust badges), satisfies AC-1, AC-2, AC-4, AC-5
+  - [x] Moderator publish/reject endpoints, including the published → rejected takedown path, satisfies AC-4, AC-5, AC-8
+  - [x] Wire `/r`, `/r/$resourceId/details`, `/submit`, and the home hero to real data, satisfies AC-1, AC-2, AC-3, AC-6, AC-7 — lat/lng and structuredDetails form inputs cut for time, Turnstile still needs a real site key configured before submission can actually complete (see spec Follow-up)
+- [ ] Verify it: `/check verify resource directory`
+- [ ] Test it: `/test resource directory`
+- [ ] Review it (fresh model): `/check review resource directory`
+- [ ] Document it: `/document resource directory`
+spec [0003](../specs/0003-resource-directory/index.md) · code in `www/src/schemas/resources.ts`, `www/src/domains/resources/`, `www/src/routes/api/resources.*`, `www/src/routes/(public)/r/`, `www/src/routes/(public)/submit/`, `www/src/routes/(public)/index.tsx`, `www/src/components/resources/resource-card.tsx`, `www/src/components/turnstile-widget.tsx`
 
 ### 10. Accounts & saved resources · needs a decision
 Sign up/sign in (built on the Authentication foundation), a lightweight profile, and the ability to save/bookmark resources to revisit later.

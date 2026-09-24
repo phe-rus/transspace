@@ -84,12 +84,9 @@
   },
   "pages": {
     "home": {
-      "welcomeBackTitle": "欢迎回来，River。",
-      "welcomeBackSubtitle": "你所在的地区已被收录。以下是你的社区今天的概况。",
       "welcomeGuestTitle": "欢迎来到 Transspace。",
       "welcomeGuestSubtitle": "登录以查看你附近的资源和社区动态。",
       "localStatus": "本地状态",
-      "areaSummary": "附近有 12 个经社区验证的资源正在提供服务。附近有 3 个区域需要审核后才能访问。",
       "openTheMap": "打开地图",
       "exploreTitle": "探索",
       "exploreSubtitle": "查找资源",
@@ -98,7 +95,11 @@
       "trendingTitle": "你的社区热门话题",
       "trendingSubtitle": "你的圈子中的热烈讨论",
       "joinCommunity": "加入社区",
-      "protectedNotice": "你的连接受到保护。确切位置永远不会被分享"
+      "protectedNotice": "你的连接受到保护。确切位置永远不会被分享",
+      "areaSummary": "{count} 目前已发布的社区验证资源",
+      "trendingEmpty": "暂无热门趋势。社区讨论区尚未建立，此空间已为其保留。",
+      "welcomeBackTitle": "欢迎回来{name}。",
+      "welcomeBackSubtitle": "这是今天的目录概览。"
     },
     "atlas": {
       "searchPlaceholder": "搜索资源、城市或国家…",
@@ -117,7 +118,9 @@
         "verifiedOnly": "仅显示经社区验证",
         "freeOnly": "浮动收费/免费",
         "internationalOnly": "接受来自其他国家的人",
-        "relatedGuides": "相关指南"
+        "relatedGuides": "相关指南",
+        "resourcesCount": "{count} 资源",
+        "anyCountry": "任何国家"
       },
       "healthcareProviders": {
         "title": "医疗服务提供者",
@@ -255,7 +258,14 @@
       "privacyNoteStrong": "提交内容将保持匿名。",
       "privacyNote": "每条提交都会先经过管理员审核，之后才会公开。目前这里还不会保存任何内容，该流程仍在设计中。",
       "submit": "提交审核",
-      "notPartOfBuild": "尚未纳入当前版本"
+      "signInRequired": "登录以提交资源。",
+      "verificationPending": "正在等待验证后才能提交。",
+      "isFree": "这是免费或滑动比例",
+      "successTitle": "感谢您的提交",
+      "submitting": "提交中…",
+      "submitError": "提交时出现错误。请稍后再试。",
+      "signIn": "登录",
+      "successBody": "在出现在目录中之前，版主会对其进行审核。"
     },
     "stories": {
       "comingSoon": "故事版块即将上线。"

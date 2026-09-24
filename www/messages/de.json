@@ -84,12 +84,9 @@
   },
   "pages": {
     "home": {
-      "welcomeBackTitle": "Willkommen zurück, River.",
-      "welcomeBackSubtitle": "Deine Umgebung ist erfasst. Hier ist ein Überblick über deine Community heute.",
       "welcomeGuestTitle": "Willkommen bei Transspace.",
       "welcomeGuestSubtitle": "Melde dich an, um Ressourcen in deiner Nähe und deine Community-Aktivität zu sehen.",
       "localStatus": "Lokaler Status",
-      "areaSummary": "12 von der Community verifizierte Ressourcen sind in deiner Nähe aktiv. 3 Gebiete in der Nähe erfordern geprüften Zugang.",
       "openTheMap": "Karte öffnen",
       "exploreTitle": "Entdecken",
       "exploreSubtitle": "Ressourcen finden",
@@ -98,7 +95,11 @@
       "trendingTitle": "Angesagt in deinen Communitys",
       "trendingSubtitle": "Aktive Gespräche in deinen Kreisen",
       "joinCommunity": "Einer Community beitreten",
-      "protectedNotice": "Deine Verbindung ist geschützt. Genaue Standorte werden nie geteilt"
+      "protectedNotice": "Deine Verbindung ist geschützt. Genaue Standorte werden nie geteilt",
+      "areaSummary": "{count} Bisher veröffentlichte, von der Community verifizierte Ressourcen",
+      "trendingEmpty": "Noch nichts im Trend. Community-Diskussionen wurden noch nicht erstellt, dieser Bereich ist für sie reserviert.",
+      "welcomeBackTitle": "Willkommen zurück{name}.",
+      "welcomeBackSubtitle": "Hier ist ein Überblick über das Verzeichnis von heute."
     },
     "atlas": {
       "searchPlaceholder": "Ressourcen, Städte oder Länder suchen…",
@@ -117,7 +118,9 @@
         "verifiedOnly": "Nur community-verifiziert",
         "freeOnly": "Gestaffelt / kostenlos",
         "internationalOnly": "Akzeptiert Menschen aus anderen Ländern",
-        "relatedGuides": "Verwandte Guides"
+        "relatedGuides": "Verwandte Guides",
+        "resourcesCount": "{count} Ressourcen",
+        "anyCountry": "Jedes Land"
       },
       "healthcareProviders": {
         "title": "Gesundheitsdienstleister",
@@ -255,7 +258,14 @@
       "privacyNoteStrong": "Einreichungen bleiben pseudonym.",
       "privacyNote": "Ein Moderator prüft jeden Eintrag, bevor er öffentlich wird. Hier wird noch nichts gespeichert, dieser Ablauf befindet sich noch in der Gestaltung.",
       "submit": "Zur Prüfung einreichen",
-      "notPartOfBuild": "Noch nicht Teil dieses Builds"
+      "submitting": "Wird gesendet…",
+      "successBody": "Ein Moderator wird es prüfen, bevor es im Verzeichnis erscheint.",
+      "signIn": "Anmelden",
+      "successTitle": "Vielen Dank für die Einreichung",
+      "submitError": "Beim Übermitteln ist etwas schiefgelaufen. Versuchen Sie es in einem Moment erneut.",
+      "signInRequired": "Melden Sie sich an, um eine Ressource einzureichen.",
+      "isFree": "Dies ist kostenlos oder gleitend skaliert",
+      "verificationPending": "Wartet auf Verifizierung, bevor dies eingereicht werden kann."
     },
     "stories": {
       "comingSoon": "Geschichten kommen bald."

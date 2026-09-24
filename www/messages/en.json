@@ -84,12 +84,12 @@
   },
   "pages": {
     "home": {
-      "welcomeBackTitle": "Welcome back, River.",
-      "welcomeBackSubtitle": "Your area is mapped. Here is a snapshot of your community today.",
+      "welcomeBackTitle": "Welcome back{name}.",
+      "welcomeBackSubtitle": "Here is a snapshot of the directory today.",
       "welcomeGuestTitle": "Welcome to Transspace.",
       "welcomeGuestSubtitle": "Sign in to see resources near you and your community activity.",
       "localStatus": "Local status",
-      "areaSummary": "12 community verified resources active nearby. 3 areas nearby require vetted access.",
+      "areaSummary": "{count} community verified resources published so far",
       "openTheMap": "Open the map",
       "exploreTitle": "Explore",
       "exploreSubtitle": "Find resources",
@@ -97,6 +97,7 @@
       "crisisSupportSubtitle": "Ask for help",
       "trendingTitle": "Trending in your communities",
       "trendingSubtitle": "Active conversations in your circles",
+      "trendingEmpty": "Nothing trending yet. Community discussions aren't built yet, this space is reserved for them.",
       "joinCommunity": "Join a community",
       "protectedNotice": "Your connection is protected. Exact locations are never shared"
     },
@@ -109,9 +110,11 @@
     "resources": {
       "index": {
         "searchPlaceholder": "Search resources, e.g. \"hormone therapy Berlin\"",
+        "anyCountry": "Any country",
         "contribute": "Contribute",
         "all": "All",
         "resourcesNearCount": "{count} resources near",
+        "resourcesCount": "{count} resources",
         "noMatches": "No matches. Try a different search, or clear a filter.",
         "trustSignals": "Trust signals",
         "verifiedOnly": "Community verified only",
@@ -247,15 +250,22 @@
       "city": "City",
       "estimate": "Cost & wait, roughly",
       "estimatePlaceholder": "e.g. \"Free consult · ~2 weeks\"",
+      "isFree": "This is free or sliding scale",
       "contact": "How does someone reach them?",
       "contactPlaceholder": "Booking link, phone, walk-in hours…",
       "description": "Description",
       "descriptionPlaceholder": "What should someone know before they go? What makes this place trustworthy?",
       "internationalAccess": "Takes people from outside its own country",
       "privacyNoteStrong": "Submissions stay pseudonymous.",
-      "privacyNote": "A moderator reviews every entry before it's public. Nothing here is saved yet, this flow is still being designed.",
+      "privacyNote": "A moderator reviews every entry before it's public.",
       "submit": "Submit for review",
-      "notPartOfBuild": "Not part of this build yet"
+      "submitting": "Submitting…",
+      "submitError": "Something went wrong submitting this. Try again in a moment.",
+      "verificationPending": "Waiting on verification before this can be submitted.",
+      "signInRequired": "Sign in to submit a resource.",
+      "signIn": "Sign in",
+      "successTitle": "Thanks for the submission",
+      "successBody": "A moderator will review it before it appears in the directory."
     },
     "stories": {
       "comingSoon": "Stories is coming soon."

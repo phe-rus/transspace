@@ -84,12 +84,9 @@
   },
   "pages": {
     "home": {
-      "welcomeBackTitle": "Content de te revoir, River.",
-      "welcomeBackSubtitle": "Votre secteur est cartographié. Voici un aperçu de votre communauté aujourd'hui.",
       "welcomeGuestTitle": "Bienvenue sur Transspace.",
       "welcomeGuestSubtitle": "Connectez-vous pour voir les ressources près de chez vous et l'activité de votre communauté.",
       "localStatus": "Statut local",
-      "areaSummary": "12 ressources vérifiées par la communauté sont actives à proximité. 3 zones à proximité nécessitent un accès vérifié.",
       "openTheMap": "Ouvrir la carte",
       "exploreTitle": "Explorer",
       "exploreSubtitle": "Trouver des ressources",
@@ -98,7 +95,11 @@
       "trendingTitle": "Tendances dans vos communautés",
       "trendingSubtitle": "Conversations actives dans vos cercles",
       "joinCommunity": "Rejoindre une communauté",
-      "protectedNotice": "Votre connexion est protégée. Les emplacements exacts ne sont jamais partagés"
+      "protectedNotice": "Votre connexion est protégée. Les emplacements exacts ne sont jamais partagés",
+      "areaSummary": "{count} ressources vérifiées par la communauté publiées jusqu'à présent",
+      "trendingEmpty": "Rien de tendance pour le moment. Les discussions communautaires ne sont pas encore créées, cet espace leur est réservé.",
+      "welcomeBackTitle": "Content de te revoir{name}.",
+      "welcomeBackSubtitle": "Voici un aperçu de l'annuaire aujourd'hui."
     },
     "atlas": {
       "searchPlaceholder": "Rechercher des ressources, villes ou pays…",
@@ -117,7 +118,9 @@
         "verifiedOnly": "Vérifié par la communauté uniquement",
         "freeOnly": "Tarif dégressif / gratuit",
         "internationalOnly": "Accepte les personnes venant d'autres pays",
-        "relatedGuides": "Guides associés"
+        "relatedGuides": "Guides associés",
+        "resourcesCount": "{count} ressources",
+        "anyCountry": "N'importe quel pays"
       },
       "healthcareProviders": {
         "title": "Professionnels de santé",
@@ -255,7 +258,14 @@
       "privacyNoteStrong": "Les soumissions restent pseudonymes.",
       "privacyNote": "Un modérateur examine chaque entrée avant qu'elle ne soit publiée. Rien n'est encore enregistré ici, ce parcours est encore en cours de conception.",
       "submit": "Soumettre pour vérification",
-      "notPartOfBuild": "Pas encore intégré à cette version"
+      "signInRequired": "Connectez-vous pour soumettre une ressource.",
+      "signIn": "Se connecter",
+      "successTitle": "Merci pour la soumission",
+      "isFree": "C'est gratuit ou à échelle mobile",
+      "submitError": "Une erreur s'est produite lors de l'envoi. Réessayez dans un instant.",
+      "successBody": "Un modérateur le révisera avant qu'il n'apparaisse dans le répertoire.",
+      "verificationPending": "En attente de vérification avant de pouvoir être soumis.",
+      "submitting": "Envoi en cours…"
     },
     "stories": {
       "comingSoon": "Les témoignages arrivent bientôt."
