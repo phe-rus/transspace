@@ -122,7 +122,7 @@ Browse and search resources by need and category (health care, transition suppor
   - [x] List and detail read endpoints (search, filters, trust badges), satisfies AC-1, AC-2, AC-4, AC-5
   - [x] Moderator publish/reject endpoints, including the published → rejected takedown path, satisfies AC-4, AC-5, AC-8
   - [x] Wire `/r`, `/r/$resourceId/details`, `/submit`, and the home hero to real data, satisfies AC-1, AC-2, AC-3, AC-6, AC-7 — lat/lng and structuredDetails form inputs cut for time, Turnstile still needs a real site key configured before submission can actually complete (see spec Follow-up)
-- [ ] Verify it: `/check verify resource directory`
+- [x] Verify it: `/check verify resource directory` → PASS on every exercisable behavior (AC-1, AC-2, AC-6, AC-7 fully covered with fresh evidence; AC-3, AC-4, AC-5, AC-8 covered by code review plus curl against seeded data, real concurrent load, a real moderator session, and a real decoy session remain blocked, no seeded moderator or live session exists in this environment, same known gap spec 0002 already carries)
 - [ ] Test it: `/test resource directory`
 - [ ] Review it (fresh model): `/check review resource directory`
 - [ ] Document it: `/document resource directory`
@@ -159,7 +159,7 @@ Editorial, community-contributed practical guides (e.g. "Finding healthcare in U
   - [x] List and detail read endpoints (search, trust/profile joins, related resources), satisfies AC-1, AC-2, AC-4, AC-5, AC-6
   - [x] Moderator publish/reject endpoints, including the published → rejected takedown path, satisfies AC-4, AC-5, AC-8
   - [x] Wire `/guides`, a new `/guides/$guideId/details`, and a new `/submit-guide` (rich text editor) to real data, satisfies AC-1, AC-2, AC-3, AC-6, AC-7
-- [ ] Verify it: `/check verify guides`
+- [ ] Verify it: `/check verify guides` → re-opened 2026-09-25: AC-10 (series, cover image, video embed) landed after the prior PASS pass, a real new acceptance criterion with new endpoints/schema/UI, so the previous tick no longer stands; needs a fresh pass
 - [ ] Test it: `/test guides`
 - [ ] Review it (fresh model): `/check review guides`
 - [ ] Document it: `/document guides`

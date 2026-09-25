@@ -1,11 +1,13 @@
-# Verify: guides · spec 0004 · updated 2026-09-24
+# Verify: guides · spec 0004 · updated 2026-09-25
 _Steps derived from spec 0004 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones. Built and verified while the engineer was asleep: every read path was exercised against directly-seeded D1 data (including a real profile row) via curl and live SSR HTML inspection; write paths (submit, publish, reject) were verified by code review, typecheck, and the content-safety module's own isolated unit run, not a live authenticated session — see Known gaps._
 
+_Re-opened 2026-09-25: AC-10 (guide series via a new `guide_series` table, cover image, video embed, three new categories) landed after the pass above, plus a cross-cutting rework (TanStack Form on `/submit` and `/submit-guide`, the domain layer folded from one flat `func.ts` into `func/`, the in-editor image upload switched from a REST `fetch` to a direct `useMutation`-wrapped server function call). Everything below this line through "Known gaps" describes the AC-1–AC-9 pass only; AC-10 has not yet had its own verify pass — the new `GET /guides/series` endpoint, `findOrCreateSeries`, `assertValidVideoUrl`/`assertValidCoverImageUrl`, and the rebuilt submit/detail UI are unverified beyond typecheck and a basic live smoke check (all routes return 200, `/api/guides/series` returns `{items: []}`)._
+
 ## UI / manual
-- [x] Visit `/guides` → lists the seeded guide with its real contributor byline, community-reviewed badge, and computed read time → confirmed during this build via live SSR HTML
-- [x] Visit `/guides/$id/details` for the seeded guide → renders the real body via `@pherus/rich-text`'s `Preview` (the seeded link text rendered), shows the references badge, and resolves the related resource into a real link → confirmed during this build
-- [x] Visit `/guides/does-not-exist/details` → shows the not-found state, not a crash → confirmed during this build
-- [x] Visit `/submit-guide` while signed out → shows "sign in to submit a guide", not the form → confirmed during this build
+- [x] Visit `/guides` → lists the seeded guide with its real contributor byline, community-reviewed badge, and computed read time → confirmed during this build via live SSR HTML, re-confirmed this pass (SSR stream contains `<h3>Finding healthcare in Testland</h3>`)
+- [x] Visit `/guides/$id/details` for the seeded guide → renders the real body via `@pherus/rich-text`'s `Preview` (the seeded link text rendered), shows the references badge, and resolves the related resource into a real link → confirmed during this build, re-confirmed this pass (SSR stream contains the `<h1>` title, "Community reviewed" badge text, `trust:{communityReviewed:true,coSignCount:3,referencesAvailable:true}`, and a real `<a href=".../details">Test Wellness Clinic</a>` link)
+- [x] Visit `/guides/does-not-exist/details` → shows the not-found state, not a crash → confirmed during this build, re-confirmed this pass (200, no crash)
+- [x] Visit `/submit-guide` while signed out → shows "sign in to submit a guide", not the form → confirmed during this build, re-confirmed this pass
 - [ ] Visit `/submit-guide` while signed in → the editor renders, an in-editor image upload succeeds and inserts a same-origin image, the submit button stays disabled until Turnstile produces a token
 - [ ] Submit a guide with a heading, a list, an image, and a link → succeeds, shows the "thanks for the guide" confirmation
 - [ ] As a moderator, publish a pending guide → it appears in `GET /guides` and the detail page
@@ -25,7 +27,7 @@ _Steps derived from spec 0004 acceptance criteria. `/check verify` runs these; `
 - [x] `assertValidRelatedResourceIds` isolated unit run: 15 raw entries (even with duplicates) rejected before de-duplication is attempted, a valid duplicated pair de-duplicates to one entry, a non-UUID entry is rejected → confirmed during this build, matches the corrected Value sourcing wording (cap applies to the raw count)
 - [ ] Two concurrent `POST /api/guides` submissions with images uploaded mid-composition → not yet run against a real concurrent load or a real moderator session (none is seeded in this environment, same blocker spec 0002/0003 already noted)
 - [ ] A decoy session attempting `POST /guides`, `/publish`, `/reject`, or `/guides/upload-image` → not yet run against a real decoy session
-- [x] Regression: `/r`, `/submit`, `/atlas`, `/support`, `/api/resources`, `/api/trust-signals/*`, `/api/moderators` all still behave exactly as before after this build's `ModeratorMiddleware`-adjacent and shared-cursor-util refactors → confirmed during this build
+- [x] Regression: `/r`, `/submit`, `/atlas`, `/support`, `/api/resources`, `/api/trust-signals/*`, `/api/moderators` all still behave exactly as before after this build's `ModeratorMiddleware`-adjacent and shared-cursor-util refactors → confirmed during this build, re-confirmed this pass (`/api/resources` pagination, category filter, verified/free/international filters, and moderator/trust-signal write gating all still return the expected codes)
 
 ## Acceptance-criteria coverage
 - AC-1: list filters, search (title+excerpt), sort/cursor · covered by the seeded-data curl steps

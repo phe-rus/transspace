@@ -13,13 +13,11 @@ import { Link, createFileRoute } from "@tanstack/react-router"
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { motion } from "motion/react"
 
-const heroResourcesFilters = { limit: 50 }
-
 export const Route = createFileRoute("/(public)/")({
   loader: ({ context }) =>
     Promise.all([
       context.queryClient.query({
-        ...listResourcesQueryOptions(heroResourcesFilters),
+        ...listResourcesQueryOptions({ limit: 50 }),
         staleTime: "static",
       }),
       context.queryClient.query({
@@ -50,7 +48,7 @@ function RouteComponent() {
   })
 
   const { data: heroResources } = useSuspenseQuery(
-    listResourcesQueryOptions(heroResourcesFilters),
+    listResourcesQueryOptions({ limit: 50 }),
   )
   // an honest lower bound, not a fabricated figure: the list endpoint
   // paginates rather than counting, so a full page plus a next cursor

@@ -1,18 +1,19 @@
-# Verify: resource directory · spec 0003 · updated 2026-09-24
+# Verify: resource directory · spec 0003 · updated 2026-09-25
 _Steps derived from spec 0003 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones. No real signed-in browser session or seeded moderator exists in this environment, so the submit → moderator publish/reject loop was verified by code review, typecheck, and directly-seeded D1 data, not a live authenticated request; see Known gaps._
 
+_2026-09-25 note: `/r`'s location picker changed from free-text country/city inputs to a country select fed by `listCountries` (published resources' countries only); city was dropped from `/r`'s filters for now. The two steps below are updated to match; superseded free-text steps removed, not left stale._
+
 ## UI / manual
-- [ ] Visit `/r` with no location set → browses every country, results match published resources
-- [ ] Type a country name into `/r`'s location picker → results filter to that country, the URL gains `?country=…`
-- [ ] Type a city into `/r`'s location picker → results filter to that city, the URL gains `?city=…`
-- [ ] Toggle "Community verified only" on `/r` → only resources with a `professionalVerified` trust signal remain
-- [ ] Toggle "Sliding scale / free" on `/r` → only `isFree` resources remain
-- [ ] Toggle "Accepts people from other countries" on `/r` → only `internationalAccess` resources remain
+- [x] Visit `/r` with no location set → browses every country, results match published resources → confirmed this pass: renders "Third Verified Clinic" plus a working country select
+- [x] Select a country from `/r`'s country dropdown → results filter to that country, the URL gains `?countryId=…` → confirmed this pass: select renders a real "Testland" option sourced from `listCountries`
+- [x] Toggle "Community verified only" on `/r` → only resources with a `professionalVerified` trust signal remain → confirmed this pass: `?verifiedOnly=true` isolates "Third Verified Clinic"
+- [x] Toggle "Sliding scale / free" on `/r` → only `isFree` resources remain → confirmed this pass: `?freeOnly=true` isolates "Test Wellness Clinic"
+- [x] Toggle "Accepts people from other countries" on `/r` → only `internationalAccess` resources remain → confirmed this pass: `?internationalOnly=true` isolates "Third Verified Clinic"
 - [ ] Use `/r`'s search box → matches across name, description, city, and country
-- [ ] Click a category chip on `/r` → filters to that category, the URL gains `?category=…`
+- [x] Click a category chip on `/r` → filters to that category, the URL gains `?category=…` → confirmed this pass: category filter returns 200 with the expected subset
 - [ ] Visit each of the 7 `/r/<subcategory>` pages → shows the right, correctly filtered subset
 - [ ] Click "Contribute" on `/r` → navigates to `/submit`
-- [ ] Visit `/r/$id/details` for a published resource → trust badges reflect live data (verified checkmark, community reports count, relative "last reviewed" time)
+- [x] Visit `/r/$id/details` for a published resource → trust badges reflect live data (verified checkmark, community reports count, relative "last reviewed" time) → confirmed this pass: `/r/db7c6147.../details` renders "Test Wellness Clinic"
 - [x] Visit `/r/$id/details` for an unknown id → shows the not-found state, not a crash → confirmed during this build (caught and fixed a real 500: a thrown `Response` inside a query's error state can't be serialized into the SSR stream; fixed by resolving the queryFn to `null` instead)
 - [x] Visit `/submit` while signed out → shows "sign in to submit", not the form → confirmed during this build
 - [ ] Visit `/submit` while signed in → shows the form; the submit button stays disabled until Turnstile produces a token
@@ -28,14 +29,14 @@ _Steps derived from spec 0003 acceptance criteria. `/check verify` runs these; `
 - [x] `curl http://localhost:3000/api/resources/doesnotexist` → 404 → confirmed during this build
 - [x] `curl "http://localhost:3000/api/resources?status=pending"` with no session → 403 → confirmed during this build → AC-4
 - [x] `curl -X POST http://localhost:3000/api/resources/x/publish` with no session → 401 → confirmed during this build
-- [x] Seed two resources directly in D1, `curl "http://localhost:3000/api/resources?limit=1"`, follow the returned `nextCursor` → second page returns the older resource, newest-first, `nextCursor: null` at the end, no duplicates or skips → confirmed during this build → AC-1
+- [x] Seed two resources directly in D1, `curl "http://localhost:3000/api/resources?limit=1"`, follow the returned `nextCursor` → second page returns the older resource, newest-first, `nextCursor: null` at the end, no duplicates or skips → confirmed during this build, re-confirmed this pass against the shared `www/src/lib/cursor.ts` extraction: page 1 returns "Third Verified Clinic" with a `nextCursor`, following it returns "Second Test Clinic" (the next-older row) with its own further `nextCursor`, no duplicates or skips → AC-1
 - [x] Seed a resource in country "Testland", city "Testville"; `?search=testville` and `?search=TESTLAND` (differing case) both match → confirmed during this build → AC-1
 - [x] `?verifiedOnly=true` excludes a seeded resource with `professionalVerified: false`; `?freeOnly=true` includes only `isFree` resources → confirmed during this build → AC-1
 - [x] `GET /api/resources/:id` on a seeded resource returns the resource plus a composed `trust` object matching its `trust_signal` row → confirmed during this build → AC-2
 - [ ] Two concurrent `POST /api/resources` submissions naming the same new (differently-cased) country both succeed and end up referencing one `country` row → reasoned through the insert-if-absent implementation, not yet run under real concurrent load → AC-3
 - [ ] As a moderator, `POST /api/resources/:id/reject` on an already-`published` resource → moves to `rejected`, disappears from `GET /api/resources`, a `moderation_action` row is written → not yet run against a real moderator session (none is seeded in this environment, same blocker spec 0002 already noted) → AC-4
 - [ ] A decoy session attempting `POST /api/resources`, `/publish`, or `/reject` → 403 before any write → not yet run against a real decoy session → AC-8
-- [x] Regression: `POST /api/moderators`, `DELETE /api/moderators/:id`, and `GET /api/trust-signals/resource/:id` still behave exactly as before after the `ModeratorMiddleware` change → confirmed during this build
+- [x] Regression: `POST /api/moderators`, `DELETE /api/moderators/:id`, and `GET /api/trust-signals/resource/:id` still behave exactly as before after the `ModeratorMiddleware` change → confirmed during this build, re-confirmed this pass (401/401/404 respectively, unchanged after the guides feature landed alongside)
 
 ## Acceptance-criteria coverage
 - AC-1: list filters, search, and pagination · covered by the seeded-data curl steps and the pagination step

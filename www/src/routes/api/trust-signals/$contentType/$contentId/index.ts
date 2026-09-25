@@ -3,7 +3,7 @@ import { getTrustSignal } from "@/domains/trust-signals"
 import { toHttpResponse } from "@/lib/http"
 
 export const Route = createFileRoute(
-    "/api/trust-signals/$contentType/$contentId"
+    "/api/trust-signals/$contentType/$contentId/"
 )({
     server: {
         handlers: {

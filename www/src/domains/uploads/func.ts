@@ -15,6 +15,8 @@ import {
     ALLOWED_TYPES,
     MAX_FILE_BYTES,
     MAX_USER_QUOTA_BYTES,
+    assertValidContentId,
+    assertValidUploadCategory,
     fileKey,
     getUsageBytes,
     listAllObjects,
@@ -70,6 +72,21 @@ export const uploadFile = createServerFn({ method: "POST" })
                 status: 400,
             })
         }
+        // one level of real nesting under storagePrefix: which
+        // feature, then which record (spec 0002 follow-up, the
+        // engineer's explicit call, 2026-09-25). Nothing calls this
+        // general endpoint from the built UI yet, so both are
+        // required from every caller rather than defaulted
+        const category = data.get("category")
+        if (typeof category !== "string") {
+            throw new Response("Missing category", { status: 400 })
+        }
+        assertValidUploadCategory(category)
+        const contentId = data.get("contentId")
+        if (typeof contentId !== "string") {
+            throw new Response("Missing contentId", { status: 400 })
+        }
+        assertValidContentId(contentId)
         if (file.size > MAX_FILE_BYTES) {
             throw new Response(
                 "File exceeds the 10 MB limit",
@@ -106,7 +123,7 @@ export const uploadFile = createServerFn({ method: "POST" })
                       new TextDecoder().decode(bytes)
                   )
                 : bytes
-        const key = fileKey(storagePrefix, file.name)
+        const key = fileKey(storagePrefix, category, contentId, file.name)
         await env.R2.put(key, body, {
             httpMetadata: { contentType: ALLOWED_TYPES[ext] },
         })

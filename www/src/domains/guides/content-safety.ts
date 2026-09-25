@@ -36,6 +36,43 @@ function assertSafeImageSrc(src: unknown): void {
     }
 }
 
+// spec 0004 AC-10: a guide's cover image follows the exact same
+// same-origin rule as an in-body image; reuses assertSafeImageSrc
+// rather than duplicating the check
+export function assertValidCoverImageUrl(url: string | undefined): void {
+    if (url === undefined) return
+    assertSafeImageSrc(url)
+}
+
+const VIDEO_HOST_ALLOWLIST = new Set([
+    "youtube.com",
+    "www.youtube.com",
+    "youtu.be",
+    "vimeo.com",
+])
+
+// spec 0004 AC-10: a video is an embed link, not an upload; restrict
+// to a fixed provider allowlist so this never becomes an arbitrary
+// iframe src built from unvalidated input
+export function assertValidVideoUrl(url: string | undefined): void {
+    if (url === undefined) return
+    let parsed: URL
+    try {
+        parsed = new URL(url)
+    } catch {
+        throw new Response("Invalid video URL", { status: 422 })
+    }
+    if (
+        parsed.protocol !== "https:" ||
+        !VIDEO_HOST_ALLOWLIST.has(parsed.hostname)
+    ) {
+        throw new Response(
+            "Video URL must be a YouTube or Vimeo link",
+            { status: 422 }
+        )
+    }
+}
+
 // spec 0004 AC-3, AC-9: one pass over the content validates every
 // image node's src and computes wordCount and hasLink (for
 // referencesAvailable) together, so a malicious body is rejected

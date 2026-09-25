@@ -6,6 +6,7 @@ import { getLocale } from "@/paraglide/runtime"
 import { seo } from "@/seo/seo"
 import type { RouterAppContext } from "@/types"
 import tailwindcss from "@pherus/ui/globals.css?url"
+import { GooeyToaster } from "@pherus/ui/goey-toaster"
 import { cn } from "@pherus/ui/lib/utils"
 import { ThemeProvider } from "@pherus/ui/theming"
 import { TanStackDevtools } from "@tanstack/react-devtools"
@@ -15,9 +16,9 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => seo({
-    title: "TanStack Start Starter",
-    description: "TanStack Start Starter",
-    keywords: ['TanStack', 'Start', 'Starter'],
+    title: "Transspace",
+    description: "Discover trusted resources, practical knowledge, opportunities, and support shared through queer-to-queer community knowledge.",
+    keywords: ['transspace', 'queer', 'lgbtqia+'],
     icons: {
       icon: '/favicon.ico',
       shortcut: '/favicon.ico',
@@ -63,6 +64,7 @@ function RootDocument() {
         >
           <Outlet />
           <LanguageSelect />
+          <GooeyToaster />
         </ThemeProvider>
         <Scripts />
         <TanStackDevtools

@@ -1,6 +1,33 @@
 import { sql } from "drizzle-orm"
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core"
+import {
+    sqliteTable,
+    text,
+    integer,
+    index,
+    uniqueIndex,
+} from "drizzle-orm/sqlite-core"
 import { userLink } from "./user-link"
+
+// dynamically created the first time a guide submission names one
+// (spec 0004 AC-10): no pre-seeded list. Uniqueness is a functional
+// lowercase index, mirroring country's find-or-create shape (spec
+// 0003 Decision, Value sourcing).
+export const guideSeries = sqliteTable(
+    "guide_series",
+    {
+        id: text("id").primaryKey(),
+        title: text("title").notNull(),
+        description: text("description"),
+        createdAt: integer("createdAt", {
+            mode: "timestamp_ms",
+        }).notNull(),
+    },
+    (table) => [
+        uniqueIndex("guideSeries_titleLower_idx").on(
+            sql`lower(${table.title})`
+        ),
+    ]
+)
 
 export const guide = sqliteTable(
     "guide",
@@ -25,6 +52,20 @@ export const guide = sqliteTable(
         // de-duplicated at submission (spec 0004 AC-9); not validated
         // against the resource table's actual contents (Follow-up)
         relatedResourceIds: text("relatedResourceIds"),
+        // find-or-create at submission, never a raw client id (spec
+        // 0004 AC-10)
+        seriesId: text("seriesId").references(() => guideSeries.id),
+        // the submitter's own stated position within the series, a
+        // display hint only, not enforced unique/contiguous (spec
+        // 0004 AC-10, Follow-up)
+        seriesOrder: integer("seriesOrder"),
+        // same same-origin /api/uploads/ rule as an in-body image
+        // (spec 0004 AC-9, AC-10)
+        coverImageUrl: text("coverImageUrl"),
+        // validated against a fixed embeddable-provider allowlist at
+        // submission, never rendered from unvalidated input (spec
+        // 0004 AC-10)
+        videoUrl: text("videoUrl"),
         // pending | published | rejected. Moderator-only transitions,
         // including a published -> rejected takedown, identical state
         // machine to resource (spec 0003)
@@ -54,5 +95,10 @@ export const guide = sqliteTable(
             table.id
         ),
         index("guide_status_idx").on(table.status),
+        // supports listing a series in order (spec 0004 AC-10)
+        index("guide_seriesId_seriesOrder_idx").on(
+            table.seriesId,
+            table.seriesOrder
+        ),
     ]
 )

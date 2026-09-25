@@ -4,19 +4,17 @@ import { m } from "@/paraglide/messages"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
-const filters = { category: "health", subcategory: "general-health" }
-
 export const Route = createFileRoute("/(public)/r/general-health/")({
   loader: ({ context }) =>
     context.queryClient.query({
-      ...listResourcesQueryOptions(filters),
+      ...listResourcesQueryOptions({ category: "health", subcategory: "general-health" }),
       staleTime: "static",
     }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { data } = useSuspenseQuery(listResourcesQueryOptions(filters))
+  const { data } = useSuspenseQuery(listResourcesQueryOptions({ category: "health", subcategory: "general-health" }))
 
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">

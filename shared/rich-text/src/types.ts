@@ -24,7 +24,7 @@ export type EditorProps = {
     /** Renders the media browser (upload + pick existing) given open state and a select callback. Omit to hide the "choose from existing" affordance. */
     renderBrowser?: (props: EditorBrowserProps) => ReactNode
 } & Omit<
-    ComponentProps<'div'>,
+    ComponentProps<'article'>,
     'value' | 'onChange' | 'placeholder' | 'className'
 >
 export interface PreviewProps {

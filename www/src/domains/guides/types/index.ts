@@ -21,6 +21,9 @@ const contentRefSchema = {
     id: z.string().min(1),
 }
 
+const UUID_RE =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export const listGuidesSchema = z.object({
     category: z.string().optional(),
     search: z.string().optional(),
@@ -31,12 +34,25 @@ export const listGuidesSchema = z.object({
 
 export const getGuideSchema = z.object(contentRefSchema)
 
+export const listGuideSeriesSchema = z.object({
+    search: z.string().optional(),
+})
+
 export const submitGuideSchema = z.object({
+    // client-generated before the first in-editor upload, since
+    // composing (and uploading images under this id) happens before
+    // the guide row itself exists (spec 0004 AC-10 follow-up)
+    id: z.string().regex(UUID_RE),
     title: z.string().min(1),
     excerpt: z.string().min(1),
     category: z.string().min(1),
     bodyContent: z.unknown(),
     relatedResourceIds: z.array(z.string()).max(10).optional(),
+    // find-or-create by title, spec 0004 AC-10
+    seriesTitle: z.string().min(1).optional(),
+    seriesOrder: z.number().int().min(1).optional(),
+    coverImageUrl: z.string().optional(),
+    videoUrl: z.string().optional(),
     turnstileToken: z.string(),
 })
 

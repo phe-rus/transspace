@@ -7,17 +7,16 @@ import {
   type ResourceCategory,
 } from "@/data/resource-categories"
 import { submitResource } from "@/domains/resources"
+import { submitFormDefaults, submitFormSchema } from "@/domains/resources/submit-form"
 import { authGateQueryOptions } from "@/lib/auth-gate"
 import { m } from "@/paraglide/messages"
 import { Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
-import { Input } from "@pherus/ui/input"
+import { useAppForm } from "@pherus/ui/form"
 import { cn } from "@pherus/ui/lib/utils"
-import { Textarea } from "@pherus/ui/textarea"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
 
 export const Route = createFileRoute("/(public)/submit/")({
   loader: ({ context }) =>
@@ -30,10 +29,32 @@ export const Route = createFileRoute("/(public)/submit/")({
 
 function RouteComponent() {
   const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
+  const mutation = useMutation({ mutationFn: submitResource })
+
+  const form = useAppForm({
+    defaultValues: submitFormDefaults,
+    onSubmit: async ({ value }) => {
+      await mutation.mutateAsync({
+        data: {
+          name: value.name,
+          category: value.category,
+          subcategory: value.subcategory || undefined,
+          countryName: value.countryName,
+          city: value.city,
+          description: value.description,
+          estimate: value.estimate || undefined,
+          contact: value.contact || undefined,
+          internationalAccess: value.internationalAccess,
+          isFree: value.isFree,
+          turnstileToken: value.turnstileToken,
+        },
+      })
+    },
+  })
 
   if (!authGate.signedIn) {
     return (
-      <article className="container mx-auto flex min-h-[40vh] w-full max-w-2xl flex-col items-center justify-center gap-3 py-10 text-center">
+      <article className="container mx-auto flex min-h-[40vh] w-full flex-col items-center justify-center gap-3 py-10 text-center md:max-w-5xl">
         <h1>{m["pages.submit.title"]()}</h1>
         <p>{m["pages.submit.signInRequired"]()}</p>
         <Button nativeButton={false} render={<Link to="/auth" />} className="rounded-full">
@@ -43,39 +64,9 @@ function RouteComponent() {
     )
   }
 
-  return <SubmitForm />
-}
-
-function SubmitForm() {
-  const [name, setName] = useState("")
-  const [category, setCategory] = useState<ResourceCategory | null>(null)
-  const [subcategory, setSubcategory] = useState<string | null>(null)
-  const [countryName, setCountryName] = useState("")
-  const [city, setCity] = useState("")
-  const [estimate, setEstimate] = useState("")
-  const [isFree, setIsFree] = useState(false)
-  const [contact, setContact] = useState("")
-  const [description, setDescription] = useState("")
-  const [internationalAccess, setInternationalAccess] = useState(false)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-
-  const subcategories = category ? RESOURCE_SUBCATEGORIES_BY_CATEGORY[category] : []
-
-  const mutation = useMutation({
-    mutationFn: submitResource,
-  })
-
-  const canSubmit =
-    name.trim().length > 0 &&
-    category !== null &&
-    countryName.trim().length > 0 &&
-    city.trim().length > 0 &&
-    description.trim().length > 0 &&
-    Boolean(turnstileToken)
-
   if (mutation.isSuccess) {
     return (
-      <article className="container mx-auto flex min-h-[40vh] w-full max-w-2xl flex-col items-center justify-center gap-3 py-10 text-center">
+      <article className="container mx-auto flex min-h-[40vh] w-full flex-col items-center justify-center gap-3 py-10 text-center md:max-w-5xl">
         <h1>{m["pages.submit.successTitle"]()}</h1>
         <p>{m["pages.submit.successBody"]()}</p>
         <Button variant="outline" nativeButton={false} render={<Link to="/r" />} className="rounded-full">
@@ -86,7 +77,7 @@ function SubmitForm() {
   }
 
   return (
-    <article className="container mx-auto flex w-full md:max-w-5xl flex-col gap-6 py-10">
+    <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-2">
         <h1>{m["pages.submit.title"]()}</h1>
         <p className="max-w-lg">
@@ -97,136 +88,150 @@ function SubmitForm() {
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          if (!category || !turnstileToken) return
-          mutation.mutate({
-            data: {
-              name,
-              category,
-              subcategory: subcategory ?? undefined,
-              countryName,
-              city,
-              description,
-              estimate: estimate || undefined,
-              contact: contact || undefined,
-              internationalAccess,
-              isFree,
-              turnstileToken,
-            },
-          })
+          event.stopPropagation()
+          form.handleSubmit()
         }}
         className="flex flex-col gap-5"
       >
-        <div className="flex flex-col gap-1.5">
-          <h6>{m["pages.submit.resourceName"]()}</h6>
-          <Input value={name} onChange={(event) => setName(event.target.value)} placeholder={m["pages.submit.resourceNamePlaceholder"]()} />
-        </div>
+        <form.AppField
+          name="name"
+          validators={{ onChange: submitFormSchema.shape.name }}
+        >
+          {(field) => (
+            <field.TextField
+              label={m["pages.submit.resourceName"]()}
+              placeholder={m["pages.submit.resourceNamePlaceholder"]()}
+            />
+          )}
+        </form.AppField>
 
-        <div className="flex flex-col gap-1.5">
-          <h6>{m["pages.submit.category"]()}</h6>
-          <div className="flex flex-wrap gap-1.5">
-            {RESOURCE_CATEGORIES.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => {
-                  setCategory((current) => (current === item ? null : item))
-                  setSubcategory(null)
-                }}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm transition-colors",
-                  category === item
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border text-muted-foreground hover:border-muted-foreground",
-                )}
-              >
-                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: resourceCategoryColor[item] }} />
-                {resourceCategoryLabel[item]}
-              </button>
-            ))}
-          </div>
-        </div>
+        <form.Field name="category">
+          {(categoryField) => (
+            <form.Field name="subcategory">
+              {(subcategoryField) => {
+                const category = categoryField.state.value as ResourceCategory | ""
+                const subcategories = category
+                  ? RESOURCE_SUBCATEGORIES_BY_CATEGORY[category]
+                  : []
 
-        {subcategories.length > 0 && (
-          <div className="flex flex-col gap-1.5">
-            <h6>{m["pages.submit.moreSpecifically"]()}</h6>
-            <div className="flex flex-wrap gap-1.5">
-              {subcategories.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setSubcategory((current) => (current === item ? null : item))}
-                  className={cn(
-                    "rounded-full border px-3.5 py-2 text-sm transition-colors",
-                    subcategory === item
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-border text-muted-foreground hover:border-muted-foreground",
-                  )}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+                return (
+                  <>
+                    <div className="flex flex-col gap-1.5">
+                      <h6>{m["pages.submit.category"]()}</h6>
+                      <div className="flex flex-wrap gap-1.5">
+                        {RESOURCE_CATEGORIES.map((item) => (
+                          <button
+                            key={item}
+                            type="button"
+                            onClick={() => {
+                              categoryField.handleChange(
+                                categoryField.state.value === item ? "" : item,
+                              )
+                              subcategoryField.handleChange("")
+                            }}
+                            className={cn(
+                              "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm transition-colors",
+                              categoryField.state.value === item
+                                ? "border-foreground bg-foreground text-background"
+                                : "border-border text-muted-foreground hover:border-muted-foreground",
+                            )}
+                          >
+                            <span
+                              className="size-2 shrink-0 rounded-full"
+                              style={{ backgroundColor: resourceCategoryColor[item] }}
+                            />
+                            {resourceCategoryLabel[item]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {subcategories.length > 0 && (
+                      <div className="flex flex-col gap-1.5">
+                        <h6>{m["pages.submit.moreSpecifically"]()}</h6>
+                        <div className="flex flex-wrap gap-1.5">
+                          {subcategories.map((item) => (
+                            <button
+                              key={item}
+                              type="button"
+                              onClick={() =>
+                                subcategoryField.handleChange(
+                                  subcategoryField.state.value === item ? "" : item,
+                                )
+                              }
+                              className={cn(
+                                "rounded-full border px-3.5 py-2 text-sm transition-colors",
+                                subcategoryField.state.value === item
+                                  ? "border-foreground bg-foreground text-background"
+                                  : "border-border text-muted-foreground hover:border-muted-foreground",
+                              )}
+                            >
+                              {item}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )
+              }}
+            </form.Field>
+          )}
+        </form.Field>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="flex flex-col gap-1.5">
-            <h6>{m["pages.submit.country"]()}</h6>
-            <Input value={countryName} onChange={(event) => setCountryName(event.target.value)} placeholder="Germany" />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <h6>{m["pages.submit.city"]()}</h6>
-            <Input value={city} onChange={(event) => setCity(event.target.value)} placeholder="Berlin" />
-          </div>
+          <form.AppField
+            name="countryName"
+            validators={{ onChange: submitFormSchema.shape.countryName }}
+          >
+            {(field) => <field.TextField label={m["pages.submit.country"]()} placeholder="Germany" />}
+          </form.AppField>
+          <form.AppField
+            name="city"
+            validators={{ onChange: submitFormSchema.shape.city }}
+          >
+            {(field) => <field.TextField label={m["pages.submit.city"]()} placeholder="Berlin" />}
+          </form.AppField>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <h6>{m["pages.submit.estimate"]()}</h6>
-          <Input
-            value={estimate}
-            onChange={(event) => setEstimate(event.target.value)}
-            placeholder={m["pages.submit.estimatePlaceholder"]()}
-          />
-        </div>
+        <form.AppField name="estimate">
+          {(field) => (
+            <field.TextField
+              label={m["pages.submit.estimate"]()}
+              placeholder={m["pages.submit.estimatePlaceholder"]()}
+            />
+          )}
+        </form.AppField>
 
-        <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
-          <input
-            type="checkbox"
-            checked={isFree}
-            onChange={(event) => setIsFree(event.target.checked)}
-            className="accent-success"
-          />
-          {m["pages.submit.isFree"]()}
-        </label>
+        <form.AppField name="isFree">
+          {(field) => <field.CheckboxField label={m["pages.submit.isFree"]()} />}
+        </form.AppField>
 
-        <div className="flex flex-col gap-1.5">
-          <h6>{m["pages.submit.contact"]()}</h6>
-          <Input
-            value={contact}
-            onChange={(event) => setContact(event.target.value)}
-            placeholder={m["pages.submit.contactPlaceholder"]()}
-          />
-        </div>
+        <form.AppField name="contact">
+          {(field) => (
+            <field.TextField
+              label={m["pages.submit.contact"]()}
+              placeholder={m["pages.submit.contactPlaceholder"]()}
+            />
+          )}
+        </form.AppField>
 
-        <div className="flex flex-col gap-1.5">
-          <h6>{m["pages.submit.description"]()}</h6>
-          <Textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder={m["pages.submit.descriptionPlaceholder"]()}
-            className="min-h-28"
-          />
-        </div>
+        <form.AppField
+          name="description"
+          validators={{ onChange: submitFormSchema.shape.description }}
+        >
+          {(field) => (
+            <field.TextareaField
+              label={m["pages.submit.description"]()}
+              placeholder={m["pages.submit.descriptionPlaceholder"]()}
+              className="min-h-28"
+            />
+          )}
+        </form.AppField>
 
-        <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
-          <input
-            type="checkbox"
-            checked={internationalAccess}
-            onChange={(event) => setInternationalAccess(event.target.checked)}
-            className="accent-success"
-          />
-          {m["pages.submit.internationalAccess"]()}
-        </label>
+        <form.AppField name="internationalAccess">
+          {(field) => <field.CheckboxField label={m["pages.submit.internationalAccess"]()} />}
+        </form.AppField>
 
         <div className="flex items-center gap-3 rounded-3xl border border-border p-5">
           <HugeiconsIcon icon={Shield01Icon} className="size-4.5 shrink-0" />
@@ -235,18 +240,43 @@ function SubmitForm() {
           </p>
         </div>
 
-        <TurnstileWidget onToken={setTurnstileToken} />
+        <form.Field name="turnstileToken">
+          {(field) => (
+            <TurnstileWidget onToken={(token) => field.handleChange(token ?? "")} />
+          )}
+        </form.Field>
 
         {mutation.isError && (
           <p className="text-sm text-destructive">{m["pages.submit.submitError"]()}</p>
         )}
 
-        <div className="flex items-center gap-3">
-          <Button type="submit" disabled={!canSubmit || mutation.isPending} className="h-11 rounded-full px-6">
-            {mutation.isPending ? m["pages.submit.submitting"]() : m["pages.submit.submit"]()}
-          </Button>
-          {!turnstileToken && <p>{m["pages.submit.verificationPending"]()}</p>}
-        </div>
+        <form.Subscribe
+          selector={(state) => [state.values, state.isSubmitting] as const}
+        >
+          {([values, isSubmitting]) => {
+            const canSubmit =
+              values.name.trim().length > 0 &&
+              values.category.length > 0 &&
+              values.countryName.trim().length > 0 &&
+              values.city.trim().length > 0 &&
+              values.description.trim().length > 0 &&
+              Boolean(values.turnstileToken)
+            return (
+              <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || mutation.isPending}
+                  className="h-11 w-full rounded-full px-6 sm:w-auto"
+                >
+                  {isSubmitting || mutation.isPending
+                    ? m["pages.submit.submitting"]()
+                    : m["pages.submit.submit"]()}
+                </Button>
+                {!values.turnstileToken && <p>{m["pages.submit.verificationPending"]()}</p>}
+              </div>
+            )
+          }}
+        </form.Subscribe>
       </form>
     </article>
   )

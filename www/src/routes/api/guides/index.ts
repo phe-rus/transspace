@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { listResources, submitResource } from "@/domains/resources"
+import { listGuides, submitGuide } from "@/domains/guides"
 import { toHttpResponse } from "@/lib/http"
 
-export const Route = createFileRoute("/api/resources")({
+export const Route = createFileRoute("/api/guides/")({
     server: {
         handlers: {
             GET: ({ request }) =>
@@ -11,21 +11,9 @@ export const Route = createFileRoute("/api/resources")({
                     const params = Object.fromEntries(
                         url.searchParams.entries()
                     )
-                    return listResources({
+                    return listGuides({
                         data: {
                             ...params,
-                            verifiedOnly:
-                                params.verifiedOnly === "true"
-                                    ? true
-                                    : undefined,
-                            freeOnly:
-                                params.freeOnly === "true"
-                                    ? true
-                                    : undefined,
-                            internationalOnly:
-                                params.internationalOnly === "true"
-                                    ? true
-                                    : undefined,
                             limit: params.limit
                                 ? Number(params.limit)
                                 : undefined,
@@ -34,7 +22,7 @@ export const Route = createFileRoute("/api/resources")({
                 }),
             POST: ({ request }) =>
                 toHttpResponse(async () =>
-                    submitResource({
+                    submitGuide({
                         data: await request.json(),
                     })
                 ),

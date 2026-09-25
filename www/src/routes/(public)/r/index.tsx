@@ -16,22 +16,21 @@ import { Link, createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { z } from "zod"
 
-// held only in the URL, never in localStorage or any other persistent
-// client storage (spec 0003-resource-directory AC-6). countryId, not a
-// free-text name: the picker is a list of countries that actually have
-// published resources, never a blind text field with no feedback about
-// what's there (city is dropped for now, see Follow-up)
-const searchSchema = z.object({
-  search: z.string().optional(),
-  category: z.string().optional(),
-  countryId: z.string().optional(),
-  verifiedOnly: z.boolean().optional(),
-  freeOnly: z.boolean().optional(),
-  internationalOnly: z.boolean().optional(),
-})
-
 export const Route = createFileRoute("/(public)/r/")({
-  validateSearch: searchSchema,
+  // held only in the URL, never in localStorage or any other
+  // persistent client storage (spec 0003-resource-directory AC-6).
+  // countryId, not a free-text name: the picker is a list of countries
+  // that actually have published resources, never a blind text field
+  // with no feedback about what's there (city is dropped for now, see
+  // Follow-up)
+  validateSearch: z.object({
+    search: z.string().optional(),
+    category: z.string().optional(),
+    countryId: z.string().optional(),
+    verifiedOnly: z.boolean().optional(),
+    freeOnly: z.boolean().optional(),
+    internationalOnly: z.boolean().optional(),
+  }),
   loaderDeps: ({ search }) => search,
   loader: ({ context, deps }) =>
     Promise.all([

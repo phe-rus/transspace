@@ -1,5 +1,6 @@
 import { GuideCard } from "@/components/guides/guide-card"
 import { listGuidesQueryOptions } from "@/domains/guides"
+import { authGateQueryOptions } from "@/lib/auth-gate"
 import { m } from "@/paraglide/messages"
 import {
   GUIDE_CATEGORIES,
@@ -15,19 +16,23 @@ import { Link, createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { z } from "zod"
 
-const searchSchema = z.object({
-  search: z.string().optional(),
-  category: z.string().optional(),
-})
-
 export const Route = createFileRoute("/(public)/guides/")({
-  validateSearch: searchSchema,
+  validateSearch: z.object({
+    search: z.string().optional(),
+    category: z.string().optional(),
+  }),
   loaderDeps: ({ search }) => search,
   loader: ({ context, deps }) =>
-    context.queryClient.query({
-      ...listGuidesQueryOptions(deps),
-      staleTime: "static",
-    }),
+    Promise.all([
+      context.queryClient.query({
+        ...listGuidesQueryOptions(deps),
+        staleTime: "static",
+      }),
+      context.queryClient.query({
+        ...authGateQueryOptions(),
+        staleTime: "static",
+      }),
+    ]),
   component: RouteComponent,
 })
 
@@ -35,6 +40,7 @@ function RouteComponent() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const { data } = useSuspenseQuery(listGuidesQueryOptions(search))
+  const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
 
   const patchSearch = (patch: Partial<typeof search>) =>
     navigate({ search: (prev) => ({ ...prev, ...patch }) })
@@ -65,11 +71,11 @@ function RouteComponent() {
           <Button
             variant="secondary"
             nativeButton={false}
-            render={<Link to="/submit-guide" />}
+            render={<Link to={authGate.signedIn ? "/submit-guide" : "/auth"} />}
             className="h-11 shrink-0 gap-1.5 rounded-full px-5"
           >
             <HugeiconsIcon icon={Add01Icon} />
-            {m["pages.guides.contribute"]()}
+            {authGate.signedIn ? m["pages.guides.contribute"]() : m["pages.guides.signInToContribute"]()}
           </Button>
         </div>
 

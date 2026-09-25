@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { getResource } from "@/domains/resources"
+import { getGuide } from "@/domains/guides"
 import { toHttpResponse } from "@/lib/http"
 
-export const Route = createFileRoute("/api/resources/$id")({
+export const Route = createFileRoute("/api/guides/$id/")({
     server: {
         handlers: {
             GET: ({ params }) =>
-                toHttpResponse(() => getResource({ data: params })),
+                toHttpResponse(() => getGuide({ data: params })),
         },
     },
 })

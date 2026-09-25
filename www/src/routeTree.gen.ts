@@ -27,12 +27,7 @@ import { Route as publicSubmitRouteRouteImport } from './routes/(public)/submit/
 import { Route as publicSubmitGuideRouteRouteImport } from './routes/(public)/submit-guide/route'
 import { Route as publicSupportRouteRouteImport } from './routes/(public)/support/route'
 import { Route as ApiAccountRouteImport } from './routes/api/account'
-import { Route as ApiAppLockRouteImport } from './routes/api/app-lock'
-import { Route as ApiGuidesRouteImport } from './routes/api/guides'
-import { Route as ApiModeratorsRouteImport } from './routes/api/moderators'
 import { Route as ApiProfileRouteImport } from './routes/api/profile'
-import { Route as ApiResourcesRouteImport } from './routes/api/resources'
-import { Route as ApiUploadsRouteImport } from './routes/api/uploads'
 import { Route as authenticationAuthIndexRouteImport } from './routes/(authentication)/auth/index'
 import { Route as authenticationOnboardingIndexRouteImport } from './routes/(authentication)/onboarding/index'
 import { Route as authenticationResetLockIndexRouteImport } from './routes/(authentication)/reset-lock/index'
@@ -58,16 +53,20 @@ import { Route as publicStoriesIndexRouteImport } from './routes/(public)/storie
 import { Route as publicSubmitGuideIndexRouteImport } from './routes/(public)/submit-guide/index'
 import { Route as publicSubmitIndexRouteImport } from './routes/(public)/submit/index'
 import { Route as publicSupportIndexRouteImport } from './routes/(public)/support/index'
-import { Route as ApiAppLockResetRouteImport } from './routes/api/app-lock.reset'
-import { Route as ApiAppLockVerifyRouteImport } from './routes/api/app-lock.verify'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
-import { Route as ApiAuthLoginRouteImport } from './routes/api/auth.login'
-import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth.logout'
-import { Route as ApiGuidesIdRouteImport } from './routes/api/guides.$id'
-import { Route as ApiGuidesUploadImageRouteImport } from './routes/api/guides.upload-image'
-import { Route as ApiModeratorsUserLinkIdRouteImport } from './routes/api/moderators.$userLinkId'
-import { Route as ApiResourcesIdRouteImport } from './routes/api/resources.$id'
-import { Route as ApiUploadsSplatRouteImport } from './routes/api/uploads.$'
+import { Route as ApiAppLockIndexRouteImport } from './routes/api/app-lock/index'
+import { Route as ApiAppLockResetRouteImport } from './routes/api/app-lock/reset'
+import { Route as ApiAppLockVerifyRouteImport } from './routes/api/app-lock/verify'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
+import { Route as ApiGuidesIndexRouteImport } from './routes/api/guides/index'
+import { Route as ApiGuidesSeriesRouteImport } from './routes/api/guides/series'
+import { Route as ApiGuidesUploadImageRouteImport } from './routes/api/guides/upload-image'
+import { Route as ApiModeratorsIndexRouteImport } from './routes/api/moderators/index'
+import { Route as ApiModeratorsUserLinkIdRouteImport } from './routes/api/moderators/$userLinkId'
+import { Route as ApiResourcesIndexRouteImport } from './routes/api/resources/index'
+import { Route as ApiUploadsIndexRouteImport } from './routes/api/uploads/index'
+import { Route as ApiUploadsSplatRouteImport } from './routes/api/uploads/$'
 import { Route as publicGuidesGuideIdDetailsRouteRouteImport } from './routes/(public)/guides/$guideId/details/route'
 import { Route as publicProfileAccountSettingsIndexRouteImport } from './routes/(public)/profile/account-settings/index'
 import { Route as publicProfileHelpAndSupportIndexRouteImport } from './routes/(public)/profile/help-and-support/index'
@@ -80,16 +79,18 @@ import { Route as publicRLegalIndexRouteImport } from './routes/(public)/r/legal
 import { Route as publicRMentalHealthIndexRouteImport } from './routes/(public)/r/mental-health/index'
 import { Route as publicRSafeSpaceIndexRouteImport } from './routes/(public)/r/safe-space/index'
 import { Route as publicRTravelIndexRouteImport } from './routes/(public)/r/travel/index'
-import { Route as ApiGuidesIdPublishRouteImport } from './routes/api/guides.$id.publish'
-import { Route as ApiGuidesIdRejectRouteImport } from './routes/api/guides.$id.reject'
-import { Route as ApiResourcesIdPublishRouteImport } from './routes/api/resources.$id.publish'
-import { Route as ApiResourcesIdRejectRouteImport } from './routes/api/resources.$id.reject'
-import { Route as ApiTrustSignalsContentTypeContentIdRouteImport } from './routes/api/trust-signals.$contentType.$contentId'
+import { Route as ApiGuidesIdIndexRouteImport } from './routes/api/guides/$id/index'
+import { Route as ApiGuidesIdPublishRouteImport } from './routes/api/guides/$id/publish'
+import { Route as ApiGuidesIdRejectRouteImport } from './routes/api/guides/$id/reject'
+import { Route as ApiResourcesIdIndexRouteImport } from './routes/api/resources/$id/index'
+import { Route as ApiResourcesIdPublishRouteImport } from './routes/api/resources/$id/publish'
+import { Route as ApiResourcesIdRejectRouteImport } from './routes/api/resources/$id/reject'
 import { Route as publicGuidesGuideIdDetailsIndexRouteImport } from './routes/(public)/guides/$guideId/details/index'
 import { Route as publicRResourceIdDetailsIndexRouteImport } from './routes/(public)/r/$resourceId/details/index'
-import { Route as ApiTrustSignalsContentTypeContentIdCoSignRouteImport } from './routes/api/trust-signals.$contentType.$contentId.co-sign'
-import { Route as ApiTrustSignalsContentTypeContentIdDisputeRouteImport } from './routes/api/trust-signals.$contentType.$contentId.dispute'
-import { Route as ApiTrustSignalsContentTypeContentIdVerifyRouteImport } from './routes/api/trust-signals.$contentType.$contentId.verify'
+import { Route as ApiTrustSignalsContentTypeContentIdIndexRouteImport } from './routes/api/trust-signals/$contentType/$contentId/index'
+import { Route as ApiTrustSignalsContentTypeContentIdCoSignRouteImport } from './routes/api/trust-signals/$contentType/$contentId/co-sign'
+import { Route as ApiTrustSignalsContentTypeContentIdDisputeRouteImport } from './routes/api/trust-signals/$contentType/$contentId/dispute'
+import { Route as ApiTrustSignalsContentTypeContentIdVerifyRouteImport } from './routes/api/trust-signals/$contentType/$contentId/verify'
 
 const authenticationRouteRoute = authenticationRouteRouteImport.update({
   id: '/(authentication)',
@@ -182,34 +183,9 @@ const ApiAccountRoute = ApiAccountRouteImport.update({
   path: '/api/account',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAppLockRoute = ApiAppLockRouteImport.update({
-  id: '/api/app-lock',
-  path: '/api/app-lock',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGuidesRoute = ApiGuidesRouteImport.update({
-  id: '/api/guides',
-  path: '/api/guides',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiModeratorsRoute = ApiModeratorsRouteImport.update({
-  id: '/api/moderators',
-  path: '/api/moderators',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiProfileRoute = ApiProfileRouteImport.update({
   id: '/api/profile',
   path: '/api/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiResourcesRoute = ApiResourcesRouteImport.update({
-  id: '/api/resources',
-  path: '/api/resources',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiUploadsRoute = ApiUploadsRouteImport.update({
-  id: '/api/uploads',
-  path: '/api/uploads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authenticationAuthIndexRoute = authenticationAuthIndexRouteImport.update({
@@ -349,15 +325,20 @@ const publicSupportIndexRoute = publicSupportIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicSupportRouteRoute,
 } as any)
+const ApiAppLockIndexRoute = ApiAppLockIndexRouteImport.update({
+  id: '/api/app-lock/',
+  path: '/api/app-lock/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAppLockResetRoute = ApiAppLockResetRouteImport.update({
-  id: '/reset',
-  path: '/reset',
-  getParentRoute: () => ApiAppLockRoute,
+  id: '/api/app-lock/reset',
+  path: '/api/app-lock/reset',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAppLockVerifyRoute = ApiAppLockVerifyRouteImport.update({
-  id: '/verify',
-  path: '/verify',
-  getParentRoute: () => ApiAppLockRoute,
+  id: '/api/app-lock/verify',
+  path: '/api/app-lock/verify',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -374,30 +355,45 @@ const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
   path: '/api/auth/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiGuidesIdRoute = ApiGuidesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ApiGuidesRoute,
+const ApiGuidesIndexRoute = ApiGuidesIndexRouteImport.update({
+  id: '/api/guides/',
+  path: '/api/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGuidesSeriesRoute = ApiGuidesSeriesRouteImport.update({
+  id: '/api/guides/series',
+  path: '/api/guides/series',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGuidesUploadImageRoute = ApiGuidesUploadImageRouteImport.update({
-  id: '/upload-image',
-  path: '/upload-image',
-  getParentRoute: () => ApiGuidesRoute,
+  id: '/api/guides/upload-image',
+  path: '/api/guides/upload-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiModeratorsIndexRoute = ApiModeratorsIndexRouteImport.update({
+  id: '/api/moderators/',
+  path: '/api/moderators/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiModeratorsUserLinkIdRoute = ApiModeratorsUserLinkIdRouteImport.update({
-  id: '/$userLinkId',
-  path: '/$userLinkId',
-  getParentRoute: () => ApiModeratorsRoute,
+  id: '/api/moderators/$userLinkId',
+  path: '/api/moderators/$userLinkId',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ApiResourcesIdRoute = ApiResourcesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ApiResourcesRoute,
+const ApiResourcesIndexRoute = ApiResourcesIndexRouteImport.update({
+  id: '/api/resources/',
+  path: '/api/resources/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUploadsIndexRoute = ApiUploadsIndexRouteImport.update({
+  id: '/api/uploads/',
+  path: '/api/uploads/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUploadsSplatRoute = ApiUploadsSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => ApiUploadsRoute,
+  id: '/api/uploads/$',
+  path: '/api/uploads/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const publicGuidesGuideIdDetailsRouteRoute =
   publicGuidesGuideIdDetailsRouteRouteImport.update({
@@ -468,32 +464,36 @@ const publicRTravelIndexRoute = publicRTravelIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRTravelRouteRoute,
 } as any)
+const ApiGuidesIdIndexRoute = ApiGuidesIdIndexRouteImport.update({
+  id: '/api/guides/$id/',
+  path: '/api/guides/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGuidesIdPublishRoute = ApiGuidesIdPublishRouteImport.update({
-  id: '/publish',
-  path: '/publish',
-  getParentRoute: () => ApiGuidesIdRoute,
+  id: '/api/guides/$id/publish',
+  path: '/api/guides/$id/publish',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGuidesIdRejectRoute = ApiGuidesIdRejectRouteImport.update({
-  id: '/reject',
-  path: '/reject',
-  getParentRoute: () => ApiGuidesIdRoute,
+  id: '/api/guides/$id/reject',
+  path: '/api/guides/$id/reject',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiResourcesIdIndexRoute = ApiResourcesIdIndexRouteImport.update({
+  id: '/api/resources/$id/',
+  path: '/api/resources/$id/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiResourcesIdPublishRoute = ApiResourcesIdPublishRouteImport.update({
-  id: '/publish',
-  path: '/publish',
-  getParentRoute: () => ApiResourcesIdRoute,
+  id: '/api/resources/$id/publish',
+  path: '/api/resources/$id/publish',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiResourcesIdRejectRoute = ApiResourcesIdRejectRouteImport.update({
-  id: '/reject',
-  path: '/reject',
-  getParentRoute: () => ApiResourcesIdRoute,
+  id: '/api/resources/$id/reject',
+  path: '/api/resources/$id/reject',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ApiTrustSignalsContentTypeContentIdRoute =
-  ApiTrustSignalsContentTypeContentIdRouteImport.update({
-    id: '/api/trust-signals/$contentType/$contentId',
-    path: '/api/trust-signals/$contentType/$contentId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const publicGuidesGuideIdDetailsIndexRoute =
   publicGuidesGuideIdDetailsIndexRouteImport.update({
     id: '/',
@@ -506,23 +506,29 @@ const publicRResourceIdDetailsIndexRoute =
     path: '/',
     getParentRoute: () => publicRResourceIdDetailsRouteRoute,
   } as any)
+const ApiTrustSignalsContentTypeContentIdIndexRoute =
+  ApiTrustSignalsContentTypeContentIdIndexRouteImport.update({
+    id: '/api/trust-signals/$contentType/$contentId/',
+    path: '/api/trust-signals/$contentType/$contentId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiTrustSignalsContentTypeContentIdCoSignRoute =
   ApiTrustSignalsContentTypeContentIdCoSignRouteImport.update({
-    id: '/co-sign',
-    path: '/co-sign',
-    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
+    id: '/api/trust-signals/$contentType/$contentId/co-sign',
+    path: '/api/trust-signals/$contentType/$contentId/co-sign',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ApiTrustSignalsContentTypeContentIdDisputeRoute =
   ApiTrustSignalsContentTypeContentIdDisputeRouteImport.update({
-    id: '/dispute',
-    path: '/dispute',
-    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
+    id: '/api/trust-signals/$contentType/$contentId/dispute',
+    path: '/api/trust-signals/$contentType/$contentId/dispute',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ApiTrustSignalsContentTypeContentIdVerifyRoute =
   ApiTrustSignalsContentTypeContentIdVerifyRouteImport.update({
-    id: '/verify',
-    path: '/verify',
-    getParentRoute: () => ApiTrustSignalsContentTypeContentIdRoute,
+    id: '/api/trust-signals/$contentType/$contentId/verify',
+    path: '/api/trust-signals/$contentType/$contentId/verify',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -540,12 +546,7 @@ export interface FileRoutesByFullPath {
   '/submit-guide': typeof publicSubmitGuideRouteRouteWithChildren
   '/support': typeof publicSupportRouteRouteWithChildren
   '/api/account': typeof ApiAccountRoute
-  '/api/app-lock': typeof ApiAppLockRouteWithChildren
-  '/api/guides': typeof ApiGuidesRouteWithChildren
-  '/api/moderators': typeof ApiModeratorsRouteWithChildren
   '/api/profile': typeof ApiProfileRoute
-  '/api/resources': typeof ApiResourcesRouteWithChildren
-  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/': typeof publicIndexRoute
   '/guides/$guideId': typeof publicGuidesGuideIdRouteRouteWithChildren
   '/profile/account-settings': typeof publicProfileAccountSettingsRouteRouteWithChildren
@@ -564,10 +565,9 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
-  '/api/guides/$id': typeof ApiGuidesIdRouteWithChildren
+  '/api/guides/series': typeof ApiGuidesSeriesRoute
   '/api/guides/upload-image': typeof ApiGuidesUploadImageRoute
   '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
-  '/api/resources/$id': typeof ApiResourcesIdRouteWithChildren
   '/api/uploads/$': typeof ApiUploadsSplatRoute
   '/auth/': typeof authenticationAuthIndexRoute
   '/onboarding/': typeof authenticationOnboardingIndexRoute
@@ -582,13 +582,17 @@ export interface FileRoutesByFullPath {
   '/submit-guide/': typeof publicSubmitGuideIndexRoute
   '/submit/': typeof publicSubmitIndexRoute
   '/support/': typeof publicSupportIndexRoute
+  '/api/app-lock/': typeof ApiAppLockIndexRoute
+  '/api/guides/': typeof ApiGuidesIndexRoute
+  '/api/moderators/': typeof ApiModeratorsIndexRoute
+  '/api/resources/': typeof ApiResourcesIndexRoute
+  '/api/uploads/': typeof ApiUploadsIndexRoute
   '/guides/$guideId/details': typeof publicGuidesGuideIdDetailsRouteRouteWithChildren
   '/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
   '/api/guides/$id/publish': typeof ApiGuidesIdPublishRoute
   '/api/guides/$id/reject': typeof ApiGuidesIdRejectRoute
   '/api/resources/$id/publish': typeof ApiResourcesIdPublishRoute
   '/api/resources/$id/reject': typeof ApiResourcesIdRejectRoute
-  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/profile/account-settings/': typeof publicProfileAccountSettingsIndexRoute
   '/profile/help-and-support/': typeof publicProfileHelpAndSupportIndexRoute
   '/profile/security/': typeof publicProfileSecurityIndexRoute
@@ -599,20 +603,18 @@ export interface FileRoutesByFullPath {
   '/r/mental-health/': typeof publicRMentalHealthIndexRoute
   '/r/safe-space/': typeof publicRSafeSpaceIndexRoute
   '/r/travel/': typeof publicRTravelIndexRoute
+  '/api/guides/$id/': typeof ApiGuidesIdIndexRoute
+  '/api/resources/$id/': typeof ApiResourcesIdIndexRoute
   '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
   '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/guides/$guideId/details/': typeof publicGuidesGuideIdDetailsIndexRoute
   '/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
+  '/api/trust-signals/$contentType/$contentId/': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/api/account': typeof ApiAccountRoute
-  '/api/app-lock': typeof ApiAppLockRouteWithChildren
-  '/api/guides': typeof ApiGuidesRouteWithChildren
-  '/api/moderators': typeof ApiModeratorsRouteWithChildren
   '/api/profile': typeof ApiProfileRoute
-  '/api/resources': typeof ApiResourcesRouteWithChildren
-  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/': typeof publicIndexRoute
   '/guides/$guideId': typeof publicGuidesGuideIdRouteRouteWithChildren
   '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
@@ -621,10 +623,9 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
-  '/api/guides/$id': typeof ApiGuidesIdRouteWithChildren
+  '/api/guides/series': typeof ApiGuidesSeriesRoute
   '/api/guides/upload-image': typeof ApiGuidesUploadImageRoute
   '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
-  '/api/resources/$id': typeof ApiResourcesIdRouteWithChildren
   '/api/uploads/$': typeof ApiUploadsSplatRoute
   '/auth': typeof authenticationAuthIndexRoute
   '/onboarding': typeof authenticationOnboardingIndexRoute
@@ -639,11 +640,15 @@ export interface FileRoutesByTo {
   '/submit-guide': typeof publicSubmitGuideIndexRoute
   '/submit': typeof publicSubmitIndexRoute
   '/support': typeof publicSupportIndexRoute
+  '/api/app-lock': typeof ApiAppLockIndexRoute
+  '/api/guides': typeof ApiGuidesIndexRoute
+  '/api/moderators': typeof ApiModeratorsIndexRoute
+  '/api/resources': typeof ApiResourcesIndexRoute
+  '/api/uploads': typeof ApiUploadsIndexRoute
   '/api/guides/$id/publish': typeof ApiGuidesIdPublishRoute
   '/api/guides/$id/reject': typeof ApiGuidesIdRejectRoute
   '/api/resources/$id/publish': typeof ApiResourcesIdPublishRoute
   '/api/resources/$id/reject': typeof ApiResourcesIdRejectRoute
-  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/profile/account-settings': typeof publicProfileAccountSettingsIndexRoute
   '/profile/help-and-support': typeof publicProfileHelpAndSupportIndexRoute
   '/profile/security': typeof publicProfileSecurityIndexRoute
@@ -654,11 +659,14 @@ export interface FileRoutesByTo {
   '/r/mental-health': typeof publicRMentalHealthIndexRoute
   '/r/safe-space': typeof publicRSafeSpaceIndexRoute
   '/r/travel': typeof publicRTravelIndexRoute
+  '/api/guides/$id': typeof ApiGuidesIdIndexRoute
+  '/api/resources/$id': typeof ApiResourcesIdIndexRoute
   '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
   '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/guides/$guideId/details': typeof publicGuidesGuideIdDetailsIndexRoute
   '/r/$resourceId/details': typeof publicRResourceIdDetailsIndexRoute
+  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -679,12 +687,7 @@ export interface FileRoutesById {
   '/(public)/submit-guide': typeof publicSubmitGuideRouteRouteWithChildren
   '/(public)/support': typeof publicSupportRouteRouteWithChildren
   '/api/account': typeof ApiAccountRoute
-  '/api/app-lock': typeof ApiAppLockRouteWithChildren
-  '/api/guides': typeof ApiGuidesRouteWithChildren
-  '/api/moderators': typeof ApiModeratorsRouteWithChildren
   '/api/profile': typeof ApiProfileRoute
-  '/api/resources': typeof ApiResourcesRouteWithChildren
-  '/api/uploads': typeof ApiUploadsRouteWithChildren
   '/(public)/': typeof publicIndexRoute
   '/(public)/guides/$guideId': typeof publicGuidesGuideIdRouteRouteWithChildren
   '/(public)/profile/account-settings': typeof publicProfileAccountSettingsRouteRouteWithChildren
@@ -703,10 +706,9 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
-  '/api/guides/$id': typeof ApiGuidesIdRouteWithChildren
+  '/api/guides/series': typeof ApiGuidesSeriesRoute
   '/api/guides/upload-image': typeof ApiGuidesUploadImageRoute
   '/api/moderators/$userLinkId': typeof ApiModeratorsUserLinkIdRoute
-  '/api/resources/$id': typeof ApiResourcesIdRouteWithChildren
   '/api/uploads/$': typeof ApiUploadsSplatRoute
   '/(authentication)/auth/': typeof authenticationAuthIndexRoute
   '/(authentication)/onboarding/': typeof authenticationOnboardingIndexRoute
@@ -721,13 +723,17 @@ export interface FileRoutesById {
   '/(public)/submit-guide/': typeof publicSubmitGuideIndexRoute
   '/(public)/submit/': typeof publicSubmitIndexRoute
   '/(public)/support/': typeof publicSupportIndexRoute
+  '/api/app-lock/': typeof ApiAppLockIndexRoute
+  '/api/guides/': typeof ApiGuidesIndexRoute
+  '/api/moderators/': typeof ApiModeratorsIndexRoute
+  '/api/resources/': typeof ApiResourcesIndexRoute
+  '/api/uploads/': typeof ApiUploadsIndexRoute
   '/(public)/guides/$guideId/details': typeof publicGuidesGuideIdDetailsRouteRouteWithChildren
   '/(public)/r/$resourceId/details': typeof publicRResourceIdDetailsRouteRouteWithChildren
   '/api/guides/$id/publish': typeof ApiGuidesIdPublishRoute
   '/api/guides/$id/reject': typeof ApiGuidesIdRejectRoute
   '/api/resources/$id/publish': typeof ApiResourcesIdPublishRoute
   '/api/resources/$id/reject': typeof ApiResourcesIdRejectRoute
-  '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
   '/(public)/profile/account-settings/': typeof publicProfileAccountSettingsIndexRoute
   '/(public)/profile/help-and-support/': typeof publicProfileHelpAndSupportIndexRoute
   '/(public)/profile/security/': typeof publicProfileSecurityIndexRoute
@@ -738,11 +744,14 @@ export interface FileRoutesById {
   '/(public)/r/mental-health/': typeof publicRMentalHealthIndexRoute
   '/(public)/r/safe-space/': typeof publicRSafeSpaceIndexRoute
   '/(public)/r/travel/': typeof publicRTravelIndexRoute
+  '/api/guides/$id/': typeof ApiGuidesIdIndexRoute
+  '/api/resources/$id/': typeof ApiResourcesIdIndexRoute
   '/api/trust-signals/$contentType/$contentId/co-sign': typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
   '/api/trust-signals/$contentType/$contentId/dispute': typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/(public)/guides/$guideId/details/': typeof publicGuidesGuideIdDetailsIndexRoute
   '/(public)/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
+  '/api/trust-signals/$contentType/$contentId/': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -761,12 +770,7 @@ export interface FileRouteTypes {
     | '/submit-guide'
     | '/support'
     | '/api/account'
-    | '/api/app-lock'
-    | '/api/guides'
-    | '/api/moderators'
     | '/api/profile'
-    | '/api/resources'
-    | '/api/uploads'
     | '/'
     | '/guides/$guideId'
     | '/profile/account-settings'
@@ -785,10 +789,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/auth/login'
     | '/api/auth/logout'
-    | '/api/guides/$id'
+    | '/api/guides/series'
     | '/api/guides/upload-image'
     | '/api/moderators/$userLinkId'
-    | '/api/resources/$id'
     | '/api/uploads/$'
     | '/auth/'
     | '/onboarding/'
@@ -803,13 +806,17 @@ export interface FileRouteTypes {
     | '/submit-guide/'
     | '/submit/'
     | '/support/'
+    | '/api/app-lock/'
+    | '/api/guides/'
+    | '/api/moderators/'
+    | '/api/resources/'
+    | '/api/uploads/'
     | '/guides/$guideId/details'
     | '/r/$resourceId/details'
     | '/api/guides/$id/publish'
     | '/api/guides/$id/reject'
     | '/api/resources/$id/publish'
     | '/api/resources/$id/reject'
-    | '/api/trust-signals/$contentType/$contentId'
     | '/profile/account-settings/'
     | '/profile/help-and-support/'
     | '/profile/security/'
@@ -820,20 +827,18 @@ export interface FileRouteTypes {
     | '/r/mental-health/'
     | '/r/safe-space/'
     | '/r/travel/'
+    | '/api/guides/$id/'
+    | '/api/resources/$id/'
     | '/api/trust-signals/$contentType/$contentId/co-sign'
     | '/api/trust-signals/$contentType/$contentId/dispute'
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/guides/$guideId/details/'
     | '/r/$resourceId/details/'
+    | '/api/trust-signals/$contentType/$contentId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/api/account'
-    | '/api/app-lock'
-    | '/api/guides'
-    | '/api/moderators'
     | '/api/profile'
-    | '/api/resources'
-    | '/api/uploads'
     | '/'
     | '/guides/$guideId'
     | '/r/$resourceId'
@@ -842,10 +847,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/auth/login'
     | '/api/auth/logout'
-    | '/api/guides/$id'
+    | '/api/guides/series'
     | '/api/guides/upload-image'
     | '/api/moderators/$userLinkId'
-    | '/api/resources/$id'
     | '/api/uploads/$'
     | '/auth'
     | '/onboarding'
@@ -860,11 +864,15 @@ export interface FileRouteTypes {
     | '/submit-guide'
     | '/submit'
     | '/support'
+    | '/api/app-lock'
+    | '/api/guides'
+    | '/api/moderators'
+    | '/api/resources'
+    | '/api/uploads'
     | '/api/guides/$id/publish'
     | '/api/guides/$id/reject'
     | '/api/resources/$id/publish'
     | '/api/resources/$id/reject'
-    | '/api/trust-signals/$contentType/$contentId'
     | '/profile/account-settings'
     | '/profile/help-and-support'
     | '/profile/security'
@@ -875,11 +883,14 @@ export interface FileRouteTypes {
     | '/r/mental-health'
     | '/r/safe-space'
     | '/r/travel'
+    | '/api/guides/$id'
+    | '/api/resources/$id'
     | '/api/trust-signals/$contentType/$contentId/co-sign'
     | '/api/trust-signals/$contentType/$contentId/dispute'
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/guides/$guideId/details'
     | '/r/$resourceId/details'
+    | '/api/trust-signals/$contentType/$contentId'
   id:
     | '__root__'
     | '/(authentication)'
@@ -899,12 +910,7 @@ export interface FileRouteTypes {
     | '/(public)/submit-guide'
     | '/(public)/support'
     | '/api/account'
-    | '/api/app-lock'
-    | '/api/guides'
-    | '/api/moderators'
     | '/api/profile'
-    | '/api/resources'
-    | '/api/uploads'
     | '/(public)/'
     | '/(public)/guides/$guideId'
     | '/(public)/profile/account-settings'
@@ -923,10 +929,9 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/auth/login'
     | '/api/auth/logout'
-    | '/api/guides/$id'
+    | '/api/guides/series'
     | '/api/guides/upload-image'
     | '/api/moderators/$userLinkId'
-    | '/api/resources/$id'
     | '/api/uploads/$'
     | '/(authentication)/auth/'
     | '/(authentication)/onboarding/'
@@ -941,13 +946,17 @@ export interface FileRouteTypes {
     | '/(public)/submit-guide/'
     | '/(public)/submit/'
     | '/(public)/support/'
+    | '/api/app-lock/'
+    | '/api/guides/'
+    | '/api/moderators/'
+    | '/api/resources/'
+    | '/api/uploads/'
     | '/(public)/guides/$guideId/details'
     | '/(public)/r/$resourceId/details'
     | '/api/guides/$id/publish'
     | '/api/guides/$id/reject'
     | '/api/resources/$id/publish'
     | '/api/resources/$id/reject'
-    | '/api/trust-signals/$contentType/$contentId'
     | '/(public)/profile/account-settings/'
     | '/(public)/profile/help-and-support/'
     | '/(public)/profile/security/'
@@ -958,11 +967,14 @@ export interface FileRouteTypes {
     | '/(public)/r/mental-health/'
     | '/(public)/r/safe-space/'
     | '/(public)/r/travel/'
+    | '/api/guides/$id/'
+    | '/api/resources/$id/'
     | '/api/trust-signals/$contentType/$contentId/co-sign'
     | '/api/trust-signals/$contentType/$contentId/dispute'
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/(public)/guides/$guideId/details/'
     | '/(public)/r/$resourceId/details/'
+    | '/api/trust-signals/$contentType/$contentId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -970,16 +982,31 @@ export interface RootRouteChildren {
   protectionRouteRoute: typeof protectionRouteRoute
   publicRouteRoute: typeof publicRouteRouteWithChildren
   ApiAccountRoute: typeof ApiAccountRoute
-  ApiAppLockRoute: typeof ApiAppLockRouteWithChildren
-  ApiGuidesRoute: typeof ApiGuidesRouteWithChildren
-  ApiModeratorsRoute: typeof ApiModeratorsRouteWithChildren
   ApiProfileRoute: typeof ApiProfileRoute
-  ApiResourcesRoute: typeof ApiResourcesRouteWithChildren
-  ApiUploadsRoute: typeof ApiUploadsRouteWithChildren
+  ApiAppLockResetRoute: typeof ApiAppLockResetRoute
+  ApiAppLockVerifyRoute: typeof ApiAppLockVerifyRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
-  ApiTrustSignalsContentTypeContentIdRoute: typeof ApiTrustSignalsContentTypeContentIdRouteWithChildren
+  ApiGuidesSeriesRoute: typeof ApiGuidesSeriesRoute
+  ApiGuidesUploadImageRoute: typeof ApiGuidesUploadImageRoute
+  ApiModeratorsUserLinkIdRoute: typeof ApiModeratorsUserLinkIdRoute
+  ApiUploadsSplatRoute: typeof ApiUploadsSplatRoute
+  ApiAppLockIndexRoute: typeof ApiAppLockIndexRoute
+  ApiGuidesIndexRoute: typeof ApiGuidesIndexRoute
+  ApiModeratorsIndexRoute: typeof ApiModeratorsIndexRoute
+  ApiResourcesIndexRoute: typeof ApiResourcesIndexRoute
+  ApiUploadsIndexRoute: typeof ApiUploadsIndexRoute
+  ApiGuidesIdPublishRoute: typeof ApiGuidesIdPublishRoute
+  ApiGuidesIdRejectRoute: typeof ApiGuidesIdRejectRoute
+  ApiResourcesIdPublishRoute: typeof ApiResourcesIdPublishRoute
+  ApiResourcesIdRejectRoute: typeof ApiResourcesIdRejectRoute
+  ApiGuidesIdIndexRoute: typeof ApiGuidesIdIndexRoute
+  ApiResourcesIdIndexRoute: typeof ApiResourcesIdIndexRoute
+  ApiTrustSignalsContentTypeContentIdCoSignRoute: typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
+  ApiTrustSignalsContentTypeContentIdDisputeRoute: typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
+  ApiTrustSignalsContentTypeContentIdVerifyRoute: typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
+  ApiTrustSignalsContentTypeContentIdIndexRoute: typeof ApiTrustSignalsContentTypeContentIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1110,46 +1137,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/app-lock': {
-      id: '/api/app-lock'
-      path: '/api/app-lock'
-      fullPath: '/api/app-lock'
-      preLoaderRoute: typeof ApiAppLockRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/guides': {
-      id: '/api/guides'
-      path: '/api/guides'
-      fullPath: '/api/guides'
-      preLoaderRoute: typeof ApiGuidesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/moderators': {
-      id: '/api/moderators'
-      path: '/api/moderators'
-      fullPath: '/api/moderators'
-      preLoaderRoute: typeof ApiModeratorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/profile': {
       id: '/api/profile'
       path: '/api/profile'
       fullPath: '/api/profile'
       preLoaderRoute: typeof ApiProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/resources': {
-      id: '/api/resources'
-      path: '/api/resources'
-      fullPath: '/api/resources'
-      preLoaderRoute: typeof ApiResourcesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/uploads': {
-      id: '/api/uploads'
-      path: '/api/uploads'
-      fullPath: '/api/uploads'
-      preLoaderRoute: typeof ApiUploadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(authentication)/auth/': {
@@ -1327,19 +1319,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicSupportIndexRouteImport
       parentRoute: typeof publicSupportRouteRoute
     }
+    '/api/app-lock/': {
+      id: '/api/app-lock/'
+      path: '/api/app-lock'
+      fullPath: '/api/app-lock/'
+      preLoaderRoute: typeof ApiAppLockIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/app-lock/reset': {
       id: '/api/app-lock/reset'
-      path: '/reset'
+      path: '/api/app-lock/reset'
       fullPath: '/api/app-lock/reset'
       preLoaderRoute: typeof ApiAppLockResetRouteImport
-      parentRoute: typeof ApiAppLockRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/app-lock/verify': {
       id: '/api/app-lock/verify'
-      path: '/verify'
+      path: '/api/app-lock/verify'
       fullPath: '/api/app-lock/verify'
       preLoaderRoute: typeof ApiAppLockVerifyRouteImport
-      parentRoute: typeof ApiAppLockRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -1362,40 +1361,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthLogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/guides/$id': {
-      id: '/api/guides/$id'
-      path: '/$id'
-      fullPath: '/api/guides/$id'
-      preLoaderRoute: typeof ApiGuidesIdRouteImport
-      parentRoute: typeof ApiGuidesRoute
+    '/api/guides/': {
+      id: '/api/guides/'
+      path: '/api/guides'
+      fullPath: '/api/guides/'
+      preLoaderRoute: typeof ApiGuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/guides/series': {
+      id: '/api/guides/series'
+      path: '/api/guides/series'
+      fullPath: '/api/guides/series'
+      preLoaderRoute: typeof ApiGuidesSeriesRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/guides/upload-image': {
       id: '/api/guides/upload-image'
-      path: '/upload-image'
+      path: '/api/guides/upload-image'
       fullPath: '/api/guides/upload-image'
       preLoaderRoute: typeof ApiGuidesUploadImageRouteImport
-      parentRoute: typeof ApiGuidesRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/moderators/': {
+      id: '/api/moderators/'
+      path: '/api/moderators'
+      fullPath: '/api/moderators/'
+      preLoaderRoute: typeof ApiModeratorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/moderators/$userLinkId': {
       id: '/api/moderators/$userLinkId'
-      path: '/$userLinkId'
+      path: '/api/moderators/$userLinkId'
       fullPath: '/api/moderators/$userLinkId'
       preLoaderRoute: typeof ApiModeratorsUserLinkIdRouteImport
-      parentRoute: typeof ApiModeratorsRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/api/resources/$id': {
-      id: '/api/resources/$id'
-      path: '/$id'
-      fullPath: '/api/resources/$id'
-      preLoaderRoute: typeof ApiResourcesIdRouteImport
-      parentRoute: typeof ApiResourcesRoute
+    '/api/resources/': {
+      id: '/api/resources/'
+      path: '/api/resources'
+      fullPath: '/api/resources/'
+      preLoaderRoute: typeof ApiResourcesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/uploads/': {
+      id: '/api/uploads/'
+      path: '/api/uploads'
+      fullPath: '/api/uploads/'
+      preLoaderRoute: typeof ApiUploadsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/uploads/$': {
       id: '/api/uploads/$'
-      path: '/$'
+      path: '/api/uploads/$'
       fullPath: '/api/uploads/$'
       preLoaderRoute: typeof ApiUploadsSplatRouteImport
-      parentRoute: typeof ApiUploadsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(public)/guides/$guideId/details': {
       id: '/(public)/guides/$guideId/details'
@@ -1481,39 +1501,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicRTravelIndexRouteImport
       parentRoute: typeof publicRTravelRouteRoute
     }
+    '/api/guides/$id/': {
+      id: '/api/guides/$id/'
+      path: '/api/guides/$id'
+      fullPath: '/api/guides/$id/'
+      preLoaderRoute: typeof ApiGuidesIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/guides/$id/publish': {
       id: '/api/guides/$id/publish'
-      path: '/publish'
+      path: '/api/guides/$id/publish'
       fullPath: '/api/guides/$id/publish'
       preLoaderRoute: typeof ApiGuidesIdPublishRouteImport
-      parentRoute: typeof ApiGuidesIdRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/guides/$id/reject': {
       id: '/api/guides/$id/reject'
-      path: '/reject'
+      path: '/api/guides/$id/reject'
       fullPath: '/api/guides/$id/reject'
       preLoaderRoute: typeof ApiGuidesIdRejectRouteImport
-      parentRoute: typeof ApiGuidesIdRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resources/$id/': {
+      id: '/api/resources/$id/'
+      path: '/api/resources/$id'
+      fullPath: '/api/resources/$id/'
+      preLoaderRoute: typeof ApiResourcesIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/resources/$id/publish': {
       id: '/api/resources/$id/publish'
-      path: '/publish'
+      path: '/api/resources/$id/publish'
       fullPath: '/api/resources/$id/publish'
       preLoaderRoute: typeof ApiResourcesIdPublishRouteImport
-      parentRoute: typeof ApiResourcesIdRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/resources/$id/reject': {
       id: '/api/resources/$id/reject'
-      path: '/reject'
+      path: '/api/resources/$id/reject'
       fullPath: '/api/resources/$id/reject'
       preLoaderRoute: typeof ApiResourcesIdRejectRouteImport
-      parentRoute: typeof ApiResourcesIdRoute
-    }
-    '/api/trust-signals/$contentType/$contentId': {
-      id: '/api/trust-signals/$contentType/$contentId'
-      path: '/api/trust-signals/$contentType/$contentId'
-      fullPath: '/api/trust-signals/$contentType/$contentId'
-      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(public)/guides/$guideId/details/': {
@@ -1530,26 +1557,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicRResourceIdDetailsIndexRouteImport
       parentRoute: typeof publicRResourceIdDetailsRouteRoute
     }
+    '/api/trust-signals/$contentType/$contentId/': {
+      id: '/api/trust-signals/$contentType/$contentId/'
+      path: '/api/trust-signals/$contentType/$contentId'
+      fullPath: '/api/trust-signals/$contentType/$contentId/'
+      preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/trust-signals/$contentType/$contentId/co-sign': {
       id: '/api/trust-signals/$contentType/$contentId/co-sign'
-      path: '/co-sign'
+      path: '/api/trust-signals/$contentType/$contentId/co-sign'
       fullPath: '/api/trust-signals/$contentType/$contentId/co-sign'
       preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdCoSignRouteImport
-      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/trust-signals/$contentType/$contentId/dispute': {
       id: '/api/trust-signals/$contentType/$contentId/dispute'
-      path: '/dispute'
+      path: '/api/trust-signals/$contentType/$contentId/dispute'
       fullPath: '/api/trust-signals/$contentType/$contentId/dispute'
       preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdDisputeRouteImport
-      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/trust-signals/$contentType/$contentId/verify': {
       id: '/api/trust-signals/$contentType/$contentId/verify'
-      path: '/verify'
+      path: '/api/trust-signals/$contentType/$contentId/verify'
       fullPath: '/api/trust-signals/$contentType/$contentId/verify'
       preLoaderRoute: typeof ApiTrustSignalsContentTypeContentIdVerifyRouteImport
-      parentRoute: typeof ApiTrustSignalsContentTypeContentIdRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1987,135 +2021,40 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
-interface ApiAppLockRouteChildren {
-  ApiAppLockResetRoute: typeof ApiAppLockResetRoute
-  ApiAppLockVerifyRoute: typeof ApiAppLockVerifyRoute
-}
-
-const ApiAppLockRouteChildren: ApiAppLockRouteChildren = {
-  ApiAppLockResetRoute: ApiAppLockResetRoute,
-  ApiAppLockVerifyRoute: ApiAppLockVerifyRoute,
-}
-
-const ApiAppLockRouteWithChildren = ApiAppLockRoute._addFileChildren(
-  ApiAppLockRouteChildren,
-)
-
-interface ApiGuidesIdRouteChildren {
-  ApiGuidesIdPublishRoute: typeof ApiGuidesIdPublishRoute
-  ApiGuidesIdRejectRoute: typeof ApiGuidesIdRejectRoute
-}
-
-const ApiGuidesIdRouteChildren: ApiGuidesIdRouteChildren = {
-  ApiGuidesIdPublishRoute: ApiGuidesIdPublishRoute,
-  ApiGuidesIdRejectRoute: ApiGuidesIdRejectRoute,
-}
-
-const ApiGuidesIdRouteWithChildren = ApiGuidesIdRoute._addFileChildren(
-  ApiGuidesIdRouteChildren,
-)
-
-interface ApiGuidesRouteChildren {
-  ApiGuidesIdRoute: typeof ApiGuidesIdRouteWithChildren
-  ApiGuidesUploadImageRoute: typeof ApiGuidesUploadImageRoute
-}
-
-const ApiGuidesRouteChildren: ApiGuidesRouteChildren = {
-  ApiGuidesIdRoute: ApiGuidesIdRouteWithChildren,
-  ApiGuidesUploadImageRoute: ApiGuidesUploadImageRoute,
-}
-
-const ApiGuidesRouteWithChildren = ApiGuidesRoute._addFileChildren(
-  ApiGuidesRouteChildren,
-)
-
-interface ApiModeratorsRouteChildren {
-  ApiModeratorsUserLinkIdRoute: typeof ApiModeratorsUserLinkIdRoute
-}
-
-const ApiModeratorsRouteChildren: ApiModeratorsRouteChildren = {
-  ApiModeratorsUserLinkIdRoute: ApiModeratorsUserLinkIdRoute,
-}
-
-const ApiModeratorsRouteWithChildren = ApiModeratorsRoute._addFileChildren(
-  ApiModeratorsRouteChildren,
-)
-
-interface ApiResourcesIdRouteChildren {
-  ApiResourcesIdPublishRoute: typeof ApiResourcesIdPublishRoute
-  ApiResourcesIdRejectRoute: typeof ApiResourcesIdRejectRoute
-}
-
-const ApiResourcesIdRouteChildren: ApiResourcesIdRouteChildren = {
-  ApiResourcesIdPublishRoute: ApiResourcesIdPublishRoute,
-  ApiResourcesIdRejectRoute: ApiResourcesIdRejectRoute,
-}
-
-const ApiResourcesIdRouteWithChildren = ApiResourcesIdRoute._addFileChildren(
-  ApiResourcesIdRouteChildren,
-)
-
-interface ApiResourcesRouteChildren {
-  ApiResourcesIdRoute: typeof ApiResourcesIdRouteWithChildren
-}
-
-const ApiResourcesRouteChildren: ApiResourcesRouteChildren = {
-  ApiResourcesIdRoute: ApiResourcesIdRouteWithChildren,
-}
-
-const ApiResourcesRouteWithChildren = ApiResourcesRoute._addFileChildren(
-  ApiResourcesRouteChildren,
-)
-
-interface ApiUploadsRouteChildren {
-  ApiUploadsSplatRoute: typeof ApiUploadsSplatRoute
-}
-
-const ApiUploadsRouteChildren: ApiUploadsRouteChildren = {
-  ApiUploadsSplatRoute: ApiUploadsSplatRoute,
-}
-
-const ApiUploadsRouteWithChildren = ApiUploadsRoute._addFileChildren(
-  ApiUploadsRouteChildren,
-)
-
-interface ApiTrustSignalsContentTypeContentIdRouteChildren {
-  ApiTrustSignalsContentTypeContentIdCoSignRoute: typeof ApiTrustSignalsContentTypeContentIdCoSignRoute
-  ApiTrustSignalsContentTypeContentIdDisputeRoute: typeof ApiTrustSignalsContentTypeContentIdDisputeRoute
-  ApiTrustSignalsContentTypeContentIdVerifyRoute: typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
-}
-
-const ApiTrustSignalsContentTypeContentIdRouteChildren: ApiTrustSignalsContentTypeContentIdRouteChildren =
-  {
-    ApiTrustSignalsContentTypeContentIdCoSignRoute:
-      ApiTrustSignalsContentTypeContentIdCoSignRoute,
-    ApiTrustSignalsContentTypeContentIdDisputeRoute:
-      ApiTrustSignalsContentTypeContentIdDisputeRoute,
-    ApiTrustSignalsContentTypeContentIdVerifyRoute:
-      ApiTrustSignalsContentTypeContentIdVerifyRoute,
-  }
-
-const ApiTrustSignalsContentTypeContentIdRouteWithChildren =
-  ApiTrustSignalsContentTypeContentIdRoute._addFileChildren(
-    ApiTrustSignalsContentTypeContentIdRouteChildren,
-  )
-
 const rootRouteChildren: RootRouteChildren = {
   authenticationRouteRoute: authenticationRouteRouteWithChildren,
   protectionRouteRoute: protectionRouteRoute,
   publicRouteRoute: publicRouteRouteWithChildren,
   ApiAccountRoute: ApiAccountRoute,
-  ApiAppLockRoute: ApiAppLockRouteWithChildren,
-  ApiGuidesRoute: ApiGuidesRouteWithChildren,
-  ApiModeratorsRoute: ApiModeratorsRouteWithChildren,
   ApiProfileRoute: ApiProfileRoute,
-  ApiResourcesRoute: ApiResourcesRouteWithChildren,
-  ApiUploadsRoute: ApiUploadsRouteWithChildren,
+  ApiAppLockResetRoute: ApiAppLockResetRoute,
+  ApiAppLockVerifyRoute: ApiAppLockVerifyRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
-  ApiTrustSignalsContentTypeContentIdRoute:
-    ApiTrustSignalsContentTypeContentIdRouteWithChildren,
+  ApiGuidesSeriesRoute: ApiGuidesSeriesRoute,
+  ApiGuidesUploadImageRoute: ApiGuidesUploadImageRoute,
+  ApiModeratorsUserLinkIdRoute: ApiModeratorsUserLinkIdRoute,
+  ApiUploadsSplatRoute: ApiUploadsSplatRoute,
+  ApiAppLockIndexRoute: ApiAppLockIndexRoute,
+  ApiGuidesIndexRoute: ApiGuidesIndexRoute,
+  ApiModeratorsIndexRoute: ApiModeratorsIndexRoute,
+  ApiResourcesIndexRoute: ApiResourcesIndexRoute,
+  ApiUploadsIndexRoute: ApiUploadsIndexRoute,
+  ApiGuidesIdPublishRoute: ApiGuidesIdPublishRoute,
+  ApiGuidesIdRejectRoute: ApiGuidesIdRejectRoute,
+  ApiResourcesIdPublishRoute: ApiResourcesIdPublishRoute,
+  ApiResourcesIdRejectRoute: ApiResourcesIdRejectRoute,
+  ApiGuidesIdIndexRoute: ApiGuidesIdIndexRoute,
+  ApiResourcesIdIndexRoute: ApiResourcesIdIndexRoute,
+  ApiTrustSignalsContentTypeContentIdCoSignRoute:
+    ApiTrustSignalsContentTypeContentIdCoSignRoute,
+  ApiTrustSignalsContentTypeContentIdDisputeRoute:
+    ApiTrustSignalsContentTypeContentIdDisputeRoute,
+  ApiTrustSignalsContentTypeContentIdVerifyRoute:
+    ApiTrustSignalsContentTypeContentIdVerifyRoute,
+  ApiTrustSignalsContentTypeContentIdIndexRoute:
+    ApiTrustSignalsContentTypeContentIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

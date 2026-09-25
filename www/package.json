@@ -29,6 +29,7 @@
     "@pherus/rich-text": "workspace:*",
     "@pherus/ui": "workspace:*",
     "@tanstack/react-devtools": "latest",
+    "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
     "@tanstack/react-router": "latest",

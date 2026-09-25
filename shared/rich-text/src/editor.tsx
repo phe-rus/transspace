@@ -63,7 +63,7 @@ export function Editor({
 
     return (
         <EditorContext.Provider value={providerValue}>
-            <div
+            <article
                 {...props}
                 className={cn('flex w-full flex-col overflow-hidden', className)}
             >
@@ -84,7 +84,7 @@ export function Editor({
                 <EditorContent editor={editor} />
                 {editor && <BubbleMenus editor={editor} />}
                 {editor && <LinkHoverCard editor={editor} />}
-            </div>
+            </article>
         </EditorContext.Provider>
     )
 }

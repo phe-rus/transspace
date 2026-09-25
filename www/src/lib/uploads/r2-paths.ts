@@ -1,12 +1,56 @@
 import type { AllowedExtension } from "./constants"
 
+// one level of real nesting under a caller's storage_prefix: which
+// feature wrote this file, then which specific record it belongs to.
+// Fixed allowlist, never a client-supplied string, so this stays
+// "organized subfolders" and never reopens arbitrary-path traversal
+// (the engineer's explicit call, 2026-09-25 — flat-per-account was the
+// original spec 0002 shape; this is a deliberate widening of it)
+export const UPLOAD_CATEGORIES = [
+    "guides",
+    "resources",
+    "profile",
+    "general",
+] as const
+
+export type UploadCategory = (typeof UPLOAD_CATEGORIES)[number]
+
+export function assertValidUploadCategory(
+    category: string
+): asserts category is UploadCategory {
+    if (!(UPLOAD_CATEGORIES as readonly string[]).includes(category)) {
+        throw new Response("Unknown upload category", { status: 422 })
+    }
+}
+
+const UUID_RE =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+// the record this file belongs to (a guide id, a resource id); always
+// validated as this app's own id format before it's ever concatenated
+// into an R2 key, the same reasoning assertValidUploadCategory applies
+// to category (spec 0004 AC-9's relatedResourceIds check uses the
+// identical pattern)
+export function assertValidContentId(
+    contentId: string
+): asserts contentId is string {
+    if (!UUID_RE.test(contentId)) {
+        throw new Response("Invalid content id", { status: 422 })
+    }
+}
+
 // keyed by storage_prefix, never user_link.id — no object key or public
-// URL may ever reveal the internal database id (spec 0002 key invariants)
+// URL may ever reveal the internal database id (spec 0002 key
+// invariants). category and contentId are both validated by the caller
+// before reaching here (assertValidUploadCategory, assertValidContentId),
+// so this never trusts raw client input for either segment
 export function fileKey(
     storagePrefix: string,
+    category: UploadCategory,
+    contentId: string,
     filename: string
 ): string {
-    return `${storagePrefix}/${sanitizeFilename(filename)}`
+    return `${storagePrefix}/${category}/${contentId}/${sanitizeFilename(filename)}`
 }
 
 export function sanitizeFilename(name: string): string {

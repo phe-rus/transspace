@@ -6,7 +6,7 @@ import {
 } from "@/domains/uploads"
 import { toHttpResponse } from "@/lib/http"
 
-export const Route = createFileRoute("/api/uploads")({
+export const Route = createFileRoute("/api/uploads/")({
     server: {
         handlers: {
             GET: ({ request }) => toHttpResponse(() => {
