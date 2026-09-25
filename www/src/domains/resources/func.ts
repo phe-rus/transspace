@@ -15,6 +15,7 @@ import { logModerationAction } from "@/lib/moderation-audit"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
 import { assertTurnstileVerified } from "@/lib/turnstile"
 import { readTrustSignal } from "@/domains/trust-signals"
+import { encodeCreatedAtCursor, decodeCreatedAtCursor } from "@/lib/cursor"
 import {
     assertValidCategory,
     getResourceSchema,
@@ -97,37 +98,6 @@ async function findOrCreateCountry(name: string): Promise<string> {
     return row[0]!.id
 }
 
-type ResourceCursor = { createdAt: number; id: string }
-
-// this endpoint's own opaque cursor, not lib/pagination.ts's bare-id
-// one: id alone (a random UUID) carries no chronological order to page
-// through, this list is ordered newest first (spec 0003 Value sourcing)
-function encodeCursor(row: { createdAt: Date; id: string }): string {
-    return Buffer.from(
-        JSON.stringify({
-            createdAt: row.createdAt.getTime(),
-            id: row.id,
-        })
-    ).toString("base64url")
-}
-
-function decodeCursor(cursor: string): ResourceCursor | null {
-    try {
-        const parsed = JSON.parse(
-            Buffer.from(cursor, "base64url").toString("utf-8")
-        )
-        if (
-            typeof parsed.createdAt === "number" &&
-            typeof parsed.id === "string"
-        ) {
-            return parsed
-        }
-        return null
-    } catch {
-        return null
-    }
-}
-
 // GET /resources and GET /resources/:id both need "is this caller a
 // moderator, if they even have a session" without ever requiring one
 // (spec 0003 API surface): no middleware, read the session directly
@@ -204,7 +174,7 @@ export const listResources = createServerFn({ method: "GET" })
                 )!
             )
         }
-        const cursor = data.cursor ? decodeCursor(data.cursor) : null
+        const cursor = data.cursor ? decodeCreatedAtCursor(data.cursor) : null
         if (cursor) {
             conditions.push(
                 sql`(${resource.createdAt}, ${resource.id}) < (${cursor.createdAt}, ${cursor.id})`
@@ -253,7 +223,7 @@ export const listResources = createServerFn({ method: "GET" })
         const last = items.at(-1)
         return {
             items,
-            nextCursor: hasMore && last ? encodeCursor(last) : null,
+            nextCursor: hasMore && last ? encodeCreatedAtCursor(last) : null,
         }
     })
 

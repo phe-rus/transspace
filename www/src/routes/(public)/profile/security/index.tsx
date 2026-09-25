@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { motion, AnimatePresence } from 'motion/react'
+import { getAppLockStatus } from '@/domains/app-lock'
+import { m } from '@/paraglide/messages'
+import { SquareLock02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@pherus/ui/button'
 import { Card, CardContent } from '@pherus/ui/card'
 import { Input } from '@pherus/ui/input'
 import { signatureSpring } from '@pherus/ui/lib/motion'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { SquareLock02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
-import { m } from '@/paraglide/messages'
-import { getAppLockStatus } from '@/domains/app-lock'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { AnimatePresence, motion } from 'motion/react'
+import { useState } from 'react'
 
 // gated by the parent /profile route's beforeLoad (signed in, onboarded,
 // unlocked), so no separate guard needed here
@@ -82,7 +82,7 @@ function RouteComponent() {
   }
 
   return (
-    <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-lg">
+    <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col items-center gap-3 text-center">
         <span className="flex size-12 items-center justify-center rounded-2xl bg-muted">
           <HugeiconsIcon icon={SquareLock02Icon} className="size-6" />

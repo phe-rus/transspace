@@ -1,8 +1,8 @@
 import { ResourceCard } from "@/components/resources/resource-card"
 import { listResourcesQueryOptions } from "@/domains/resources"
 import { m } from "@/paraglide/messages"
-import { createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
 
 const filters = { category: "legal" }
 
@@ -19,7 +19,7 @@ function RouteComponent() {
   const { data } = useSuspenseQuery(listResourcesQueryOptions(filters))
 
   return (
-    <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-3xl">
+    <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-2">
         <h1>{m["pages.resources.legal.title"]()}</h1>
         <p>{m["pages.resources.legal.subtitle"]()}</p>

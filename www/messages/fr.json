@@ -205,7 +205,16 @@
       "all": "Tous",
       "noMatches": "Aucun résultat. Essayez une autre recherche ou effacez un filtre.",
       "communityReviewed": "Vérifié par la communauté",
-      "readGuide": "Lire le guide"
+      "readGuide": "Lire le guide",
+      "readTimeMinutes": "{count} min de lecture",
+      "detail": {
+        "backToGuides": "Retour aux guides",
+        "notFoundTitle": "Guide introuvable",
+        "notFoundBody": "Ce guide n'existe pas, ou n'est pas encore publié.",
+        "trustSignals": "Signaux de confiance",
+        "referencesAvailable": "Inclut des références",
+        "relatedResources": "Ressources associées"
+      }
     },
     "support": {
       "badge": "Concept exploratoire, pas encore intégré à cette version",
@@ -326,6 +335,24 @@
         "weakPinError": "Le code PIN doit comporter au moins 6 chiffres et ne pas suivre un schéma évident.",
         "samePinError": "Le code PIN de détresse doit être différent de votre code PIN réel."
       }
+    },
+    "submitGuide": {
+      "title": "Contribuer un guide",
+      "subtitle": "Rédige quelque chose que la communauté trouverait utile. Un modérateur examine chaque guide avant sa publication.",
+      "titleLabel": "Titre du guide",
+      "titlePlaceholder": "ex. \"Trouver des soins de santé en Ouganda\"",
+      "excerptLabel": "Résumé court",
+      "excerptPlaceholder": "Une ligne décrivant ce que couvre ce guide",
+      "category": "Catégorie",
+      "bodyLabel": "Contenu du guide",
+      "submit": "Soumettre pour examen",
+      "submitting": "Envoi en cours…",
+      "submitError": "Une erreur s'est produite lors de l'envoi. Réessaie dans un instant.",
+      "verificationPending": "En attente de vérification avant de pouvoir soumettre.",
+      "signInRequired": "Connecte-toi pour soumettre un guide.",
+      "signIn": "Se connecter",
+      "successTitle": "Merci pour ce guide",
+      "successBody": "Un modérateur l'examinera avant qu'il n'apparaisse publiquement."
     }
   },
   "components": {

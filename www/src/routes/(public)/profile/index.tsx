@@ -1,7 +1,7 @@
-import { useState } from "react"
 import { ProfileActivityRow } from "@/components/profile/activity-row"
 import { ProfileSettingRow } from "@/components/profile/setting-row"
 import { mySubmissions, savedResources } from "@/data/profile-activity"
+import { profileQueryOptions } from "@/domains/profile"
 import { m } from "@/paraglide/messages"
 import {
   Edit02Icon,
@@ -13,9 +13,9 @@ import {
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
-import { createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { profileQueryOptions } from "@/domains/profile"
+import { createFileRoute } from "@tanstack/react-router"
+import { useState } from "react"
 
 export const Route = createFileRoute("/(public)/profile/")({
   // the parent route's beforeLoad already guarantees signed in, onboarded,
@@ -56,7 +56,7 @@ function RouteComponent() {
               <img
                 src={`/avatar/${profile.avatarSlug}.jpg`}
                 alt=""
-                className="size-24 rounded-full border border-border object-cover"
+                className="size-55 rounded-full border border-border object-cover"
               />
             ) : (
               <div className="flex size-24 items-center justify-center rounded-full border border-border bg-card text-2xl font-semibold text-muted-foreground">
@@ -114,10 +114,10 @@ function RouteComponent() {
         </div>
 
         <Button
-          variant="outline"
+          variant='destructive'
           disabled={signingOut}
           onClick={handleLogOut}
-          className="gap-1.5 rounded-full border-destructive/40 px-6 text-destructive"
+          className="gap-1.5 p-5 rounded-2xl"
         >
           <HugeiconsIcon icon={Logout05Icon} />
           {m["pages.profile.logOut"]()}

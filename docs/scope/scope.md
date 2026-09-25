@@ -24,7 +24,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 10 | Accounts & saved resources | Slice 1 | planned |
 | 11 | Contribution & moderation flow | Slice 2 | planned |
 | 12 | Resource Atlas | Slice 3 | planned |
-| 13 | Guides | Slice 4 | planned |
+| 13 | Guides | Slice 4 | in-progress |
 | 14 | Stories | Slice 5 | planned |
 | 15 | Opportunities | Slice 6 | planned |
 | 16 | Businesses & creators | Slice 7 | planned |
@@ -149,10 +149,21 @@ Geographic drill-down discovery (world → region → country → city → categ
 
 ## Slice 4: Guides
 
-### 13. Guides · needs a decision
+### 13. Guides · GA
 Editorial, community-contributed practical guides (e.g. "Finding healthcare in Uganda," "Understanding gender-affirming care"), the existing "Learn new skills" nav destination.
 **Done when:** a person can browse and read a guide with contributor info, references, and related resources; guides go through the same contribution & moderation flow.
-- [ ] Design it (spec): `/architect guides`
+- [x] Design it (spec): [0004](../specs/0004-guides/index.md)
+- [x] Build it: `/develop guides`
+  - [x] Stabilize `shared/rich-text` (imports, versions, a new `Combobox` primitive, `PopoverContent`), unblocks everything else
+  - [x] `guide` migration and the submit + image-upload endpoints (atomic, content-safety validated, decoy-blocked), satisfies AC-1, AC-3, AC-5, AC-7, AC-8, AC-9
+  - [x] List and detail read endpoints (search, trust/profile joins, related resources), satisfies AC-1, AC-2, AC-4, AC-5, AC-6
+  - [x] Moderator publish/reject endpoints, including the published → rejected takedown path, satisfies AC-4, AC-5, AC-8
+  - [x] Wire `/guides`, a new `/guides/$guideId/details`, and a new `/submit-guide` (rich text editor) to real data, satisfies AC-1, AC-2, AC-3, AC-6, AC-7
+- [ ] Verify it: `/check verify guides`
+- [ ] Test it: `/test guides`
+- [ ] Review it (fresh model): `/check review guides`
+- [ ] Document it: `/document guides`
+spec [0004](../specs/0004-guides/index.md) · code in `www/src/schemas/guides.ts`, `www/src/domains/guides/`, `www/src/routes/api/guides.*`, `www/src/routes/(public)/guides/`, `www/src/routes/(public)/submit-guide/`, `www/src/components/guides/guide-card.tsx`, `shared/rich-text/`, `shared/ui/src/components/combobox.tsx`
 
 ## Slice 5: Stories
 

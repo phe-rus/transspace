@@ -26,6 +26,7 @@
     "@better-auth/drizzle-adapter": "1.7.5",
     "@hugeicons/core-free-icons": "^4.3.0",
     "@hugeicons/react": "^1.1.10",
+    "@pherus/rich-text": "workspace:*",
     "@pherus/ui": "workspace:*",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "^5.102.8",

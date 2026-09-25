@@ -1,37 +1,43 @@
 import { GuideCard } from "@/components/guides/guide-card"
+import { listGuidesQueryOptions } from "@/domains/guides"
 import { m } from "@/paraglide/messages"
 import {
   GUIDE_CATEGORIES,
   guideCategoryIcon,
   guideCategoryLabel,
-  guides,
-  type GuideCategory,
 } from "@/data/guides"
 import { Add01Icon, SearchIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@pherus/ui/input-group"
 import { cn } from "@pherus/ui/lib/utils"
-import { createFileRoute } from "@tanstack/react-router"
-import { useMemo, useState } from "react"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { z } from "zod"
+
+const searchSchema = z.object({
+  search: z.string().optional(),
+  category: z.string().optional(),
+})
 
 export const Route = createFileRoute("/(public)/guides/")({
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => search,
+  loader: ({ context, deps }) =>
+    context.queryClient.query({
+      ...listGuidesQueryOptions(deps),
+      staleTime: "static",
+    }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [search, setSearch] = useState("")
-  const [activeCategory, setActiveCategory] = useState<GuideCategory | null>(null)
+  const search = Route.useSearch()
+  const navigate = Route.useNavigate()
+  const { data } = useSuspenseQuery(listGuidesQueryOptions(search))
 
-  const filteredGuides = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    return guides.filter((guide) => {
-      const matchesCategory = !activeCategory || guide.category === activeCategory
-      const matchesSearch =
-        !query || guide.title.toLowerCase().includes(query) || guide.excerpt.toLowerCase().includes(query)
-      return matchesCategory && matchesSearch
-    })
-  }, [search, activeCategory])
+  const patchSearch = (patch: Partial<typeof search>) =>
+    navigate({ search: (prev) => ({ ...prev, ...patch }) })
 
   return (
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
@@ -49,12 +55,19 @@ function RouteComponent() {
               <HugeiconsIcon icon={SearchIcon} className="size-4" />
             </InputGroupAddon>
             <InputGroupInput
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              value={search.search ?? ""}
+              onChange={(event) =>
+                patchSearch({ search: event.target.value || undefined })
+              }
               placeholder={m["pages.guides.searchPlaceholder"]()}
             />
           </InputGroup>
-          <Button variant="secondary" disabled className="h-11 shrink-0 gap-1.5 rounded-full px-5">
+          <Button
+            variant="secondary"
+            nativeButton={false}
+            render={<Link to="/submit-guide" />}
+            className="h-11 shrink-0 gap-1.5 rounded-full px-5"
+          >
             <HugeiconsIcon icon={Add01Icon} />
             {m["pages.guides.contribute"]()}
           </Button>
@@ -63,10 +76,10 @@ function RouteComponent() {
         <div className="flex flex-wrap gap-1.5">
           <button
             type="button"
-            onClick={() => setActiveCategory(null)}
+            onClick={() => patchSearch({ category: undefined })}
             className={cn(
               "rounded-full border px-3.5 py-2 text-sm transition-colors",
-              activeCategory === null
+              !search.category
                 ? "border-foreground bg-foreground text-background"
                 : "border-border text-muted-foreground hover:border-muted-foreground",
             )}
@@ -77,10 +90,14 @@ function RouteComponent() {
             <button
               key={category}
               type="button"
-              onClick={() => setActiveCategory((current) => (current === category ? null : category))}
+              onClick={() =>
+                patchSearch({
+                  category: search.category === category ? undefined : category,
+                })
+              }
               className={cn(
                 "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm transition-colors",
-                activeCategory === category
+                search.category === category
                   ? "border-foreground bg-foreground text-background"
                   : "border-border text-muted-foreground hover:border-muted-foreground",
               )}
@@ -93,11 +110,11 @@ function RouteComponent() {
       </div>
 
       <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
-        {filteredGuides.map((guide) => (
+        {data.items.map((guide) => (
           <GuideCard key={guide.id} guide={guide} />
         ))}
 
-        {filteredGuides.length === 0 && (
+        {data.items.length === 0 && (
           <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center md:col-span-2">
             <p>{m["pages.guides.noMatches"]()}</p>
           </div>

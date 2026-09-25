@@ -23,7 +23,10 @@ import {
 } from "@/lib/uploads"
 import { deleteUploadsSchema, listUploadsSchema } from "./types"
 
-async function getStoragePrefix(
+// exported for reuse by any other domain that writes to R2 under a
+// caller's own storage prefix (e.g. guides' in-editor image upload,
+// spec 0004), so the lookup and its 404 aren't duplicated per domain
+export async function getStoragePrefix(
     userLinkId: string
 ): Promise<string> {
     const [row] = await db

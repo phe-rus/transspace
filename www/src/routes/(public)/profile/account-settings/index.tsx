@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { Card, CardContent } from '@pherus/ui/card'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Settings01Icon } from '@hugeicons/core-free-icons'
 import { m } from '@/paraglide/messages'
+import { Settings01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Card, CardContent } from '@pherus/ui/card'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(public)/profile/account-settings/')({
   component: RouteComponent,
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/(public)/profile/account-settings/')({
 
 function RouteComponent() {
   return (
-    <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-lg">
+    <article className="container mx-auto flex w-full flex-col items-center gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col items-center gap-3 text-center">
         <span className="flex size-12 items-center justify-center rounded-2xl bg-muted">
           <HugeiconsIcon icon={Settings01Icon} className="size-6" />

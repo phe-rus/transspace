@@ -205,7 +205,16 @@
       "all": "Alle",
       "noMatches": "Keine Treffer. Versuche eine andere Suche oder entferne einen Filter.",
       "communityReviewed": "Von der Community geprüft",
-      "readGuide": "Guide lesen"
+      "readGuide": "Guide lesen",
+      "readTimeMinutes": "{count} Min. Lesezeit",
+      "detail": {
+        "backToGuides": "Zurück zu den Anleitungen",
+        "notFoundTitle": "Anleitung nicht gefunden",
+        "notFoundBody": "Diese Anleitung existiert nicht oder ist noch nicht veröffentlicht.",
+        "trustSignals": "Vertrauenssignale",
+        "referencesAvailable": "Enthält Quellen",
+        "relatedResources": "Verwandte Ressourcen"
+      }
     },
     "support": {
       "badge": "Konzeptidee, noch nicht Teil dieses Builds",
@@ -326,6 +335,24 @@
         "weakPinError": "Die PIN muss mindestens 6 Ziffern haben und darf kein offensichtliches Muster sein.",
         "samePinError": "Die Notfall-PIN muss sich von deiner echten PIN unterscheiden."
       }
+    },
+    "submitGuide": {
+      "title": "Anleitung beitragen",
+      "subtitle": "Schreib etwas, das die Community nützlich findet. Ein Moderator prüft jede Anleitung, bevor sie öffentlich wird.",
+      "titleLabel": "Titel der Anleitung",
+      "titlePlaceholder": "z. B. \"Gesundheitsversorgung in Uganda finden\"",
+      "excerptLabel": "Kurze Zusammenfassung",
+      "excerptPlaceholder": "Eine Zeile, die beschreibt, worum es in dieser Anleitung geht",
+      "category": "Kategorie",
+      "bodyLabel": "Inhalt der Anleitung",
+      "submit": "Zur Prüfung einreichen",
+      "submitting": "Wird gesendet…",
+      "submitError": "Beim Einreichen ist etwas schiefgelaufen. Versuch es gleich noch einmal.",
+      "verificationPending": "Warte auf die Verifizierung, bevor dies eingereicht werden kann.",
+      "signInRequired": "Melde dich an, um eine Anleitung einzureichen.",
+      "signIn": "Anmelden",
+      "successTitle": "Danke für die Anleitung",
+      "successBody": "Ein Moderator prüft sie, bevor sie öffentlich erscheint."
     }
   },
   "components": {

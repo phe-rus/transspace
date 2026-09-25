@@ -41,6 +41,40 @@ function PopoverPopup({ className, ...props }: PopoverPrimitive.Popup.Props) {
   )
 }
 
+// bundles Portal+Positioner+Popup, matching SelectContent/ComboboxContent's
+// convenience pattern, for a caller that just wants a positioned card and
+// doesn't need the parts split apart
+function PopoverContent({
+  className,
+  children,
+  side = "bottom",
+  sideOffset = 8,
+  align = "center",
+  alignOffset = 0,
+  ...props
+}: PopoverPrimitive.Popup.Props &
+  Pick<
+    PopoverPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
+  return (
+    <PopoverPrimitive.Portal data-slot="popover-portal">
+      <PopoverPrimitive.Positioner
+        data-slot="popover-positioner"
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={alignOffset}
+        className="isolate z-50"
+      >
+        <PopoverPopup className={className} {...props}>
+          {children}
+        </PopoverPopup>
+      </PopoverPrimitive.Positioner>
+    </PopoverPrimitive.Portal>
+  )
+}
+
 function PopoverArrow({ className, ...props }: PopoverPrimitive.Arrow.Props) {
   return (
     <PopoverPrimitive.Arrow
@@ -89,6 +123,7 @@ export {
   PopoverPortal,
   PopoverPositioner,
   PopoverPopup,
+  PopoverContent,
   PopoverArrow,
   PopoverTitle,
   PopoverDescription,

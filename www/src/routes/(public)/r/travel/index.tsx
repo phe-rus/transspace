@@ -19,7 +19,7 @@ function RouteComponent() {
   const { data } = useSuspenseQuery(listResourcesQueryOptions(filters))
 
   return (
-    <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-3xl">
+    <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-2">
         <h1>{m["pages.resources.travel.title"]()}</h1>
         <p>{m["pages.resources.travel.subtitle"]()}</p>

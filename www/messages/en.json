@@ -205,7 +205,34 @@
       "all": "All",
       "noMatches": "No matches. Try a different search, or clear a filter.",
       "communityReviewed": "Community reviewed",
-      "readGuide": "Read guide"
+      "readGuide": "Read guide",
+      "readTimeMinutes": "{count} min read",
+      "detail": {
+        "backToGuides": "Back to guides",
+        "notFoundTitle": "Guide not found",
+        "notFoundBody": "This guide doesn't exist, or isn't published yet.",
+        "trustSignals": "Trust signals",
+        "referencesAvailable": "Includes references",
+        "relatedResources": "Related resources"
+      }
+    },
+    "submitGuide": {
+      "title": "Contribute a guide",
+      "subtitle": "Write up something the community would find useful. A moderator reviews every guide before it's public.",
+      "titleLabel": "Guide title",
+      "titlePlaceholder": "e.g. \"Finding healthcare in Uganda\"",
+      "excerptLabel": "Short summary",
+      "excerptPlaceholder": "One line describing what this guide covers",
+      "category": "Category",
+      "bodyLabel": "Guide content",
+      "submit": "Submit for review",
+      "submitting": "Submitting…",
+      "submitError": "Something went wrong submitting this. Try again in a moment.",
+      "verificationPending": "Waiting on verification before this can be submitted.",
+      "signInRequired": "Sign in to submit a guide.",
+      "signIn": "Sign in",
+      "successTitle": "Thanks for the guide",
+      "successBody": "A moderator will review it before it appears publicly."
     },
     "support": {
       "badge": "Exploratory concept, not part of this build yet",

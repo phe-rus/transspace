@@ -1,4 +1,4 @@
-import { m } from "@/paraglide/messages"
+import { TurnstileWidget } from "@/components/turnstile-widget"
 import {
   RESOURCE_CATEGORIES,
   RESOURCE_SUBCATEGORIES_BY_CATEGORY,
@@ -8,15 +8,15 @@ import {
 } from "@/data/resource-categories"
 import { submitResource } from "@/domains/resources"
 import { authGateQueryOptions } from "@/lib/auth-gate"
-import { TurnstileWidget } from "@/components/turnstile-widget"
+import { m } from "@/paraglide/messages"
 import { Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { Input } from "@pherus/ui/input"
 import { cn } from "@pherus/ui/lib/utils"
 import { Textarea } from "@pherus/ui/textarea"
-import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
+import { Link, createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
 export const Route = createFileRoute("/(public)/submit/")({
@@ -86,7 +86,7 @@ function SubmitForm() {
   }
 
   return (
-    <article className="container mx-auto flex w-full max-w-2xl flex-col gap-6 py-10">
+    <article className="container mx-auto flex w-full md:max-w-5xl flex-col gap-6 py-10">
       <div className="flex flex-col gap-2">
         <h1>{m["pages.submit.title"]()}</h1>
         <p className="max-w-lg">

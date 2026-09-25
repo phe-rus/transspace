@@ -60,5 +60,9 @@
     },
     "[typescript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
-    }
+    },
+    "editor.codeActions.triggerOnFocusChange": true,
+    "notebook.formatOnSave.enabled": true,
+    "files.autoSave": "onWindowChange",
+    "files.autoSaveWhenNoErrors": true
 }

@@ -55,7 +55,7 @@ This decides how the resource directory (browse, search, submit, and moderate a 
 | | `submittedBy` | text, foreign key to `userLink.id`, required | never a client-supplied value, always the session's own id |
 | | `createdAt` / `updatedAt` | timestamp, required | |
 | unique | `(countryId, name)` | | not enforced; two resources can share a name in the same country (this is a directory of real places, not a uniqueness-guaranteed catalog). A soft duplicate check at submission time (same name/country/city, case-insensitive) is a Follow-up, not built now. |
-| search index | `lower(name)`, `lower(city)` | | functional indexes so `GET /resources`'s keyword search is case-insensitive across non-Latin scripts too, not relying on SQLite's default ASCII-only `LIKE` folding |
+| search index | `lower(name)`, `lower(city)` | | functional indexes so `GET /resources`'s keyword search is case-insensitive for ASCII text without relying on SQLite's default `LIKE` folding. Correction (caught during the guides spec's cross-check): SQLite's `lower()` itself only folds ASCII; it does not case-fold non-Latin scripts, so this does not actually make search case-insensitive for those. No functional gap for scripts with no case distinction (e.g. Chinese), but a real one for scripts that do have case (e.g. Cyrillic, Greek); tracked as a Follow-up rather than fixed here since no such gap has been reported yet. |
 
 Logical link, not a foreign key: `resource` ↔ `trust_signal` via `trust_signal.contentType = "resource"`, `trust_signal.contentId = resource.id` (spec 0003 under 0002, already built, `"resource"` already a valid registered content type).
 
@@ -148,6 +148,7 @@ Logical link, not a foreign key: `resource` ↔ `trust_signal` via `trust_signal
 ## Follow-up
 
 - [ ] Country-scoped moderators plus a real moderator/admin review dashboard under `(protection)`: design as scope feature 11's own `/architect` pass, right after this spec ships. The current model is one global moderator status-flip action with no dashboard.
+- [ ] The `lower(name)`/`lower(city)` search indexes are only truly case-insensitive for ASCII; a script with real case distinction outside ASCII (Cyrillic, Greek, etc.) won't fold correctly. Caught during the guides spec's cross-check; not fixed here since no gap has actually been reported, but a real limitation worth an `Intl.Collator`-backed search pass if it becomes one.
 - [ ] Vetted-access visibility tier and country-risk auto-gating (hiding certain listings or exact addresses from unvetted accounts based on a country's laws): deliberately deferred given the safety stakes; needs its own dedicated decision, not a rushed addition here.
 - [ ] The `/support` page requested alongside this feature is not covered by this spec. It isn't a named row in `docs/scope/scope.md` and its actual content (crisis lines, a contact form, an FAQ) was never defined; it needs its own scoping pass before `/develop` touches it.
 - [ ] Resource photo upload: the detail page currently shows a text placeholder. Wiring the existing R2 upload module (spec 0002) to resources is a natural follow-up, not required for this walking skeleton.
