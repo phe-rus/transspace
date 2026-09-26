@@ -25,9 +25,9 @@
         ]
     ],
     "npm.packageManager": "bun",
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "google.antigravity",
+    "editor.defaultFormatter": "vscode.json-language-features",
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true
@@ -37,7 +37,7 @@
         "editor.formatOnSave": true
     },
     "[javascript]": {
-        "editor.defaultFormatter": "google.antigravity",
+        "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true
     },
     "[typescriptreact]": {
@@ -56,7 +56,7 @@
         "source.fixAll.biome": "explicit"
     },
     "[tailwindcss]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.json-language-features"
     },
     "[typescript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
