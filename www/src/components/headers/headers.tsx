@@ -82,7 +82,7 @@ export const Headers = () => {
         { label: m["navigation.items.communities"](), to: "/r" },
         { label: m["navigation.items.support"](), to: "/support" },
         ...(signedIn ? [{ label: m["navigation.items.profile"](), to: "/profile" }] : []),
-    ], [])
+    ], [signedIn])
 
     const resourceGroups = useMemo(() => [
         {
@@ -148,7 +148,7 @@ export const Headers = () => {
         >
             <HugeiconsIcon icon={MessageIcon} />
             {inboxUnread > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-destructive px-1 text-[11px]/none font-semibold text-destructive-foreground tabular-nums">
+                <span className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-destructive px-1 text-[11px]/none font-semibold text-white tabular-nums">
                     {inboxUnread > 99 ? "99+" : inboxUnread}
                 </span>
             )}
@@ -216,7 +216,7 @@ export const Headers = () => {
                     </nav>
                 </div>
 
-                <nav className="flex items-center gap-px">
+                <nav className="flex items-center gap-2">
                     <motion.div
                         variants={fadeDown}
                         className="hidden items-center gap-1 md:flex"
@@ -227,11 +227,9 @@ export const Headers = () => {
                                 variant: 'default',
                                 className: "rounded-full",
                             }))}
-                            aria-label={m["navigation.aria.privacy"]()}
-
                         >
                             <HugeiconsIcon icon={Shield01Icon} />
-                            Submit a resource
+                            {m["navigation.actions.submitResource"]()}
                         </Link>}
 
                         {inboxLink}
@@ -256,7 +254,7 @@ export const Headers = () => {
                                     variant: 'secondary'
                                 }))}
                             >
-                                Login to transspace
+                                {m["navigation.actions.signIn"]()}
                             </Link>
                         }
                     </motion.div>

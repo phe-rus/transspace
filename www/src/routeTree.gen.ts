@@ -27,6 +27,7 @@ import { Route as publicRRouteRouteImport } from './routes/(public)/r/route'
 import { Route as publicStoriesRouteRouteImport } from './routes/(public)/stories/route'
 import { Route as publicSubmitRouteRouteImport } from './routes/(public)/submit/route'
 import { Route as publicSubmitGuideRouteRouteImport } from './routes/(public)/submit-guide/route'
+import { Route as publicSubmitStoryRouteRouteImport } from './routes/(public)/submit-story/route'
 import { Route as publicSubmitSupportRouteRouteImport } from './routes/(public)/submit-support/route'
 import { Route as publicSupportRouteRouteImport } from './routes/(public)/support/route'
 import { Route as ApiAccountRouteImport } from './routes/api/account'
@@ -55,7 +56,9 @@ import { Route as publicRMentalHealthRouteRouteImport } from './routes/(public)/
 import { Route as publicRSafeSpaceRouteRouteImport } from './routes/(public)/r/safe-space/route'
 import { Route as publicRTravelRouteRouteImport } from './routes/(public)/r/travel/route'
 import { Route as publicStoriesIndexRouteImport } from './routes/(public)/stories/index'
+import { Route as publicStoriesStoryIdRouteRouteImport } from './routes/(public)/stories/$storyId/route'
 import { Route as publicSubmitGuideIndexRouteImport } from './routes/(public)/submit-guide/index'
+import { Route as publicSubmitStoryIndexRouteImport } from './routes/(public)/submit-story/index'
 import { Route as publicSubmitSupportIndexRouteImport } from './routes/(public)/submit-support/index'
 import { Route as publicSubmitIndexRouteImport } from './routes/(public)/submit/index'
 import { Route as publicSupportIndexRouteImport } from './routes/(public)/support/index'
@@ -107,6 +110,7 @@ import { Route as ApiSupportIdVerifyRouteImport } from './routes/api/support/$id
 import { Route as ApiSupportIdWithdrawRouteImport } from './routes/api/support/$id/withdraw'
 import { Route as publicGuidesGuideIdDetailsIndexRouteImport } from './routes/(public)/guides/$guideId/details/index'
 import { Route as publicRResourceIdDetailsIndexRouteImport } from './routes/(public)/r/$resourceId/details/index'
+import { Route as publicStoriesStoryIdDetailsIndexRouteImport } from './routes/(public)/stories/$storyId/details/index'
 import { Route as publicSupportPostIdDetailsIndexRouteImport } from './routes/(public)/support/$postId/details/index'
 import { Route as ApiSupportIdClaimsIndexRouteImport } from './routes/api/support/$id/claims/index'
 import { Route as ApiTrustSignalsContentTypeContentIdIndexRouteImport } from './routes/api/trust-signals/$contentType/$contentId/index'
@@ -206,6 +210,11 @@ const publicSubmitRouteRoute = publicSubmitRouteRouteImport.update({
 const publicSubmitGuideRouteRoute = publicSubmitGuideRouteRouteImport.update({
   id: '/submit-guide',
   path: '/submit-guide',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicSubmitStoryRouteRoute = publicSubmitStoryRouteRouteImport.update({
+  id: '/submit-story',
+  path: '/submit-story',
   getParentRoute: () => publicRouteRoute,
 } as any)
 const publicSubmitSupportRouteRoute =
@@ -361,10 +370,21 @@ const publicStoriesIndexRoute = publicStoriesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicStoriesRouteRoute,
 } as any)
+const publicStoriesStoryIdRouteRoute =
+  publicStoriesStoryIdRouteRouteImport.update({
+    id: '/$storyId',
+    path: '/$storyId',
+    getParentRoute: () => publicStoriesRouteRoute,
+  } as any)
 const publicSubmitGuideIndexRoute = publicSubmitGuideIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => publicSubmitGuideRouteRoute,
+} as any)
+const publicSubmitStoryIndexRoute = publicSubmitStoryIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicSubmitStoryRouteRoute,
 } as any)
 const publicSubmitSupportIndexRoute =
   publicSubmitSupportIndexRouteImport.update({
@@ -636,6 +656,12 @@ const publicRResourceIdDetailsIndexRoute =
     path: '/',
     getParentRoute: () => publicRResourceIdDetailsRouteRoute,
   } as any)
+const publicStoriesStoryIdDetailsIndexRoute =
+  publicStoriesStoryIdDetailsIndexRouteImport.update({
+    id: '/details/',
+    path: '/details/',
+    getParentRoute: () => publicStoriesStoryIdRouteRoute,
+  } as any)
 const publicSupportPostIdDetailsIndexRoute =
   publicSupportPostIdDetailsIndexRouteImport.update({
     id: '/',
@@ -705,6 +731,7 @@ export interface FileRoutesByFullPath {
   '/stories': typeof publicStoriesRouteRouteWithChildren
   '/submit': typeof publicSubmitRouteRouteWithChildren
   '/submit-guide': typeof publicSubmitGuideRouteRouteWithChildren
+  '/submit-story': typeof publicSubmitStoryRouteRouteWithChildren
   '/submit-support': typeof publicSubmitSupportRouteRouteWithChildren
   '/support': typeof publicSupportRouteRouteWithChildren
   '/api/account': typeof ApiAccountRoute
@@ -722,6 +749,7 @@ export interface FileRoutesByFullPath {
   '/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
   '/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
   '/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/stories/$storyId': typeof publicStoriesStoryIdRouteRouteWithChildren
   '/support/$postId': typeof publicSupportPostIdRouteRouteWithChildren
   '/api/app-lock/reset': typeof ApiAppLockResetRoute
   '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
@@ -745,6 +773,7 @@ export interface FileRoutesByFullPath {
   '/r/': typeof publicRIndexRoute
   '/stories/': typeof publicStoriesIndexRoute
   '/submit-guide/': typeof publicSubmitGuideIndexRoute
+  '/submit-story/': typeof publicSubmitStoryIndexRoute
   '/submit-support/': typeof publicSubmitSupportIndexRoute
   '/submit/': typeof publicSubmitIndexRoute
   '/support/': typeof publicSupportIndexRoute
@@ -789,6 +818,7 @@ export interface FileRoutesByFullPath {
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/guides/$guideId/details/': typeof publicGuidesGuideIdDetailsIndexRoute
   '/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
+  '/stories/$storyId/details/': typeof publicStoriesStoryIdDetailsIndexRoute
   '/support/$postId/details/': typeof publicSupportPostIdDetailsIndexRoute
   '/api/support/$id/claims/': typeof ApiSupportIdClaimsIndexRoute
   '/api/trust-signals/$contentType/$contentId/': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
@@ -802,6 +832,7 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/guides/$guideId': typeof publicGuidesGuideIdRouteRouteWithChildren
   '/r/$resourceId': typeof publicRResourceIdRouteRouteWithChildren
+  '/stories/$storyId': typeof publicStoriesStoryIdRouteRouteWithChildren
   '/support/$postId': typeof publicSupportPostIdRouteRouteWithChildren
   '/api/app-lock/reset': typeof ApiAppLockResetRoute
   '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
@@ -825,6 +856,7 @@ export interface FileRoutesByTo {
   '/r': typeof publicRIndexRoute
   '/stories': typeof publicStoriesIndexRoute
   '/submit-guide': typeof publicSubmitGuideIndexRoute
+  '/submit-story': typeof publicSubmitStoryIndexRoute
   '/submit-support': typeof publicSubmitSupportIndexRoute
   '/submit': typeof publicSubmitIndexRoute
   '/support': typeof publicSupportIndexRoute
@@ -866,6 +898,7 @@ export interface FileRoutesByTo {
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/guides/$guideId/details': typeof publicGuidesGuideIdDetailsIndexRoute
   '/r/$resourceId/details': typeof publicRResourceIdDetailsIndexRoute
+  '/stories/$storyId/details': typeof publicStoriesStoryIdDetailsIndexRoute
   '/support/$postId/details': typeof publicSupportPostIdDetailsIndexRoute
   '/api/support/$id/claims': typeof ApiSupportIdClaimsIndexRoute
   '/api/trust-signals/$contentType/$contentId': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
@@ -892,6 +925,7 @@ export interface FileRoutesById {
   '/(public)/stories': typeof publicStoriesRouteRouteWithChildren
   '/(public)/submit': typeof publicSubmitRouteRouteWithChildren
   '/(public)/submit-guide': typeof publicSubmitGuideRouteRouteWithChildren
+  '/(public)/submit-story': typeof publicSubmitStoryRouteRouteWithChildren
   '/(public)/submit-support': typeof publicSubmitSupportRouteRouteWithChildren
   '/(public)/support': typeof publicSupportRouteRouteWithChildren
   '/api/account': typeof ApiAccountRoute
@@ -909,6 +943,7 @@ export interface FileRoutesById {
   '/(public)/r/mental-health': typeof publicRMentalHealthRouteRouteWithChildren
   '/(public)/r/safe-space': typeof publicRSafeSpaceRouteRouteWithChildren
   '/(public)/r/travel': typeof publicRTravelRouteRouteWithChildren
+  '/(public)/stories/$storyId': typeof publicStoriesStoryIdRouteRouteWithChildren
   '/(public)/support/$postId': typeof publicSupportPostIdRouteRouteWithChildren
   '/api/app-lock/reset': typeof ApiAppLockResetRoute
   '/api/app-lock/verify': typeof ApiAppLockVerifyRoute
@@ -932,6 +967,7 @@ export interface FileRoutesById {
   '/(public)/r/': typeof publicRIndexRoute
   '/(public)/stories/': typeof publicStoriesIndexRoute
   '/(public)/submit-guide/': typeof publicSubmitGuideIndexRoute
+  '/(public)/submit-story/': typeof publicSubmitStoryIndexRoute
   '/(public)/submit-support/': typeof publicSubmitSupportIndexRoute
   '/(public)/submit/': typeof publicSubmitIndexRoute
   '/(public)/support/': typeof publicSupportIndexRoute
@@ -976,6 +1012,7 @@ export interface FileRoutesById {
   '/api/trust-signals/$contentType/$contentId/verify': typeof ApiTrustSignalsContentTypeContentIdVerifyRoute
   '/(public)/guides/$guideId/details/': typeof publicGuidesGuideIdDetailsIndexRoute
   '/(public)/r/$resourceId/details/': typeof publicRResourceIdDetailsIndexRoute
+  '/(public)/stories/$storyId/details/': typeof publicStoriesStoryIdDetailsIndexRoute
   '/(public)/support/$postId/details/': typeof publicSupportPostIdDetailsIndexRoute
   '/api/support/$id/claims/': typeof ApiSupportIdClaimsIndexRoute
   '/api/trust-signals/$contentType/$contentId/': typeof ApiTrustSignalsContentTypeContentIdIndexRoute
@@ -1000,6 +1037,7 @@ export interface FileRouteTypes {
     | '/stories'
     | '/submit'
     | '/submit-guide'
+    | '/submit-story'
     | '/submit-support'
     | '/support'
     | '/api/account'
@@ -1017,6 +1055,7 @@ export interface FileRouteTypes {
     | '/r/mental-health'
     | '/r/safe-space'
     | '/r/travel'
+    | '/stories/$storyId'
     | '/support/$postId'
     | '/api/app-lock/reset'
     | '/api/app-lock/verify'
@@ -1040,6 +1079,7 @@ export interface FileRouteTypes {
     | '/r/'
     | '/stories/'
     | '/submit-guide/'
+    | '/submit-story/'
     | '/submit-support/'
     | '/submit/'
     | '/support/'
@@ -1084,6 +1124,7 @@ export interface FileRouteTypes {
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/guides/$guideId/details/'
     | '/r/$resourceId/details/'
+    | '/stories/$storyId/details/'
     | '/support/$postId/details/'
     | '/api/support/$id/claims/'
     | '/api/trust-signals/$contentType/$contentId/'
@@ -1097,6 +1138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/guides/$guideId'
     | '/r/$resourceId'
+    | '/stories/$storyId'
     | '/support/$postId'
     | '/api/app-lock/reset'
     | '/api/app-lock/verify'
@@ -1120,6 +1162,7 @@ export interface FileRouteTypes {
     | '/r'
     | '/stories'
     | '/submit-guide'
+    | '/submit-story'
     | '/submit-support'
     | '/submit'
     | '/support'
@@ -1161,6 +1204,7 @@ export interface FileRouteTypes {
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/guides/$guideId/details'
     | '/r/$resourceId/details'
+    | '/stories/$storyId/details'
     | '/support/$postId/details'
     | '/api/support/$id/claims'
     | '/api/trust-signals/$contentType/$contentId'
@@ -1186,6 +1230,7 @@ export interface FileRouteTypes {
     | '/(public)/stories'
     | '/(public)/submit'
     | '/(public)/submit-guide'
+    | '/(public)/submit-story'
     | '/(public)/submit-support'
     | '/(public)/support'
     | '/api/account'
@@ -1203,6 +1248,7 @@ export interface FileRouteTypes {
     | '/(public)/r/mental-health'
     | '/(public)/r/safe-space'
     | '/(public)/r/travel'
+    | '/(public)/stories/$storyId'
     | '/(public)/support/$postId'
     | '/api/app-lock/reset'
     | '/api/app-lock/verify'
@@ -1226,6 +1272,7 @@ export interface FileRouteTypes {
     | '/(public)/r/'
     | '/(public)/stories/'
     | '/(public)/submit-guide/'
+    | '/(public)/submit-story/'
     | '/(public)/submit-support/'
     | '/(public)/submit/'
     | '/(public)/support/'
@@ -1270,6 +1317,7 @@ export interface FileRouteTypes {
     | '/api/trust-signals/$contentType/$contentId/verify'
     | '/(public)/guides/$guideId/details/'
     | '/(public)/r/$resourceId/details/'
+    | '/(public)/stories/$storyId/details/'
     | '/(public)/support/$postId/details/'
     | '/api/support/$id/claims/'
     | '/api/trust-signals/$contentType/$contentId/'
@@ -1452,6 +1500,13 @@ declare module '@tanstack/react-router' {
       path: '/submit-guide'
       fullPath: '/submit-guide'
       preLoaderRoute: typeof publicSubmitGuideRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/submit-story': {
+      id: '/(public)/submit-story'
+      path: '/submit-story'
+      fullPath: '/submit-story'
+      preLoaderRoute: typeof publicSubmitStoryRouteRouteImport
       parentRoute: typeof publicRouteRoute
     }
     '/(public)/submit-support': {
@@ -1650,12 +1705,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicStoriesIndexRouteImport
       parentRoute: typeof publicStoriesRouteRoute
     }
+    '/(public)/stories/$storyId': {
+      id: '/(public)/stories/$storyId'
+      path: '/$storyId'
+      fullPath: '/stories/$storyId'
+      preLoaderRoute: typeof publicStoriesStoryIdRouteRouteImport
+      parentRoute: typeof publicStoriesRouteRoute
+    }
     '/(public)/submit-guide/': {
       id: '/(public)/submit-guide/'
       path: '/'
       fullPath: '/submit-guide/'
       preLoaderRoute: typeof publicSubmitGuideIndexRouteImport
       parentRoute: typeof publicSubmitGuideRouteRoute
+    }
+    '/(public)/submit-story/': {
+      id: '/(public)/submit-story/'
+      path: '/'
+      fullPath: '/submit-story/'
+      preLoaderRoute: typeof publicSubmitStoryIndexRouteImport
+      parentRoute: typeof publicSubmitStoryRouteRoute
     }
     '/(public)/submit-support/': {
       id: '/(public)/submit-support/'
@@ -2013,6 +2082,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/r/$resourceId/details/'
       preLoaderRoute: typeof publicRResourceIdDetailsIndexRouteImport
       parentRoute: typeof publicRResourceIdDetailsRouteRoute
+    }
+    '/(public)/stories/$storyId/details/': {
+      id: '/(public)/stories/$storyId/details/'
+      path: '/details'
+      fullPath: '/stories/$storyId/details/'
+      preLoaderRoute: typeof publicStoriesStoryIdDetailsIndexRouteImport
+      parentRoute: typeof publicStoriesStoryIdRouteRoute
     }
     '/(public)/support/$postId/details/': {
       id: '/(public)/support/$postId/details/'
@@ -2470,11 +2546,28 @@ const publicRRouteRouteWithChildren = publicRRouteRoute._addFileChildren(
   publicRRouteRouteChildren,
 )
 
+interface publicStoriesStoryIdRouteRouteChildren {
+  publicStoriesStoryIdDetailsIndexRoute: typeof publicStoriesStoryIdDetailsIndexRoute
+}
+
+const publicStoriesStoryIdRouteRouteChildren: publicStoriesStoryIdRouteRouteChildren =
+  {
+    publicStoriesStoryIdDetailsIndexRoute:
+      publicStoriesStoryIdDetailsIndexRoute,
+  }
+
+const publicStoriesStoryIdRouteRouteWithChildren =
+  publicStoriesStoryIdRouteRoute._addFileChildren(
+    publicStoriesStoryIdRouteRouteChildren,
+  )
+
 interface publicStoriesRouteRouteChildren {
+  publicStoriesStoryIdRouteRoute: typeof publicStoriesStoryIdRouteRouteWithChildren
   publicStoriesIndexRoute: typeof publicStoriesIndexRoute
 }
 
 const publicStoriesRouteRouteChildren: publicStoriesRouteRouteChildren = {
+  publicStoriesStoryIdRouteRoute: publicStoriesStoryIdRouteRouteWithChildren,
   publicStoriesIndexRoute: publicStoriesIndexRoute,
 }
 
@@ -2504,6 +2597,20 @@ const publicSubmitGuideRouteRouteChildren: publicSubmitGuideRouteRouteChildren =
 const publicSubmitGuideRouteRouteWithChildren =
   publicSubmitGuideRouteRoute._addFileChildren(
     publicSubmitGuideRouteRouteChildren,
+  )
+
+interface publicSubmitStoryRouteRouteChildren {
+  publicSubmitStoryIndexRoute: typeof publicSubmitStoryIndexRoute
+}
+
+const publicSubmitStoryRouteRouteChildren: publicSubmitStoryRouteRouteChildren =
+  {
+    publicSubmitStoryIndexRoute: publicSubmitStoryIndexRoute,
+  }
+
+const publicSubmitStoryRouteRouteWithChildren =
+  publicSubmitStoryRouteRoute._addFileChildren(
+    publicSubmitStoryRouteRouteChildren,
   )
 
 interface publicSubmitSupportRouteRouteChildren {
@@ -2572,6 +2679,7 @@ interface publicRouteRouteChildren {
   publicStoriesRouteRoute: typeof publicStoriesRouteRouteWithChildren
   publicSubmitRouteRoute: typeof publicSubmitRouteRouteWithChildren
   publicSubmitGuideRouteRoute: typeof publicSubmitGuideRouteRouteWithChildren
+  publicSubmitStoryRouteRoute: typeof publicSubmitStoryRouteRouteWithChildren
   publicSubmitSupportRouteRoute: typeof publicSubmitSupportRouteRouteWithChildren
   publicSupportRouteRoute: typeof publicSupportRouteRouteWithChildren
   publicIndexRoute: typeof publicIndexRoute
@@ -2587,6 +2695,7 @@ const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicStoriesRouteRoute: publicStoriesRouteRouteWithChildren,
   publicSubmitRouteRoute: publicSubmitRouteRouteWithChildren,
   publicSubmitGuideRouteRoute: publicSubmitGuideRouteRouteWithChildren,
+  publicSubmitStoryRouteRoute: publicSubmitStoryRouteRouteWithChildren,
   publicSubmitSupportRouteRoute: publicSubmitSupportRouteRouteWithChildren,
   publicSupportRouteRoute: publicSupportRouteRouteWithChildren,
   publicIndexRoute: publicIndexRoute,

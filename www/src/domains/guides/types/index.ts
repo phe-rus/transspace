@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { GUIDE_CATEGORIES } from "@/data/guides"
+import { AUTHOR_VISIBILITIES, STORY_TOPICS } from "@/data/stories"
 
 export const GUIDE_STATUSES = ["pending", "published", "rejected"] as const
 
@@ -17,6 +18,23 @@ export function assertValidGuideCategory(
     }
 }
 
+export const GUIDE_KINDS = ["guide", "story"] as const
+
+export type GuideKind = (typeof GUIDE_KINDS)[number]
+
+// a guide category for a guide, a story topic for a story; the wrong list
+// for the kind is a 422 (spec 0007 AC-5)
+export function assertValidCategoryForKind(
+    kind: GuideKind,
+    category: string
+): void {
+    const allowed: readonly string[] =
+        kind === "story" ? STORY_TOPICS : GUIDE_CATEGORIES
+    if (!allowed.includes(category)) {
+        throw new Response("Unknown category", { status: 422 })
+    }
+}
+
 const contentRefSchema = {
     id: z.string().min(1),
 }
@@ -25,6 +43,8 @@ const UUID_RE =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export const listGuidesSchema = z.object({
+    // defaults to guide on the server, so stories never leak into guides
+    kind: z.enum(GUIDE_KINDS).optional(),
     category: z.string().optional(),
     search: z.string().optional(),
     status: z.enum(GUIDE_STATUSES).optional(),
@@ -45,7 +65,10 @@ export const submitGuideSchema = z.object({
     id: z.string().regex(UUID_RE),
     title: z.string().min(1),
     excerpt: z.string().min(1),
+    kind: z.enum(GUIDE_KINDS).optional(),
     category: z.string().min(1),
+    // required for a story (spec 0007 AC-4), ignored for a guide
+    authorVisibility: z.enum(AUTHOR_VISIBILITIES).optional(),
     bodyContent: z.unknown(),
     relatedResourceIds: z.array(z.string()).max(10).optional(),
     // find-or-create by title, spec 0004 AC-10

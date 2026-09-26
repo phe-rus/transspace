@@ -13,7 +13,7 @@ import {
     assertValidRelatedResourceIds,
     assertValidVideoUrl,
 } from "../content-safety"
-import { assertValidGuideCategory, submitGuideSchema } from "../types"
+import { assertValidCategoryForKind, submitGuideSchema } from "../types"
 
 // found-or-created against guide_series.title via a case-insensitive
 // lookup; insert-if-absent then select, mirrors findOrCreateCountry
@@ -54,7 +54,13 @@ export const submitGuide = createServerFn({ method: "POST" })
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
-        assertValidGuideCategory(data.category)
+        const kind = data.kind ?? "guide"
+        assertValidCategoryForKind(kind, data.category)
+        // a story must say how it shows its writer, and a guide carries
+        // no such choice (spec 0007 AC-4)
+        if (kind === "story" && !data.authorVisibility) {
+            throw new Response("Choose how your name is shown", { status: 422 })
+        }
 
         // validated before anything is written (spec 0004 AC-9, AC-10):
         // image src allowlist + size cap inside analyzeBodyContent, id
@@ -97,6 +103,9 @@ export const submitGuide = createServerFn({ method: "POST" })
                 title: data.title,
                 excerpt: data.excerpt,
                 category: data.category,
+                kind,
+                authorVisibility:
+                    kind === "story" ? (data.authorVisibility ?? null) : null,
                 bodyContent: JSON.stringify(data.bodyContent),
                 wordCount,
                 relatedResourceIds: relatedResourceIds.length

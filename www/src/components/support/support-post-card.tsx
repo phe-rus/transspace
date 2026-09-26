@@ -1,6 +1,7 @@
 import type { listSupportPosts } from "@/domains/support"
 import { supportPostTypeLabel, type SupportPostType } from "@/data/support-types"
 import { m } from "@/paraglide/messages"
+import { formatDate } from "@/lib/format-date"
 import {
   Alert01Icon,
   ChevronRightIcon,
@@ -30,9 +31,9 @@ export function SupportPostCard({ post }: SupportPostCardProps) {
       <Link
         to="/support/$postId/details"
         params={{ postId: post.id }}
-        className="flex flex-col gap-4 overflow-hidden rounded-3xl border border-border bg-card p-6 transition-colors hover:bg-muted sm:flex-row sm:items-center sm:gap-5 md:col-span-2"
+        className="group flex flex-col gap-4 border-t border-border/60 py-5 sm:flex-row sm:items-center sm:gap-5 md:col-span-2"
       >
-        <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-background">
+        <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-muted">
           <HugeiconsIcon icon={HandHeartIcon} className="size-7" />
         </span>
         <div className="flex flex-1 flex-col gap-1">
@@ -57,7 +58,7 @@ export function SupportPostCard({ post }: SupportPostCardProps) {
     <Link
       to="/support/$postId/details"
       params={{ postId: post.id }}
-      className="flex flex-col gap-2.5 rounded-3xl border border-border bg-card p-5 transition-colors hover:bg-muted"
+      className="group flex flex-col gap-2.5 border-t border-border/60 py-5"
     >
       <div className="flex items-center justify-between">
         {post.isUrgent ? (
@@ -68,7 +69,7 @@ export function SupportPostCard({ post }: SupportPostCardProps) {
         ) : (
           <h6>{supportPostTypeLabel[type]}</h6>
         )}
-        <p>{new Date(post.createdAt).toLocaleDateString()}</p>
+        <p>{formatDate(post.createdAt)}</p>
       </div>
       <h3>{post.title}</h3>
       {post.visibility === "redacted" && (

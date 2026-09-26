@@ -58,6 +58,7 @@ function RouteComponent() {
           contact: value.contact || undefined,
           internationalAccess: value.internationalAccess,
           isFree: value.isFree,
+          tier: value.category === "health" && value.isDiy ? "diy" : undefined,
           turnstileToken,
         },
       })
@@ -244,6 +245,16 @@ function RouteComponent() {
         <form.AppField name="internationalAccess">
           {(field) => <field.CheckboxField label={m["pages.submit.internationalAccess"]()} />}
         </form.AppField>
+
+        <form.Subscribe selector={(state) => state.values.category}>
+          {(category) =>
+            category === "health" && (
+              <form.AppField name="isDiy">
+                {(field) => <field.CheckboxField label={m["pages.submit.isDiy"]()} />}
+              </form.AppField>
+            )
+          }
+        </form.Subscribe>
 
         <div className="flex items-center gap-3 rounded-3xl border border-border p-5">
           <HugeiconsIcon icon={Shield01Icon} className="size-4.5 shrink-0" />

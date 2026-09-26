@@ -9,6 +9,10 @@
       "support": "支持",
       "profile": "个人资料"
     },
+    "actions": {
+      "submitResource": "提交资源",
+      "signIn": "登录 Transspace"
+    },
     "groups": {
       "health": {
         "label": "健康",
@@ -120,7 +124,8 @@
         "internationalOnly": "接受来自其他国家的人",
         "relatedGuides": "相关指南",
         "resourcesCount": "{count} 资源",
-        "anyCountry": "任何国家"
+        "anyCountry": "任何国家",
+        "careType": "护理类型"
       },
       "healthcareProviders": {
         "title": "医疗服务提供者",
@@ -165,6 +170,12 @@
         "pendingReview": "社区提交，待审核",
         "lastReviewedCount": "上次审核时间：{when}",
         "communityReportsCount": "{count} 条社区反馈",
+        "practicalDetails": "实用信息",
+        "hours": "营业时间",
+        "languages": "语言",
+        "accessibility": "无障碍设施",
+        "safetyNotes": "安全与隐私",
+        "whatToBring": "需要携带",
         "photoPlaceholder": "{name} 的照片",
         "about": "关于",
         "services": "服务项目",
@@ -176,7 +187,8 @@
         "saveResource": "收藏此资源",
         "suggestUpdate": "建议更新",
         "trustSignals": "信任标识",
-        "internationalAccessNote": "接受来自其他国家的人"
+        "internationalAccessNote": "接受来自其他国家的人",
+        "diyNote": "这是由社区提供的护理,不是医疗服务。请阅读安全提示并格外小心。"
       }
     },
     "opportunities": {
@@ -290,10 +302,22 @@
       "successTitle": "感谢您的提交",
       "submitting": "提交中…",
       "signIn": "登录",
-      "successBody": "在出现在目录中之前，版主会对其进行审核。"
+      "successBody": "在出现在目录中之前，版主会对其进行审核。",
+      "isDiy": "这是自助或同伴运营的选项(社区提供,不是持牌服务)"
     },
     "stories": {
-      "comingSoon": "故事版块即将上线。"
+      "title": "故事",
+      "subtitle": "来自社区成员的亲身经历：转变、搬家、住房、工作等。这些是个人经历，不是建议。",
+      "searchPlaceholder": "搜索故事",
+      "share": "分享你的故事",
+      "signInToShare": "登录后分享故事",
+      "all": "全部",
+      "noMatches": "没有匹配的故事。请尝试其他搜索或主题。",
+      "anonymous": "匿名分享",
+      "experienceNote": "这是一个人的经历，不是建议。对他们有效的方法不一定适合你，请向你信任的人确认。",
+      "notFoundTitle": "未找到故事",
+      "notFoundBody": "该故事不存在，或尚未发布。",
+      "backToStories": "返回故事"
     },
     "auth": {
       "signIn": {
@@ -612,12 +636,35 @@
       "confirm": "确认",
       "banDialogDescription": "这将阻止 {name} 登录,直到你解除封禁。请填写原因以备记录。",
       "banReasonPlaceholder": "为什么要封禁此账户?"
+    },
+    "submitStory": {
+      "title": "分享你的故事",
+      "subtitle": "用你自己的话写下你的经历。每个故事在出现之前都会由版主阅读。",
+      "signInRequired": "登录后分享故事。",
+      "signIn": "登录",
+      "successTitle": "感谢你的分享",
+      "successBody": "版主会先阅读你的故事，然后才会显示。",
+      "titleLabel": "标题",
+      "titlePlaceholder": "你的故事讲的是什么？",
+      "summaryLabel": "简短摘要",
+      "summaryPlaceholder": "用一两句话告诉读者会读到什么",
+      "topic": "主题",
+      "identity": "你的名字如何显示？",
+      "identityProfile": "显示我的个人资料名称",
+      "identityProfileHint": "读者会看到你个人资料上的显示名称。",
+      "identityAnonymous": "匿名分享",
+      "identityAnonymousHint": "任何地方都不会显示名字。",
+      "bodyLabel": "你的故事",
+      "bodyPlaceholder": "在这里写。你可以添加标题和列表。请不要写出其他人的真实姓名。",
+      "submit": "提交故事",
+      "submitting": "提交中..."
     }
   },
   "components": {
     "resourceCard": {
       "verified": "社区已验证",
-      "pendingReview": "社区提交，待审核"
+      "pendingReview": "社区提交，待审核",
+      "diy": "接受自助方式"
     },
     "atlasDetail": {
       "backToList": "返回列表",

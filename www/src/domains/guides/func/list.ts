@@ -5,16 +5,16 @@ import { z } from "zod"
 import { db } from "@/db"
 import { guide, guideSeries } from "@/schemas/guides"
 import { trustSignal } from "@/schemas/trust"
-import { profile } from "@/schemas/profile"
+import { userLink } from "@/schemas/user-link"
 import { assertReadRateLimit } from "@/lib/rate-limit"
 import { encodeCreatedAtCursor, decodeCreatedAtCursor } from "@/lib/cursor"
 import { computeReadTime } from "../content-safety"
 import {
-    assertValidGuideCategory,
+    assertValidCategoryForKind,
     listGuidesSchema,
     type GuideStatus,
 } from "../types"
-import { DEFAULT_LIMIT, MAX_LIMIT, bylineFrom, currentModeratorId, getClientKey } from "./shared"
+import { DEFAULT_LIMIT, MAX_LIMIT, contributorFor, currentModeratorId, getClientKey } from "./shared"
 
 export type ListGuidesFilters = z.infer<typeof listGuidesSchema>
 
@@ -31,13 +31,17 @@ export const listGuides = createServerFn({ method: "GET" })
             effectiveStatus = data.status
         }
 
+        const kind = data.kind ?? "guide"
         if (data.category) {
-            assertValidGuideCategory(data.category)
+            assertValidCategoryForKind(kind, data.category)
         }
 
         const limit = Math.min(data.limit ?? DEFAULT_LIMIT, MAX_LIMIT)
 
-        const conditions = [eq(guide.status, effectiveStatus)]
+        const conditions = [
+            eq(guide.status, effectiveStatus),
+            eq(guide.kind, kind),
+        ]
         if (data.category)
             conditions.push(eq(guide.category, data.category))
         if (data.search) {
@@ -62,20 +66,22 @@ export const listGuides = createServerFn({ method: "GET" })
                 title: guide.title,
                 excerpt: guide.excerpt,
                 category: guide.category,
+                kind: guide.kind,
+                authorVisibility: guide.authorVisibility,
                 status: guide.status,
                 wordCount: guide.wordCount,
                 createdAt: guide.createdAt,
                 coverImageUrl: guide.coverImageUrl,
                 seriesTitle: guideSeries.title,
                 seriesOrder: guide.seriesOrder,
-                displayName: profile.displayName,
-                profileDeletedAt: profile.deletedAt,
+                displayName: userLink.displayName,
+                profileDeletedAt: userLink.deletedAt,
                 communityReviewed: trustSignal.communityReviewed,
                 coSignCount: trustSignal.coSignCount,
                 professionalVerified: trustSignal.professionalVerified,
             })
             .from(guide)
-            .leftJoin(profile, eq(profile.userLinkId, guide.submittedBy))
+            .leftJoin(userLink, eq(userLink.id, guide.submittedBy))
             .leftJoin(guideSeries, eq(guideSeries.id, guide.seriesId))
             .leftJoin(
                 trustSignal,
@@ -92,7 +98,7 @@ export const listGuides = createServerFn({ method: "GET" })
         const items = (hasMore ? rows.slice(0, limit) : rows).map(
             ({ displayName, profileDeletedAt, wordCount, ...row }) => ({
                 ...row,
-                contributor: bylineFrom({
+                contributor: contributorFor(row.authorVisibility, {
                     displayName,
                     deletedAt: profileDeletedAt,
                 }),

@@ -7,6 +7,7 @@ import {
   type ResourceCategory,
 } from "@/data/resource-categories"
 import { CheckmarkCircle01Icon } from "@hugeicons/core-free-icons"
+import { TierBadge } from "./tier-badge"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 
@@ -28,7 +29,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
     <Link
       to="/r/$resourceId/details"
       params={{ resourceId: resource.id }}
-      className="flex gap-4 rounded-4xl border border-border bg-card p-5 transition-colors hover:bg-muted"
+      className="group flex gap-4 border-t border-border/60 py-5"
     >
       <span
         className="flex size-12 shrink-0 items-center justify-center rounded-2xl"
@@ -42,8 +43,10 @@ export function ResourceCard({ resource }: ResourceCardProps) {
       </span>
       <div className="flex flex-1 flex-col gap-1.5">
         <div className="flex flex-wrap items-center gap-2.5">
-          <h3>{resource.name}</h3>
-          {resource.professionalVerified ? (
+          <h3 className="underline-offset-4 group-hover:underline">{resource.name}</h3>
+          {resource.tier === "diy" ? (
+            <TierBadge tier="diy" />
+          ) : resource.professionalVerified || resource.tier === "verified" ? (
             <h6 className="flex items-center gap-1">
               <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3" />
               {m["components.resourceCard.verified"]()}

@@ -20,6 +20,7 @@ import { sortedCountryOptions, countryName } from "@/data/countries"
 import { notifyError, notifySuccess } from "@/lib/toast"
 import { m } from "@/paraglide/messages"
 import { getLocale } from "@/paraglide/runtime"
+import { formatDate } from "@/lib/format-date"
 import {
   CheckmarkCircle01Icon,
   MoreHorizontalIcon,
@@ -320,7 +321,7 @@ function RouteComponent() {
                           : "—"}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {formatDate(user.createdAt)}
                     </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
@@ -482,7 +483,7 @@ function RouteComponent() {
                 {entry.target ? entry.target : ""}
               </p>
               <p className="shrink-0 text-xs text-muted-foreground">
-                {new Date(entry.createdAt).toLocaleString()}
+                {formatDate(entry.createdAt, { dateStyle: "medium", timeStyle: "short", timeZoneName: "short" })}
               </p>
             </div>
           ))}

@@ -5,11 +5,11 @@ import { db } from "@/db"
 import { guide, guideSeries } from "@/schemas/guides"
 import { resource } from "@/schemas/resources"
 import { trustSignal } from "@/schemas/trust"
-import { profile } from "@/schemas/profile"
+import { userLink } from "@/schemas/user-link"
 import { assertReadRateLimit } from "@/lib/rate-limit"
 import { computeReadTime } from "../content-safety"
 import { getGuideSchema } from "../types"
-import { bylineFrom, currentModeratorId, getClientKey } from "./shared"
+import { contributorFor, currentModeratorId, getClientKey } from "./shared"
 
 export const getGuide = createServerFn({ method: "GET" })
     .validator(getGuideSchema)
@@ -22,6 +22,8 @@ export const getGuide = createServerFn({ method: "GET" })
                 title: guide.title,
                 excerpt: guide.excerpt,
                 category: guide.category,
+                kind: guide.kind,
+                authorVisibility: guide.authorVisibility,
                 bodyContent: guide.bodyContent,
                 relatedResourceIds: guide.relatedResourceIds,
                 coverImageUrl: guide.coverImageUrl,
@@ -32,11 +34,11 @@ export const getGuide = createServerFn({ method: "GET" })
                 status: guide.status,
                 wordCount: guide.wordCount,
                 createdAt: guide.createdAt,
-                displayName: profile.displayName,
-                profileDeletedAt: profile.deletedAt,
+                displayName: userLink.displayName,
+                profileDeletedAt: userLink.deletedAt,
             })
             .from(guide)
-            .leftJoin(profile, eq(profile.userLinkId, guide.submittedBy))
+            .leftJoin(userLink, eq(userLink.id, guide.submittedBy))
             .leftJoin(guideSeries, eq(guideSeries.id, guide.seriesId))
             .where(eq(guide.id, data.id))
         const row = rows[0]
@@ -116,7 +118,7 @@ export const getGuide = createServerFn({ method: "GET" })
         const { displayName, profileDeletedAt, wordCount, ...rest } = row
         return {
             ...rest,
-            contributor: bylineFrom({
+            contributor: contributorFor(row.authorVisibility, {
                 displayName,
                 deletedAt: profileDeletedAt,
             }),

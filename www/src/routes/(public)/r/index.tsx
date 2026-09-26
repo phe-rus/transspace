@@ -1,16 +1,17 @@
 import { ResourceCard } from "@/components/resources/resource-card"
 import { listCountriesQueryOptions, listResourcesQueryOptions } from "@/domains/resources"
 import { m } from "@/paraglide/messages"
+import { SearchField } from "@/components/search-field"
 import {
   RESOURCE_CATEGORIES,
+  RESOURCE_TIERS,
   resourceCategoryColor,
   resourceCategoryLabel,
   type ResourceCategory,
 } from "@/data/resource-categories"
-import { MapPinpoint01Icon, SearchIcon } from "@hugeicons/core-free-icons"
+import { MapPinpoint01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@pherus/ui/input-group"
 import { cn } from "@pherus/ui/lib/utils"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/(public)/r/")({
     category: z.string().optional(),
     countryId: z.string().optional(),
     verifiedOnly: z.boolean().optional(),
+    tier: z.enum(RESOURCE_TIERS).optional(),
     freeOnly: z.boolean().optional(),
     internationalOnly: z.boolean().optional(),
   }),
@@ -61,18 +63,11 @@ function RouteComponent() {
     <article className="container mx-auto flex w-full flex-col gap-6 py-10 md:max-w-5xl">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 md:flex-row">
-          <InputGroup className="h-11 flex-1 rounded-full">
-            <InputGroupAddon align="inline-start">
-              <HugeiconsIcon icon={SearchIcon} className="size-4" />
-            </InputGroupAddon>
-            <InputGroupInput
-              value={search.search ?? ""}
-              onChange={(event) =>
-                patchSearch({ search: event.target.value || undefined })
-              }
-              placeholder={m["pages.resources.index.searchPlaceholder"]()}
-            />
-          </InputGroup>
+          <SearchField
+            value={search.search}
+            onChange={(value) => patchSearch({ search: value })}
+            placeholder={m["pages.resources.index.searchPlaceholder"]()}
+          />
           <div
             className={cn(
               "flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground",
@@ -143,9 +138,9 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6 md:flex-row">
-        <div className="flex flex-2 flex-col gap-3.5">
-          <p>
+      <div className="flex flex-col gap-8 md:flex-row md:gap-10">
+        <div className="flex flex-2 flex-col">
+          <p className="pb-3">
             {locationLabel
               ? `${m["pages.resources.index.resourcesNearCount"]({ count: data.items.length })} ${locationLabel}`
               : m["pages.resources.index.resourcesCount"]({ count: data.items.length })}
@@ -156,14 +151,14 @@ function RouteComponent() {
           ))}
 
           {data.items.length === 0 && (
-            <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-              <p>{m["pages.resources.index.noMatches"]()}</p>
-            </div>
+            <p className="border-t border-border/60 py-10 text-center">
+              {m["pages.resources.index.noMatches"]()}
+            </p>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
-          <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
+        <aside className="flex flex-1 flex-col gap-8 border-t border-border/60 pt-6 md:sticky md:top-11 md:self-start md:border-t-0 md:border-l md:pt-0 md:pl-8">
+          <div className="flex flex-col gap-3">
             <h6>{m["pages.resources.index.trustSignals"]()}</h6>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
@@ -176,6 +171,28 @@ function RouteComponent() {
               />
               {m["pages.resources.index.verifiedOnly"]()}
             </label>
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label={m["pages.resources.index.careType"]()}>
+              {RESOURCE_TIERS.map((tier) => (
+                <button
+                  key={tier}
+                  type="button"
+                  aria-pressed={search.tier === tier}
+                  onClick={() =>
+                    patchSearch({ tier: search.tier === tier ? undefined : tier })
+                  }
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs transition-colors",
+                    search.tier === tier
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border text-muted-foreground hover:border-muted-foreground",
+                  )}
+                >
+                  {tier === "verified"
+                    ? m["components.resourceCard.verified"]()
+                    : m["components.resourceCard.diy"]()}
+                </button>
+              ))}
+            </div>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
                 type="checkbox"
@@ -200,12 +217,12 @@ function RouteComponent() {
             </label>
           </div>
 
-          <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-5">
+          <div className="flex flex-col gap-2">
             <h6>{m["pages.resources.index.relatedGuides"]()}</h6>
             <p>Finding gender affirming care in Germany</p>
             <p>What "community verified" actually means</p>
           </div>
-        </div>
+        </aside>
       </div>
     </article>
   )

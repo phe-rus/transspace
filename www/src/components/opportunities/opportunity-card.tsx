@@ -27,7 +27,7 @@ export function OpportunityCard({ listing }: { listing: JobListing }) {
   )
 
   return (
-    <article className="flex gap-4 rounded-4xl border border-border bg-card p-5 transition-colors hover:bg-muted">
+    <article className="flex gap-4 border-t border-border/60 py-5">
       <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-muted">
         <HugeiconsIcon icon={Briefcase02Icon} className="size-5" />
       </span>

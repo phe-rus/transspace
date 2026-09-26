@@ -30,3 +30,11 @@ export function bylineFrom(row: {
     }
     return row.displayName
 }
+
+// an anonymous story returns no writer name from any read (spec 0007 AC-4)
+export function contributorFor(
+    authorVisibility: string | null,
+    row: { displayName: string | null; deletedAt: Date | null } | null
+): string | null {
+    return authorVisibility === "anonymous" ? null : bylineFrom(row)
+}

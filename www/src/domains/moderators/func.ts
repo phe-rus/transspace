@@ -1,9 +1,8 @@
 import { createServerFn } from "@tanstack/react-start"
 import { queryOptions } from "@tanstack/react-query"
-import { count, eq } from "drizzle-orm"
+import { count, eq, isNotNull } from "drizzle-orm"
 import { db } from "@/db"
-import { moderators } from "@/schemas/moderation"
-import { profile } from "@/schemas/profile"
+import { userLink } from "@/schemas/user-link"
 import { ModeratorMiddleware } from "@/middleware/require-moderator"
 import { AdminMiddleware } from "@/middleware/require-admin"
 import { getCurrentSession } from "@/middleware/session"
@@ -33,9 +32,9 @@ export const amIModerator = createServerFn({ method: "GET" }).handler(
         const [moderator, [row]] = await Promise.all([
             isModerator(session.userLinkId),
             db
-                .select({ countryCode: moderators.countryCode })
-                .from(moderators)
-                .where(eq(moderators.userLinkId, session.userLinkId)),
+                .select({ countryCode: userLink.moderatorCountryCode })
+                .from(userLink)
+                .where(eq(userLink.id, session.userLinkId)),
         ])
         return { isModerator: moderator, countryCode: row?.countryCode ?? null }
     }
@@ -60,14 +59,14 @@ export const listModerators = createServerFn({ method: "GET" })
         await assertReadRateLimit(userLinkId)
         const rows = await db
             .select({
-                userLinkId: moderators.userLinkId,
-                grantedBy: moderators.grantedBy,
-                grantedAt: moderators.grantedAt,
-                countryCode: moderators.countryCode,
-                displayName: profile.displayName,
+                userLinkId: userLink.id,
+                grantedBy: userLink.moderatorGrantedBy,
+                grantedAt: userLink.moderatorGrantedAt,
+                countryCode: userLink.moderatorCountryCode,
+                displayName: userLink.displayName,
             })
-            .from(moderators)
-            .leftJoin(profile, eq(profile.userLinkId, moderators.userLinkId))
+            .from(userLink)
+            .where(isNotNull(userLink.moderatorGrantedAt))
             .limit(data.limit + 1)
         return toPage(
             rows.map((row) => ({ ...row, id: row.userLinkId })),
@@ -92,12 +91,24 @@ export const grantModerator = createServerFn({ method: "POST" })
                 { status: 422 }
             )
         }
-        await db.insert(moderators).values({
-            userLinkId: data.targetUserLinkId,
-            grantedBy: userLinkId,
-            grantedAt: new Date(),
-            countryCode: data.countryCode ?? null,
-        })
+        const [target] = await db
+            .select({ grantedAt: userLink.moderatorGrantedAt })
+            .from(userLink)
+            .where(eq(userLink.id, data.targetUserLinkId))
+        if (!target) {
+            throw new Response("Not found", { status: 404 })
+        }
+        if (target.grantedAt) {
+            throw new Response("Already a moderator", { status: 409 })
+        }
+        await db
+            .update(userLink)
+            .set({
+                moderatorGrantedAt: new Date(),
+                moderatorGrantedBy: userLinkId,
+                moderatorCountryCode: data.countryCode ?? null,
+            })
+            .where(eq(userLink.id, data.targetUserLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "moderator.grant",
@@ -117,16 +128,16 @@ export const setModeratorCountry = createServerFn({ method: "POST" })
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
-            .select({ userLinkId: moderators.userLinkId })
-            .from(moderators)
-            .where(eq(moderators.userLinkId, data.userLinkId))
-        if (!target) {
+            .select({ grantedAt: userLink.moderatorGrantedAt })
+            .from(userLink)
+            .where(eq(userLink.id, data.userLinkId))
+        if (!target?.grantedAt) {
             throw new Response("Not a moderator", { status: 404 })
         }
         await db
-            .update(moderators)
-            .set({ countryCode: data.countryCode ?? null })
-            .where(eq(moderators.userLinkId, data.userLinkId))
+            .update(userLink)
+            .set({ moderatorCountryCode: data.countryCode ?? null })
+            .where(eq(userLink.id, data.userLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "moderator.setCountry",
@@ -144,17 +155,18 @@ export const revokeModerator = createServerFn({ method: "POST" })
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
-            .select({ userLinkId: moderators.userLinkId })
-            .from(moderators)
-            .where(eq(moderators.userLinkId, data.userLinkId))
-        if (!target) {
+            .select({ grantedAt: userLink.moderatorGrantedAt })
+            .from(userLink)
+            .where(eq(userLink.id, data.userLinkId))
+        if (!target?.grantedAt) {
             throw new Response("Not a moderator", {
                 status: 404,
             })
         }
         const [{ total }] = await db
             .select({ total: count() })
-            .from(moderators)
+            .from(userLink)
+            .where(isNotNull(userLink.moderatorGrantedAt))
         // rejected outright, no override endpoint (spec 0002 key invariants)
         if (total - 1 < MODERATOR_FLOOR) {
             throw new Response(
@@ -163,8 +175,13 @@ export const revokeModerator = createServerFn({ method: "POST" })
             )
         }
         await db
-            .delete(moderators)
-            .where(eq(moderators.userLinkId, data.userLinkId))
+            .update(userLink)
+            .set({
+                moderatorGrantedAt: null,
+                moderatorGrantedBy: null,
+                moderatorCountryCode: null,
+            })
+            .where(eq(userLink.id, data.userLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "moderator.revoke",

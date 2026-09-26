@@ -101,19 +101,19 @@ function RouteComponent() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2">
         {data.items.map((post) => (
           <SupportPostCard key={post.id} post={post} />
         ))}
 
         {data.items.length === 0 && (
-          <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center md:col-span-2">
-            <p>{m["pages.support.empty"]()}</p>
-          </div>
+          <p className="py-10 text-center md:col-span-2">
+            {m["pages.support.empty"]()}
+          </p>
         )}
       </div>
 
-      <div className="flex items-center gap-3 rounded-3xl border border-border p-5">
+      <div className="flex items-center gap-3 border-t border-border/60 pt-5">
         <HugeiconsIcon icon={Shield01Icon} className="size-4.5 shrink-0" />
         <p>
           <strong className="text-foreground">{m["pages.support.privacyNoteStrong"]()}</strong>{" "}

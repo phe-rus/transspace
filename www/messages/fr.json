@@ -9,6 +9,10 @@
       "support": "Soutien",
       "profile": "Profil"
     },
+    "actions": {
+      "submitResource": "Proposer une ressource",
+      "signIn": "Se connecter à Transspace"
+    },
     "groups": {
       "health": {
         "label": "Santé",
@@ -120,7 +124,8 @@
         "internationalOnly": "Accepte les personnes venant d'autres pays",
         "relatedGuides": "Guides associés",
         "resourcesCount": "{count} ressources",
-        "anyCountry": "N'importe quel pays"
+        "anyCountry": "N'importe quel pays",
+        "careType": "Type de soins"
       },
       "healthcareProviders": {
         "title": "Professionnels de santé",
@@ -165,6 +170,12 @@
         "pendingReview": "Soumis par la communauté, en attente de vérification",
         "lastReviewedCount": "Dernière vérification {when}",
         "communityReportsCount": "{count} retours de la communauté",
+        "practicalDetails": "Informations pratiques",
+        "hours": "Horaires d'ouverture",
+        "languages": "Langues",
+        "accessibility": "Accessibilité",
+        "safetyNotes": "Sécurité et confidentialité",
+        "whatToBring": "À apporter",
         "photoPlaceholder": "Photo de {name}",
         "about": "À propos",
         "services": "Services",
@@ -176,7 +187,8 @@
         "saveResource": "Enregistrer cette ressource",
         "suggestUpdate": "Suggérer une mise à jour",
         "trustSignals": "Signaux de confiance",
-        "internationalAccessNote": "Accepte les personnes venant d'autres pays"
+        "internationalAccessNote": "Accepte les personnes venant d'autres pays",
+        "diyNote": "Ce sont des soins fournis par la communauté, pas des soins médicaux. Lis les notes de sécurité et sois particulièrement prudent."
       }
     },
     "opportunities": {
@@ -290,10 +302,22 @@
       "successTitle": "Merci pour la soumission",
       "isFree": "C'est gratuit ou à échelle mobile",
       "successBody": "Un modérateur le révisera avant qu'il n'apparaisse dans le répertoire.",
-      "submitting": "Envoi en cours…"
+      "submitting": "Envoi en cours…",
+      "isDiy": "C'est une option DIY ou entre pairs (fournie par la communauté, pas un service agréé)"
     },
     "stories": {
-      "comingSoon": "Les témoignages arrivent bientôt."
+      "title": "Témoignages",
+      "subtitle": "Des expériences vécues par des personnes de la communauté : transition, déménagement, logement, travail et plus. Ce sont des expériences personnelles, pas des conseils.",
+      "searchPlaceholder": "Rechercher des témoignages",
+      "share": "Partage ton témoignage",
+      "signInToShare": "Connecte-toi pour partager un témoignage",
+      "all": "Tous",
+      "noMatches": "Aucun témoignage ne correspond. Essaie une autre recherche ou un autre thème.",
+      "anonymous": "Partagé anonymement",
+      "experienceNote": "C'est l'expérience d'une seule personne, pas un conseil. Ce qui a marché pour elle peut ne pas marcher pour toi, alors demande à des personnes de confiance.",
+      "notFoundTitle": "Témoignage introuvable",
+      "notFoundBody": "Ce témoignage n'existe pas ou n'est pas encore publié.",
+      "backToStories": "Retour aux témoignages"
     },
     "auth": {
       "signIn": {
@@ -612,12 +636,35 @@
       "confirm": "Confirmer",
       "banDialogDescription": "Ceci empêche {name} de se connecter jusqu'à la levée du bannissement. Indiquez une raison pour l'historique.",
       "banReasonPlaceholder": "Pourquoi bannissez-vous ce compte ?"
+    },
+    "submitStory": {
+      "title": "Partage ton témoignage",
+      "subtitle": "Raconte ton expérience avec tes propres mots. Une personne de la modération lit chaque témoignage avant qu'il n'apparaisse.",
+      "signInRequired": "Connecte-toi pour partager un témoignage.",
+      "signIn": "Se connecter",
+      "successTitle": "Merci d'avoir partagé",
+      "successBody": "Une personne de la modération lira ton témoignage avant qu'il n'apparaisse.",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "De quoi parle ton témoignage ?",
+      "summaryLabel": "Court résumé",
+      "summaryPlaceholder": "Une ou deux phrases qui disent à la lectrice ou au lecteur à quoi s'attendre",
+      "topic": "Thème",
+      "identity": "Comment ton nom doit-il apparaître ?",
+      "identityProfile": "Afficher mon nom de profil",
+      "identityProfileHint": "Les lecteurs voient le nom affiché sur ton profil.",
+      "identityAnonymous": "Partager anonymement",
+      "identityAnonymousHint": "Aucun nom n'apparaît nulle part.",
+      "bodyLabel": "Ton témoignage",
+      "bodyPlaceholder": "Écris ici. Tu peux ajouter des titres et des listes. Merci de ne pas mettre les vrais noms d'autres personnes.",
+      "submit": "Envoyer le témoignage",
+      "submitting": "Envoi..."
     }
   },
   "components": {
     "resourceCard": {
       "verified": "Vérifié par la communauté",
-      "pendingReview": "Soumis par la communauté, en attente de vérification"
+      "pendingReview": "Soumis par la communauté, en attente de vérification",
+      "diy": "DIY accepté"
     },
     "atlasDetail": {
       "backToList": "Retour à la liste",

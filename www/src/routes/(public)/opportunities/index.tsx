@@ -72,13 +72,13 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6 md:flex-row">
-        <div className="flex flex-2 flex-col gap-3.5">
-          <p>{m["pages.opportunities.countLabel"]({ count: filteredOpportunities.length })}</p>
+      <div className="flex flex-col gap-8 md:flex-row md:gap-10">
+        <div className="flex flex-2 flex-col">
+          <p className="pb-3">{m["pages.opportunities.countLabel"]({ count: filteredOpportunities.length })}</p>
 
           {jobsQuery.isPending &&
             Array.from({ length: 3 }, (_, index) => (
-              <Skeleton key={index} className="h-32 rounded-4xl" />
+              <Skeleton key={index} className="my-3 h-28 rounded-2xl" />
             ))}
 
           {filteredOpportunities.map((item) => (
@@ -86,14 +86,14 @@ function RouteComponent() {
           ))}
 
           {jobsQuery.isSuccess && filteredOpportunities.length === 0 && (
-            <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-              <p>{m["pages.opportunities.noMatches"]()}</p>
-            </div>
+            <p className="border-t border-border/60 py-10 text-center">
+              {m["pages.opportunities.noMatches"]()}
+            </p>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
-          <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
+        <aside className="flex flex-1 flex-col gap-8 border-t border-border/60 pt-6 md:sticky md:top-11 md:self-start md:border-t-0 md:border-l md:pt-0 md:pl-8">
+          <div className="flex flex-col gap-3">
             <h6>{m["pages.opportunities.refine"]()}</h6>
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground">
               <input
@@ -106,12 +106,12 @@ function RouteComponent() {
             </label>
           </div>
 
-          <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-5">
+          <div className="flex flex-col gap-2">
             <h6>{m["pages.opportunities.beforeYouApply"]()}</h6>
             <p>Deciding when to come out at work</p>
             <p>Rebuilding a resume after a gap</p>
           </div>
-        </div>
+        </aside>
       </div>
     </article>
   )

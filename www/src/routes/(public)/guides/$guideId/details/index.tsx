@@ -59,7 +59,7 @@ function RouteComponent() {
         <img
           src={guide.coverImageUrl}
           alt=""
-          className="h-56 w-full rounded-3xl border border-border object-cover md:h-72"
+          className="h-56 w-full rounded-3xl object-cover md:h-72"
         />
       )}
 
@@ -87,7 +87,7 @@ function RouteComponent() {
       </div>
 
       {embedUrl && (
-        <div className="aspect-video w-full overflow-hidden rounded-3xl border border-border">
+        <div className="aspect-video w-full overflow-hidden rounded-3xl">
           <iframe
             src={embedUrl}
             title={m["pages.guides.detail.watchVideo"]()}
@@ -105,7 +105,7 @@ function RouteComponent() {
       )}
 
       {(guide.trust.referencesAvailable || guide.relatedResources.length > 0) && (
-        <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
+        <div className="flex flex-col gap-3 border-t border-border/60 pt-5">
           <h6>{m["pages.guides.detail.trustSignals"]()}</h6>
           {guide.trust.referencesAvailable && (
             <p className="flex items-center gap-2">
@@ -125,13 +125,13 @@ function RouteComponent() {
       {guide.seriesGuides.length > 0 && (
         <div className="flex flex-col gap-2">
           <h2>{m["pages.guides.detail.series"]()}</h2>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             {guide.seriesGuides.map((sibling) => (
               <Link
                 key={sibling.id}
                 to="/guides/$guideId/details"
                 params={{ guideId: sibling.id }}
-                className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground transition-colors hover:bg-muted"
+                className="flex items-center justify-between gap-2 border-t border-border/60 py-3 text-sm text-foreground underline-offset-4 hover:underline"
               >
                 {sibling.title}
                 {sibling.seriesOrder && (
@@ -148,13 +148,13 @@ function RouteComponent() {
       {guide.relatedResources.length > 0 && (
         <div className="flex flex-col gap-2">
           <h2>{m["pages.guides.detail.relatedResources"]()}</h2>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             {guide.relatedResources.map((related) => (
               <Link
                 key={related.id}
                 to="/r/$resourceId/details"
                 params={{ resourceId: related.id }}
-                className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground transition-colors hover:bg-muted"
+                className="border-t border-border/60 py-3 text-sm text-foreground underline-offset-4 hover:underline"
               >
                 {related.name}
               </Link>

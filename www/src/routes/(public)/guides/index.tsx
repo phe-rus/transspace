@@ -2,15 +2,15 @@ import { GuideCard } from "@/components/guides/guide-card"
 import { listGuidesQueryOptions } from "@/domains/guides"
 import { authGateQueryOptions } from "@/lib/auth-gate"
 import { m } from "@/paraglide/messages"
+import { SearchField } from "@/components/search-field"
 import {
   GUIDE_CATEGORIES,
   guideCategoryIcon,
   guideCategoryLabel,
 } from "@/data/guides"
-import { Add01Icon, SearchIcon } from "@hugeicons/core-free-icons"
+import { Add01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@pherus/ui/input-group"
 import { cn } from "@pherus/ui/lib/utils"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -56,18 +56,11 @@ function RouteComponent() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 md:flex-row">
-          <InputGroup className="h-11 flex-1 rounded-full">
-            <InputGroupAddon align="inline-start">
-              <HugeiconsIcon icon={SearchIcon} className="size-4" />
-            </InputGroupAddon>
-            <InputGroupInput
-              value={search.search ?? ""}
-              onChange={(event) =>
-                patchSearch({ search: event.target.value || undefined })
-              }
-              placeholder={m["pages.guides.searchPlaceholder"]()}
-            />
-          </InputGroup>
+          <SearchField
+            value={search.search}
+            onChange={(value) => patchSearch({ search: value })}
+            placeholder={m["pages.guides.searchPlaceholder"]()}
+          />
           <Button
             variant="secondary"
             nativeButton={false}
@@ -115,15 +108,15 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2">
         {data.items.map((guide) => (
           <GuideCard key={guide.id} guide={guide} />
         ))}
 
         {data.items.length === 0 && (
-          <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center md:col-span-2">
-            <p>{m["pages.guides.noMatches"]()}</p>
-          </div>
+          <p className="py-10 text-center md:col-span-2">
+            {m["pages.guides.noMatches"]()}
+          </p>
         )}
       </div>
     </article>

@@ -23,15 +23,15 @@ function RouteComponent() {
         <p>{m["pages.resources.generalHealth.subtitle"]()}</p>
       </div>
 
-      <div className="flex flex-col gap-3.5">
+      <div className="flex flex-col">
         {data.items.map((resource) => (
           <ResourceCard key={resource.id} resource={resource} />
         ))}
 
         {data.items.length === 0 && (
-          <div className="flex min-h-16 items-center justify-center rounded-4xl border border-dashed border-border p-5 text-center">
-            <p>{m["pages.resources.generalHealth.empty"]()}</p>
-          </div>
+          <p className="border-t border-border/60 py-10 text-center">
+            {m["pages.resources.generalHealth.empty"]()}
+          </p>
         )}
       </div>
     </article>

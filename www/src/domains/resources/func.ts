@@ -158,6 +158,7 @@ export const listResources = createServerFn({ method: "GET" })
             conditions.push(
                 sql`lower(${resource.city}) = lower(${data.city})`
             )
+        if (data.tier) conditions.push(eq(resource.tier, data.tier))
         if (data.freeOnly) conditions.push(eq(resource.isFree, true))
         if (data.internationalOnly)
             conditions.push(eq(resource.internationalAccess, true))
@@ -197,6 +198,7 @@ export const listResources = createServerFn({ method: "GET" })
                 isFree: resource.isFree,
                 contact: resource.contact,
                 internationalAccess: resource.internationalAccess,
+                tier: resource.tier,
                 structuredDetails: resource.structuredDetails,
                 status: resource.status,
                 createdAt: resource.createdAt,
@@ -248,6 +250,7 @@ export const getResource = createServerFn({ method: "GET" })
                 isFree: resource.isFree,
                 contact: resource.contact,
                 internationalAccess: resource.internationalAccess,
+                tier: resource.tier,
                 structuredDetails: resource.structuredDetails,
                 status: resource.status,
                 createdAt: resource.createdAt,
@@ -278,6 +281,15 @@ export const submitResource = createServerFn({ method: "POST" })
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         assertValidCategory(data.category, data.subcategory)
+        // a submitter can only declare diy, and only a health entry carries
+        // a tier at all (spec 0006 AC-1, AC-4)
+        if (data.tier === "verified") {
+            throw new Response("Only a moderator can set verified", {
+                status: 422,
+            })
+        }
+        const tier =
+            data.category === "health" && data.tier === "diy" ? "diy" : null
 
         const countryId = await findOrCreateCountry(data.countryName)
         const id = crypto.randomUUID()
@@ -304,6 +316,7 @@ export const submitResource = createServerFn({ method: "POST" })
                 isFree: data.isFree ?? false,
                 contact: data.contact ?? null,
                 internationalAccess: data.internationalAccess ?? false,
+                tier,
                 structuredDetails: data.structuredDetails
                     ? JSON.stringify(data.structuredDetails)
                     : null,
@@ -334,7 +347,7 @@ export const publishResource = createServerFn({ method: "POST" })
         await assertTurnstileVerified(data.turnstileToken)
 
         const [row] = await db
-            .select({ status: resource.status })
+            .select({ status: resource.status, category: resource.category })
             .from(resource)
             .where(eq(resource.id, data.id))
         if (!row) {
@@ -344,9 +357,17 @@ export const publishResource = createServerFn({ method: "POST" })
             throw new Response("Not pending", { status: 422 })
         }
 
+        // the moderator confirms or changes the tier here (spec 0006
+        // AC-5); a tier on a non health entry is dropped (AC-1)
         await db
             .update(resource)
-            .set({ status: "published", updatedAt: new Date() })
+            .set({
+                status: "published",
+                updatedAt: new Date(),
+                ...(data.tier !== undefined
+                    ? { tier: row.category === "health" ? data.tier : null }
+                    : {}),
+            })
             .where(eq(resource.id, data.id))
 
         await logModerationAction({

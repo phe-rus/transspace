@@ -25,11 +25,18 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 11 | Contribution & moderation flow | Slice 2 | planned |
 | 12 | Resource Atlas | Slice 3 | planned |
 | 13 | Guides | Slice 4 | in-progress |
-| 14 | Stories | Slice 5 | planned |
-| 15 | Opportunities | Slice 6 | planned |
+| 14 | Stories | Slice 5 | in-progress |
+| 15 | Opportunities | Slice 6 | in-progress |
 | 16 | Businesses & creators | Slice 7 | planned |
 | 17 | Unified global search | Slice 8 | planned |
 | 18 | Mutual aid requests and offers | Slice 9 | in-progress |
+| 19 | Rich text for long content | Foundation | in-progress |
+| 20 | Provider tiers, verified and DIY accepted | Slice 1 | planned |
+| 21 | Communication layer: comments, messages, voice | Slice 10 | planned |
+| 22 | Safety: places and community | Slice 11 | planned |
+| 23 | Gender affirming health community | Slice 11 | planned |
+| 24 | Seed data pass for the directory and guides | Slice 1 | in-progress |
+| 25 | Schema consolidation | Foundation | in-progress |
 
 ## Foundations
 
@@ -111,6 +118,28 @@ A shared way to show why a piece of content can be trusted (community submitted,
 - [ ] Document it: `/document trust & verification signals`
 spec [0002](../specs/0002-identity-data-trust-foundation/0003-trust-verification-signals.md) · code in `www/src/schemas/trust.ts`, `www/src/domains/trust-signals/`, `www/src/routes/api/trust-signals.*`, `shared/ui/src/components/trust-badge.tsx`
 
+### 19. Rich text for long content · in-progress
+Every long text field uses the `@pherus/rich-text` editor, so writers get lists, checkboxes, links and headings, and readers see them formatted. Guides already use it. Mutual aid posts now use it for every long field (description, about the job, how to apply, written case, what is offered, context), stored as editor JSON, with older plain text posts still readable.
+**Done when:** every long text field in the product uses the editor and shows formatted, with the same length and safety checks (no images in posts, a size cap) on the server.
+- [x] Mutual aid posts: submit form, server validation, moderator inbox thread, public post page
+- [ ] Extend to stories, safety places, community posts and any new long text: `/develop rich text for long content`
+code in `www/src/data/rich-text.ts`, `www/src/domains/support/types/index.ts`, `www/src/routes/(public)/submit-support/`, `www/src/components/inbox/`
+
+### 25. Schema consolidation · in-progress · GA
+Fewer tables and fewer schema files. A person used to be spread across `userLink`, `profile`, `appLock`, `moderators` and `admins`. Now `userLink` is the only person table: the profile, the app lock PIN state, moderator status and the admin role are columns on it. The tables `profile`, `appLock`, `moderators` and `admins` and the schema files `profile.ts` and `app-lock.ts` are gone, and no foreign key changed. Merging into the Better Auth `user` table was rejected, because it would rebuild every foreign key on live data and put pseudonymous data beside the login table (spec 0002). Until this ships everywhere, new features add columns, not tables.
+**Done when:** there are fewer schema files and tables, every foreign key still resolves, existing data is migrated without loss, and nothing public can read login identity or private columns.
+- [x] Design it (spec): [0008](../specs/0008-schema-consolidation.md)
+- [ ] Build it: `/develop schema consolidation`
+  - [x] Columns on `userLink`, tables and two schema files removed (AC-1, AC-2)
+  - [x] Role helpers, moderator and admin functions, account deletion, profile, auth gate, app lock, sign in hook and content joins moved onto `userLink` (AC-4, AC-5, AC-6)
+  - [x] Migration with copy before drop, applied locally: counts matched (5 profiles, the founder admin row, 9 people) (AC-3)
+  - [ ] Back up the remote database, then apply the migration there and compare counts (AC-3)
+- [ ] Verify it: `/check verify schema consolidation`
+- [ ] Test it: `/test schema consolidation`
+- [ ] Review it (fresh model): `/check review schema consolidation`
+- [ ] Document it: `/document schema consolidation`
+spec [0008](../specs/0008-schema-consolidation.md) · code in `www/src/schemas/user-link.ts`, `www/src/lib/moderators.ts`, `www/src/lib/admins.ts`, `www/src/lib/auth.ts`, `www/src/lib/auth-gate.ts`, `www/src/domains/moderators/`, `www/src/domains/admins/`, `www/src/domains/account/`, `www/src/domains/profile/`, `www/src/domains/app-lock/`
+
 ## Slice 1: Resource directory
 
 ### 9. Resource directory · GA
@@ -133,6 +162,25 @@ spec [0003](../specs/0003-resource-directory/index.md) · code in `www/src/schem
 Sign up/sign in (built on the Authentication foundation), a lightweight profile, and the ability to save/bookmark resources to revisit later.
 **Done when:** a signed-in person can bookmark a resource from its card or detail page and see their saved list; signed-out visitors keep full read access to the directory.
 - [ ] Design it (spec): `/architect accounts & saved resources`
+
+### 20. Provider tiers, verified and DIY accepted · in-progress
+The health sections (healthcare providers, mental health and HIV, general health) list providers in different categories. Each entry carries a tier: verified (checked by a moderator) or DIY accepted (self provided or community run care, accepted with clear labels and safety notes). The tier shows as a badge and works as a filter. It is one nullable column on the resource table, so there is no new table.
+**Done when:** a provider shows its tier on the card and detail page, a person can filter by tier, and a submission can be marked DIY while only a moderator can set verified.
+- [x] Design it (spec): [0006](../specs/0006-provider-tiers.md)
+- [x] Build it: `/develop provider tiers`
+  - [x] Column, migration and domain validation (AC-1, AC-4, AC-5)
+  - [x] Reads and the tier filter (AC-3, AC-7)
+  - [x] Badge on the card and detail page, with the DIY note (AC-2, AC-6, AC-7)
+  - [x] Filter chips, submit checkbox, copy in four languages and seed (AC-3, AC-4)
+- [ ] Verify it: `/check verify provider tiers`
+- [ ] Test it: `/test provider tiers`
+spec [0006](../specs/0006-provider-tiers.md)
+
+### 24. Seed data pass for the directory and guides · in-progress
+Fuller, realistic seed data for every `/r` section (healthcare providers, gender affirming, mental health and HIV, general health, safe space, legal, travel) and for guides (skills and learning). Every entry gets full details: services, hours, costs, languages, safety notes, references and rich text bodies, not the same basic entry repeated. This is data work, so it needs no spec.
+**Done when:** each section has enough varied, complete entries that its list, filters and detail pages can be judged like real content.
+- [x] Build it: local seed of 36 resources across every section in 13 countries (each with services, hours, languages, accessibility, safety notes, what to bring, and a trust signal), 10 guides with rich text bodies in two series, plus 40 mutual aid posts. The resource page now shows the practical details.
+- [ ] Add the same seed to the remote database and decide where the seed script lives in the repo: `/develop seed data pass`
 
 ## Slice 2: Contribution & moderation
 
@@ -168,17 +216,28 @@ spec [0004](../specs/0004-guides/index.md) · code in `www/src/schemas/guides.ts
 
 ## Slice 5: Stories
 
-### 14. Stories · needs a decision
-Firsthand community narratives (transition, relocation, housing, employment experiences), the existing "The fog of history" nav destination, clearly framed as personal experience rather than guaranteed instruction, with contributor privacy options.
+### 14. Stories · in-progress
+Firsthand community narratives (transition, relocation, housing, employment, health and family experiences), the existing "The fog of history" nav destination, clearly marked as personal experience rather than advice, with a choice of showing the profile name or sharing anonymously. A story is a guide row with `kind = story`, so it reuses the guide submit flow, moderation, trust signal and rich text editor, and adds two columns and no new table.
 **Done when:** a person can read a story, see that it's marked as personal experience, and choose how visible their identity is when they submit one.
-- [ ] Design it (spec): `/architect stories`
+- [x] Design it (spec): [0007](../specs/0007-stories.md)
+- [x] Build it: `/develop stories`
+  - [x] Two columns on `guide` (`kind`, `authorVisibility`) and the additive migration (AC-6)
+  - [x] Story topics, kind aware validation, list, get and submit including the anonymous writer rule (AC-3, AC-4, AC-5)
+  - [x] Stories list, story page with the experience note, submit page with the rich text editor, and six seeded stories (AC-1, AC-2, AC-3)
+- [ ] Verify it: `/check verify stories`
+- [ ] Test it: `/test stories`
+- [ ] Add a moderator screen for pending stories, and comments once feature 21 exists: `/develop stories`
+spec [0007](../specs/0007-stories.md) · code in `www/src/routes/(public)/stories/`, `www/src/routes/(public)/submit-story/`, `www/src/components/stories/`, `www/src/data/stories.ts`, `www/src/domains/guides/`
 
 ## Slice 6: Opportunities
 
-### 15. Opportunities · needs a decision
-Jobs, freelance work, scholarships, mentorship, and volunteering shared by the community and allies, filterable by country, remote/local, category, and deadline.
-**Done when:** a person can filter and browse opportunities and open one to see eligibility, deadline, and how to apply.
-- [ ] Design it (spec): `/architect opportunities`
+### 15. Opportunities · in-progress
+Jobs and careers are the published job posts (`offer_job`) from mutual aid, so there is one source of truth. The page now reads those posts with search and a remote filter, each card shows organization, role, pay, place and a two sentence summary, and ten more jobs are seeded. This was built without a spec, so the decision is still owed.
+**Done when:** a person can filter and browse job posts by country, remote or local, and deadline, and open one to see what the work is, the pay, and how to apply.
+- [x] Read the published job posts on the opportunities page, with rich text details
+- [ ] Add country, category and deadline filters, and a verified badge from trust signals: `/develop opportunities`
+- [ ] Ratify the decision (spec): `/architect opportunities`
+code in `www/src/routes/(public)/opportunities/`, `www/src/components/opportunities/`
 
 ## Slice 7: Businesses & creators
 
@@ -205,18 +264,39 @@ A moderated board where people can ask for help (money, a job, transport, inform
   - [x] Author lifecycle (edit, withdraw, fulfill) and the remaining structured post types (financial, job, travel, professional, listening), satisfies AC-1, AC-5, AC-8, AC-12; endpoints and remaining types are done, a dedicated "edit my post" UI is still missing (spec Follow-up)
   - [ ] Trust and verification: financial cosign escalation, self-reported progress tracking, professional credential verification, satisfies AC-6, AC-11, AC-13; financial escalation and progress tracking are done, professional verification has no moderator-facing UI yet
   - [ ] Claim/assignment workflow and the pause/reactivate flow, satisfies AC-9, AC-10; claim/assignment is done, pause has UI, reactivate does not yet
+  - [x] Moderator inbox at `/inbox`: a Messages style list and thread, unread and read state saved per moderator in the database, an unread count on the header icon, search, previous and next, and mark as unread
+  - [x] Rich text in every long field (feature 19), a Format field for text, voice, live audio space and comments, and jobs and careers read from the job posts (feature 15)
   - [ ] Stale-post surfacing and full i18n coverage across the new UI; stale surfacing is done, i18n covers all four shipped locales (en/de/fr/zh, hand-translated since the machine-translate service was down), so this is effectively done too but left unticked pending the missing verify/reactivate UI in the same milestone group
 - [ ] Verify it: `/check verify mutual aid requests and offers`
 - [ ] Test it: `/test mutual aid requests and offers`
 - [ ] Review it (fresh model): `/check review mutual aid requests and offers`
 - [ ] Document it: `/document mutual aid requests and offers`
-spec [0005](../specs/0005-mutual-aid-requests-offers/index.md) · code in `www/src/schemas/support.ts`, `www/src/data/support-types.ts`, `www/src/data/support-fields.ts`, `www/src/data/restricted-countries.ts`, `www/src/domains/support/`, `www/src/domains/moderators/func.ts`, `www/src/routes/api/support/`, `www/src/routes/(public)/support/`, `www/src/routes/(public)/submit-support/`, `www/src/routes/(protection)/dashboard/support/`, `www/src/components/support/`
+spec [0005](../specs/0005-mutual-aid-requests-offers/index.md) · code in `www/src/schemas/support.ts`, `www/src/data/support-types.ts`, `www/src/data/support-fields.ts`, `www/src/data/restricted-countries.ts`, `www/src/domains/support/`, `www/src/domains/moderators/func.ts`, `www/src/routes/api/support/`, `www/src/routes/(public)/support/`, `www/src/routes/(public)/submit-support/`, `www/src/routes/(protection)/dashboard/support/`, `www/src/components/support/`, `www/src/components/inbox/`, `www/src/routes/(public)/inbox/`
+
+## Slice 10: Communication
+
+### 21. Communication layer: comments, messages, voice · needs a decision · GA
+One shared way for people to talk, used by mutual aid, stories, safety places and the gender affirming community. It has three parts, built in this order: comments on posts (asynchronous, threaded), direct messages in a user inbox (the moderator inbox at `/inbox` is the pattern to extend), and peer to peer voice with text chat (one to one calls and live audio rooms like X Spaces). Safety is the design constraint: pseudonymous identity, blocking, reporting, room moderation, and no recording by default. Open questions: which realtime provider (the spec decides), how long messages are kept, how abuse is handled, and who may start a room. Feature 18's Format field (text, voice, audio space, comments) is what these connect to.
+**Done when:** a person can comment on a post, message another person from a post, and join or host a voice room, each with block and report, and a moderator can act on all three.
+- [ ] Design it (spec): `/architect communication layer`
+
+## Slice 11: Community content
+
+### 22. Safety: places and community · needs a decision
+For the safe space, legal aid and travel sections. These are mostly people posting places and talking about them: a place has a location, safety notes and when it was last confirmed, and people confirm or correct it through comments, messages and voice (feature 21). Location privacy matters, so the visibility model from feature 18 is the starting point. Open questions: how precise a location is shown, and how a place is retired when it is no longer safe.
+**Done when:** a person can post a place with safety notes, other people can confirm or correct it, and talk about it through comments and messages.
+- [ ] Design it (spec): `/architect safety places`
+
+### 23. Gender affirming health community · needs a decision
+More like a community talk space than a directory: Reddit like threads and comments, plus posts for dos and donts, how tos and planning, written in rich text (feature 19) and discussed through comments (feature 21). Open questions: whether voting exists, how posts are categorised, and how medical claims are flagged as personal experience, not advice.
+**Done when:** a person can start a thread or post a how to, others can reply, and it is clearly marked as community experience.
+- [ ] Design it (spec): `/architect gender affirming community`
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
 - **Wallets & payments**: non-custodial wallet integration (each account connects its own wallet; transspace never holds funds) so requests and offers in feature 18 can move real money beyond its self-reported progress tracking · needs a decision · GA
 - **Platform trust & impact reporting**: aggregate totals, donor/helper leaderboards, ratings and reviews across the platform, sequenced after feature 18 has real usage data to report on · needs a decision
-- **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects; also covers turning feature 18's text-only listening-ear offer into a live session · needs a decision · GA
+- **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects; also covers turning feature 18's text-only listening-ear offer into a live session. The text chat and voice rooms now live in feature 21; this item keeps only the matching of people to verified professionals · needs a decision · GA
 
 ## Legend
 

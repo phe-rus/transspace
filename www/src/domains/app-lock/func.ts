@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
-import { appLock } from "@/schemas/app-lock"
+import { userLink } from "@/schemas/user-link"
 import { session as sessionTable } from "@/schemas/auth"
 import {
     SessionMiddleware,
@@ -29,9 +29,9 @@ async function assertUnlockedForConfig(
     session: CurrentSession
 ): Promise<void> {
     const [lock] = await db
-        .select({ pinHash: appLock.pinHash })
-        .from(appLock)
-        .where(eq(appLock.userLinkId, session.userLinkId))
+        .select({ pinHash: userLink.pinHash })
+        .from(userLink)
+        .where(eq(userLink.id, session.userLinkId))
     const hasPinConfigured = Boolean(lock?.pinHash)
     const isUnlocked = Boolean(
         session.unlockedUntil &&
@@ -57,9 +57,12 @@ export const setAppLock = createServerFn({ method: "POST" })
         await assertUnlockedForConfig(session)
 
         const [existing] = await db
-            .select()
-            .from(appLock)
-            .where(eq(appLock.userLinkId, session.userLinkId))
+            .select({
+                pinHash: userLink.pinHash,
+                duressPinHash: userLink.duressPinHash,
+            })
+            .from(userLink)
+            .where(eq(userLink.id, session.userLinkId))
 
         if (existing?.pinHash || existing?.duressPinHash) {
             if (!body.currentPin) {
@@ -135,17 +138,10 @@ export const setAppLock = createServerFn({ method: "POST" })
         if (Object.keys(updates).length === 0) {
             return { success: true as const }
         }
-        if (existing) {
-            await db
-                .update(appLock)
-                .set(updates)
-                .where(eq(appLock.userLinkId, session.userLinkId))
-        } else {
-            await db.insert(appLock).values({
-                userLinkId: session.userLinkId,
-                ...updates,
-            })
-        }
+        await db
+            .update(userLink)
+            .set(updates)
+            .where(eq(userLink.id, session.userLinkId))
         return { success: true as const }
     })
 
@@ -162,9 +158,14 @@ export const verifyAppLock = createServerFn({ method: "POST" })
             })
         }
         const [lock] = await db
-            .select()
-            .from(appLock)
-            .where(eq(appLock.userLinkId, session.userLinkId))
+            .select({
+                pinHash: userLink.pinHash,
+                duressPinHash: userLink.duressPinHash,
+                failedAttempts: userLink.failedAttempts,
+                lockedUntil: userLink.lockedUntil,
+            })
+            .from(userLink)
+            .where(eq(userLink.id, session.userLinkId))
         const now = Date.now()
         if (lock?.lockedUntil && lock.lockedUntil.getTime() > now) {
             throw new Response("Too Many Requests", {
@@ -181,26 +182,16 @@ export const verifyAppLock = createServerFn({ method: "POST" })
             const lockedUntil = new Date(
                 now + cooldownSecondsFor(failedAttempts) * 1000
             )
-            if (lock) {
-                await db
-                    .update(appLock)
-                    .set({ failedAttempts, lockedUntil })
-                    .where(
-                        eq(appLock.userLinkId, session.userLinkId)
-                    )
-            } else {
-                await db.insert(appLock).values({
-                    userLinkId: session.userLinkId,
-                    failedAttempts,
-                    lockedUntil,
-                })
-            }
+            await db
+                .update(userLink)
+                .set({ failedAttempts, lockedUntil })
+                .where(eq(userLink.id, session.userLinkId))
             throw new Response("Invalid PIN", { status: 401 })
         }
         await db
-            .update(appLock)
+            .update(userLink)
             .set({ failedAttempts: 0, lockedUntil: null })
-            .where(eq(appLock.userLinkId, session.userLinkId))
+            .where(eq(userLink.id, session.userLinkId))
         await db
             .update(sessionTable)
             .set({
@@ -234,8 +225,14 @@ export const resetAppLock = createServerFn({ method: "POST" })
             )
         }
         await db
-            .delete(appLock)
-            .where(eq(appLock.userLinkId, session.userLinkId))
+            .update(userLink)
+            .set({
+                pinHash: null,
+                duressPinHash: null,
+                failedAttempts: 0,
+                lockedUntil: null,
+            })
+            .where(eq(userLink.id, session.userLinkId))
         return { success: true as const }
     })
 
@@ -246,11 +243,11 @@ export const getAppLockStatus = createServerFn({ method: "GET" })
     .handler(async ({ context: session }) => {
         const [lock] = await db
             .select({
-                pinHash: appLock.pinHash,
-                duressPinHash: appLock.duressPinHash,
+                pinHash: userLink.pinHash,
+                duressPinHash: userLink.duressPinHash,
             })
-            .from(appLock)
-            .where(eq(appLock.userLinkId, session.userLinkId))
+            .from(userLink)
+            .where(eq(userLink.id, session.userLinkId))
         const hasPinSet = Boolean(lock?.pinHash)
         const isUnlocked = Boolean(
             session.unlockedUntil &&

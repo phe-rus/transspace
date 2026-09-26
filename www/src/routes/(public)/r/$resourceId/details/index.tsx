@@ -1,6 +1,7 @@
 import { getResourceQueryOptions } from "@/domains/resources"
 import { m } from "@/paraglide/messages"
 import { resourceCategoryLabel, type ResourceCategory } from "@/data/resource-categories"
+import { TierBadge } from "@/components/resources/tier-badge"
 import { formatRelativeTime } from "@/lib/relative-time"
 import {
   ArrowLeft01Icon,
@@ -49,15 +50,28 @@ function RouteComponent() {
     coSignCount: 0,
     lastReviewedAt: null as Date | null,
   }
-  const services = (() => {
-    if (!resource.structuredDetails) return []
+  const parsedDetails = (() => {
+    if (!resource.structuredDetails) return {} as Record<string, unknown>
     try {
-      const parsed = JSON.parse(resource.structuredDetails) as { services?: unknown }
-      return Array.isArray(parsed.services) ? parsed.services.filter((s): s is string => typeof s === "string") : []
+      return JSON.parse(resource.structuredDetails) as Record<string, unknown>
     } catch {
-      return []
+      return {} as Record<string, unknown>
     }
   })()
+  const services = Array.isArray(parsedDetails.services)
+    ? parsedDetails.services.filter((s): s is string => typeof s === "string")
+    : []
+  const practicalDetails = [
+    { label: m["pages.resources.detail.hours"](), value: parsedDetails.hours },
+    { label: m["pages.resources.detail.languages"](), value: parsedDetails.languages },
+    { label: m["pages.resources.detail.accessibility"](), value: parsedDetails.accessibility },
+    { label: m["pages.resources.detail.safetyNotes"](), value: parsedDetails.safetyNotes },
+    { label: m["pages.resources.detail.whatToBring"](), value: parsedDetails.whatToBring },
+  ].flatMap((detail): { label: string; value: string }[] =>
+    typeof detail.value === "string" && detail.value.trim() !== ""
+      ? [{ label: detail.label, value: detail.value }]
+      : []
+  )
   const hasTrustSignals =
     trust.professionalVerified || trust.lastReviewedAt || trust.coSignCount > 0 || resource.internationalAccess
 
@@ -68,11 +82,13 @@ function RouteComponent() {
         {m["pages.resources.detail.backToResources"]()}, {resource.city}, {resource.countryName}
       </Link>
 
-      <div className="flex flex-col gap-6 md:flex-row">
+      <div className="flex flex-col gap-8 md:flex-row md:gap-10">
         <div className="flex flex-2 flex-col gap-7">
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2.5">
-              {trust.professionalVerified ? (
+              {resource.tier === "diy" ? (
+                <TierBadge tier="diy" />
+              ) : trust.professionalVerified || resource.tier === "verified" ? (
                 <h6 className="flex items-center gap-1">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3" />
                   {m["pages.resources.detail.verified"]()}
@@ -96,9 +112,12 @@ function RouteComponent() {
             <p>
               {resourceCategoryLabel[resource.category as ResourceCategory]} · {resource.city}, {resource.countryName}
             </p>
+            {resource.tier === "diy" && (
+              <p className="text-foreground">{m["pages.resources.detail.diyNote"]()}</p>
+            )}
           </div>
 
-          <div className="flex h-56 items-center justify-center rounded-3xl border border-border bg-card">
+          <div className="flex h-56 items-center justify-center rounded-3xl bg-muted">
             <p>{m["pages.resources.detail.photoPlaceholder"]({ name: resource.name })}</p>
           </div>
 
@@ -110,19 +129,33 @@ function RouteComponent() {
           {services.length > 0 && (
             <div className="flex flex-col gap-2">
               <h2>{m["pages.resources.detail.services"]()}</h2>
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <ul className="grid list-disc grid-cols-1 gap-x-6 gap-y-1.5 pl-5 text-foreground sm:grid-cols-2">
                 {services.map((service) => (
-                  <div key={service} className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground">
-                    {service}
+                  <li key={service}>{service}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {practicalDetails.length > 0 && (
+            <div className="flex flex-col gap-3">
+              <h2>{m["pages.resources.detail.practicalDetails"]()}</h2>
+              <dl className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                {practicalDetails.map((detail) => (
+                  <div key={detail.label} className="flex flex-col gap-0.5">
+                    <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                      {detail.label}
+                    </dt>
+                    <dd className="text-foreground">{detail.value}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </div>
           )}
 
           <div className="flex flex-col gap-2">
             <h2>{m["pages.resources.detail.location"]()}</h2>
-            <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-5 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-muted">
                 <HugeiconsIcon icon={MapPinpoint01Icon} className="size-6" />
               </span>
@@ -138,8 +171,8 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 md:sticky md:top-11 md:self-start">
-          <div className="flex flex-col gap-2.5 rounded-3xl border border-border bg-card p-5">
+        <aside className="flex flex-1 flex-col gap-8 border-t border-border/60 pt-6 md:sticky md:top-11 md:self-start md:border-t-0 md:border-l md:pt-0 md:pl-8">
+          <div className="flex flex-col gap-2.5">
             <Button disabled className="h-10 rounded-full">
               {m["pages.resources.detail.saveResource"]()}
             </Button>
@@ -149,7 +182,7 @@ function RouteComponent() {
           </div>
 
           {hasTrustSignals && (
-            <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
+            <div className="flex flex-col gap-3">
               <h6>{m["pages.resources.detail.trustSignals"]()}</h6>
               {trust.professionalVerified && (
                 <p className="flex items-center gap-2">
@@ -177,7 +210,7 @@ function RouteComponent() {
               )}
             </div>
           )}
-        </div>
+        </aside>
       </div>
     </article>
   )

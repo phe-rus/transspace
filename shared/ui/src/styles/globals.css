@@ -309,7 +309,7 @@
     cursor: pointer;
   }
 
-   html {
+  html {
     @apply font-sans;
   }
   .maplibregl-popup-content {

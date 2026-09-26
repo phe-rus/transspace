@@ -137,9 +137,8 @@ function RouteComponent() {
             variants={fadeUp}
             className={cn(
               "relative flex min-h-70 flex-[1.7] flex-col justify-end",
-              'gap-3.5 overflow-hidden rounded-4xl border border-border/35',
-              'shadow hover:shadow-md bg-[url(/map.png)] bg-cover p-6',
-              'shadow-primary/15 cursor-pointer'
+              'gap-3.5 overflow-hidden rounded-4xl',
+              'bg-[url(/map.png)] bg-cover p-6'
             )}
           >
             <h6 className="flex items-center gap-1.5">
@@ -156,18 +155,14 @@ function RouteComponent() {
             </Button>
           </motion.div>
 
-          <div className="flex flex-1 flex-col gap-5">
+          <div className="flex flex-1 flex-col">
             <Link to="/r" className="contents">
               <motion.div
                 variants={fadeUp}
-                className={cn(
-                  "flex flex-1 flex-col justify-center cursor-pointer",
-                  'rounded-3xl border border-border/35 bg-card/35 p-5',
-                  'shadow hover:shadow-md shadow-primary/15'
-                )}
+                className="group flex flex-1 flex-col justify-center gap-1 border-b border-border/60 py-5"
               >
                 <HugeiconsIcon icon={SearchIcon} className="size-5" />
-                <h3>{m["pages.home.exploreTitle"]()}</h3>
+                <h3 className="underline-offset-4 group-hover:underline">{m["pages.home.exploreTitle"]()}</h3>
                 <p>{m["pages.home.exploreSubtitle"]()}</p>
               </motion.div>
             </Link>
@@ -175,14 +170,10 @@ function RouteComponent() {
             <Link to="/support" className="contents">
               <motion.div
                 variants={fadeUp}
-                className={cn(
-                  "flex flex-1 flex-col justify-center cursor-pointer",
-                  'rounded-3xl border border-border/35 bg-card/35 p-5',
-                  'shadow hover:shadow-md shadow-primary/15'
-                )}
+                className="group flex flex-1 flex-col justify-center gap-1 py-5"
               >
                 <HugeiconsIcon icon={FavouriteIcon} className="size-5 text-destructive" />
-                <h3 className="text-destructive">{m["pages.home.crisisSupportTitle"]()}</h3>
+                <h3 className="text-destructive underline-offset-4 group-hover:underline">{m["pages.home.crisisSupportTitle"]()}</h3>
                 <p>{m["pages.home.crisisSupportSubtitle"]()}</p>
               </motion.div>
             </Link>
@@ -191,11 +182,7 @@ function RouteComponent() {
 
         <motion.div
           variants={fadeUp}
-          className={cn(
-            "flex flex-col gap-3.5 bg-card/35 p-5 rounded-3xl",
-            'shadow hover:shadow-md shadow-primary/15',
-            'border border-border/35 cursor-pointer'
-          )}
+          className="flex flex-col gap-3.5 border-t border-border/60 pt-6"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -211,9 +198,7 @@ function RouteComponent() {
           {/* no community/discussion data model exists yet (not part of
               the resource directory build); this is an honest empty
               state, not a placeholder for fabricated posts */}
-          <div className="flex min-h-16 items-center justify-center rounded-3xl border border-dashed border-border/35 p-5 text-center">
-            <p>{m["pages.home.trendingEmpty"]()}</p>
-          </div>
+          <p className="py-6 text-center">{m["pages.home.trendingEmpty"]()}</p>
         </motion.div>
 
         <motion.div variants={fadeUp} className="flex justify-center pt-2">

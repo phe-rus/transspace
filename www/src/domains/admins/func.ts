@@ -2,9 +2,8 @@ import { createServerFn } from "@tanstack/react-start"
 import { queryOptions } from "@tanstack/react-query"
 import { desc, eq } from "drizzle-orm"
 import { db } from "@/db"
-import { admins, moderationAction, moderators } from "@/schemas/moderation"
+import { moderationAction } from "@/schemas/moderation"
 import { userLink } from "@/schemas/user-link"
-import { profile } from "@/schemas/profile"
 import { AdminMiddleware } from "@/middleware/require-admin"
 import { FounderMiddleware } from "@/middleware/require-founder"
 import { getCurrentSession } from "@/middleware/session"
@@ -73,16 +72,13 @@ export const listAllUsers = createServerFn({ method: "GET" })
                 deletedAt: userLink.deletedAt,
                 bannedAt: userLink.bannedAt,
                 banReason: userLink.banReason,
-                displayName: profile.displayName,
-                isModerator: moderators.userLinkId,
-                moderatorCountryCode: moderators.countryCode,
-                adminRole: admins.role,
-                adminGrantedBy: admins.grantedBy,
+                displayName: userLink.displayName,
+                moderatorGrantedAt: userLink.moderatorGrantedAt,
+                moderatorCountryCode: userLink.moderatorCountryCode,
+                adminRole: userLink.adminRole,
+                adminGrantedBy: userLink.adminGrantedBy,
             })
             .from(userLink)
-            .leftJoin(profile, eq(profile.userLinkId, userLink.id))
-            .leftJoin(moderators, eq(moderators.userLinkId, userLink.id))
-            .leftJoin(admins, eq(admins.userLinkId, userLink.id))
             .orderBy(desc(userLink.createdAt))
             .limit(data.limit + 1)
         return toPage(
@@ -92,7 +88,7 @@ export const listAllUsers = createServerFn({ method: "GET" })
                 displayName: row.displayName,
                 isBanned: row.bannedAt !== null,
                 banReason: row.banReason,
-                isModerator: Boolean(row.isModerator),
+                isModerator: row.moderatorGrantedAt !== null,
                 moderatorCountryCode: row.moderatorCountryCode,
                 isAdmin: row.adminRole !== null,
                 isSuperAdmin: row.adminRole === "super_admin",
@@ -121,15 +117,15 @@ export const listActivityLog = createServerFn({ method: "GET" })
             .select({
                 id: moderationAction.id,
                 actorUserLinkId: moderationAction.actorUserLinkId,
-                actorDisplayName: profile.displayName,
+                actorDisplayName: userLink.displayName,
                 action: moderationAction.action,
                 target: moderationAction.target,
                 createdAt: moderationAction.createdAt,
             })
             .from(moderationAction)
             .leftJoin(
-                profile,
-                eq(profile.userLinkId, moderationAction.actorUserLinkId)
+                userLink,
+                eq(userLink.id, moderationAction.actorUserLinkId)
             )
             .orderBy(desc(moderationAction.createdAt))
             .limit(data.limit + 1)
@@ -154,18 +150,23 @@ export const grantAdmin = createServerFn({ method: "POST" })
             })
         }
         const [existing] = await db
-            .select({ userLinkId: admins.userLinkId })
-            .from(admins)
-            .where(eq(admins.userLinkId, data.targetUserLinkId))
-        if (existing) {
+            .select({ adminRole: userLink.adminRole })
+            .from(userLink)
+            .where(eq(userLink.id, data.targetUserLinkId))
+        if (!existing) {
+            throw new Response("Not found", { status: 404 })
+        }
+        if (existing.adminRole) {
             throw new Response("Already an admin", { status: 409 })
         }
-        await db.insert(admins).values({
-            userLinkId: data.targetUserLinkId,
-            role: "admin",
-            grantedBy: userLinkId,
-            grantedAt: new Date(),
-        })
+        await db
+            .update(userLink)
+            .set({
+                adminRole: "admin",
+                adminGrantedBy: userLinkId,
+                adminGrantedAt: new Date(),
+            })
+            .where(eq(userLink.id, data.targetUserLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "admin.grant",
@@ -185,10 +186,10 @@ export const revokeAdmin = createServerFn({ method: "POST" })
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
-            .select({ role: admins.role })
-            .from(admins)
-            .where(eq(admins.userLinkId, data.userLinkId))
-        if (!target) {
+            .select({ role: userLink.adminRole })
+            .from(userLink)
+            .where(eq(userLink.id, data.userLinkId))
+        if (!target?.role) {
             throw new Response("Not an admin", { status: 404 })
         }
         if (target.role === "super_admin") {
@@ -197,7 +198,10 @@ export const revokeAdmin = createServerFn({ method: "POST" })
                 { status: 403 }
             )
         }
-        await db.delete(admins).where(eq(admins.userLinkId, data.userLinkId))
+        await db
+            .update(userLink)
+            .set({ adminRole: null, adminGrantedBy: null, adminGrantedAt: null })
+            .where(eq(userLink.id, data.userLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "admin.revoke",
@@ -223,25 +227,29 @@ export const grantSuperAdmin = createServerFn({ method: "POST" })
             })
         }
         const [existing] = await db
-            .select({ role: admins.role })
-            .from(admins)
-            .where(eq(admins.userLinkId, data.targetUserLinkId))
-        if (existing?.role === "super_admin") {
+            .select({ role: userLink.adminRole })
+            .from(userLink)
+            .where(eq(userLink.id, data.targetUserLinkId))
+        if (!existing) {
+            throw new Response("Not found", { status: 404 })
+        }
+        if (existing.role === "super_admin") {
             throw new Response("Already a super admin", { status: 409 })
         }
-        if (existing) {
-            await db
-                .update(admins)
-                .set({ role: "super_admin" })
-                .where(eq(admins.userLinkId, data.targetUserLinkId))
-        } else {
-            await db.insert(admins).values({
-                userLinkId: data.targetUserLinkId,
-                role: "super_admin",
-                grantedBy: userLinkId,
-                grantedAt: new Date(),
-            })
-        }
+        // an existing admin keeps their original grantor and date; a plain
+        // user gets both set now
+        await db
+            .update(userLink)
+            .set(
+                existing.role
+                    ? { adminRole: "super_admin" }
+                    : {
+                          adminRole: "super_admin",
+                          adminGrantedBy: userLinkId,
+                          adminGrantedAt: new Date(),
+                      }
+            )
+            .where(eq(userLink.id, data.targetUserLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "superAdmin.grant",
@@ -262,9 +270,12 @@ export const demoteSuperAdmin = createServerFn({ method: "POST" })
         await assertWriteRateLimit(userLinkId)
         await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
-            .select({ role: admins.role, grantedBy: admins.grantedBy })
-            .from(admins)
-            .where(eq(admins.userLinkId, data.userLinkId))
+            .select({
+                role: userLink.adminRole,
+                grantedBy: userLink.adminGrantedBy,
+            })
+            .from(userLink)
+            .where(eq(userLink.id, data.userLinkId))
         if (!target || target.role !== "super_admin") {
             throw new Response("Not a super admin", { status: 404 })
         }
@@ -274,9 +285,9 @@ export const demoteSuperAdmin = createServerFn({ method: "POST" })
             })
         }
         await db
-            .update(admins)
-            .set({ role: "admin" })
-            .where(eq(admins.userLinkId, data.userLinkId))
+            .update(userLink)
+            .set({ adminRole: "admin" })
+            .where(eq(userLink.id, data.userLinkId))
         await logModerationAction({
             actorUserLinkId: userLinkId,
             action: "superAdmin.demote",

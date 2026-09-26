@@ -39,6 +39,13 @@ export const guide = sqliteTable(
         // the domain layer, never a DB level enum (spec 0004 Value
         // sourcing)
         category: text("category").notNull(),
+        // guide or story (spec 0007): a story is a guide row with a topic in
+        // `category` and an identity choice below, so moderation, trust and
+        // the rich text checks are shared. Reads default to guide
+        kind: text("kind").notNull().default("guide"),
+        // profile or anonymous, required for a story: anonymous never
+        // returns a writer name from any read (spec 0007 AC-4)
+        authorVisibility: text("authorVisibility"),
         // the @pherus/rich-text editor's structured Tiptap content;
         // never raw HTML (spec 0004 data model). Validated at
         // submission (image src allowlist, 256 KB cap, spec 0004 AC-9)

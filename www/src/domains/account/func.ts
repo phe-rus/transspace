@@ -1,10 +1,7 @@
 import { createServerFn } from "@tanstack/react-start"
-import { eq, count } from "drizzle-orm"
+import { eq, count, isNotNull } from "drizzle-orm"
 import { db } from "@/db"
 import { userLink } from "@/schemas/user-link"
-import { profile } from "@/schemas/profile"
-import { appLock } from "@/schemas/app-lock"
-import { moderators } from "@/schemas/moderation"
 import { MODERATOR_FLOOR } from "@/domains/moderators/types"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
@@ -21,25 +18,21 @@ export const deleteAccount = createServerFn({ method: "POST" })
         assertNotDecoy(session)
         const now = new Date()
 
-        const [isModerator] = await db
-            .select({ userLinkId: moderators.userLinkId })
-            .from(moderators)
-            .where(eq(moderators.userLinkId, session.userLinkId))
-        if (isModerator) {
+        const [self] = await db
+            .select({ moderatorGrantedAt: userLink.moderatorGrantedAt })
+            .from(userLink)
+            .where(eq(userLink.id, session.userLinkId))
+        if (self?.moderatorGrantedAt) {
             const [{ total }] = await db
                 .select({ total: count() })
-                .from(moderators)
+                .from(userLink)
+                .where(isNotNull(userLink.moderatorGrantedAt))
             if (total - 1 < MODERATOR_FLOOR) {
                 throw new Response(
                     "Cannot delete this account: it is one of the last two moderators",
                     { status: 409 }
                 )
             }
-            await db
-                .delete(moderators)
-                .where(
-                    eq(moderators.userLinkId, session.userLinkId)
-                )
             await logModerationAction({
                 actorUserLinkId: session.userLinkId,
                 action: "moderator.revoke",
@@ -47,23 +40,28 @@ export const deleteAccount = createServerFn({ method: "POST" })
             })
         }
 
+        // one row now holds the profile, the PIN state and moderator
+        // status, so deleting the account clears them together (spec 0008
+        // AC-6)
         await db
-            .update(profile)
+            .update(userLink)
             .set({
+                infraUserId: null,
+                deletedAt: now,
                 displayName: null,
                 avatarSlug: null,
                 bio: null,
                 pronouns: null,
                 topics: null,
-                deletedAt: now,
+                ageRange: null,
+                pinHash: null,
+                duressPinHash: null,
+                failedAttempts: 0,
+                lockedUntil: null,
+                moderatorGrantedAt: null,
+                moderatorGrantedBy: null,
+                moderatorCountryCode: null,
             })
-            .where(eq(profile.userLinkId, session.userLinkId))
-        await db
-            .delete(appLock)
-            .where(eq(appLock.userLinkId, session.userLinkId))
-        await db
-            .update(userLink)
-            .set({ infraUserId: null, deletedAt: now })
             .where(eq(userLink.id, session.userLinkId))
 
         return { success: true as const }

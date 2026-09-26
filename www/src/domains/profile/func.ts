@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { queryOptions } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
-import { profile } from "@/schemas/profile"
+import { userLink } from "@/schemas/user-link"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy, readPrivate } from "@/lib/private-data"
 import { updateProfileSchema } from "./types"
@@ -20,9 +20,15 @@ const DECOY_PROFILE = {
 
 async function loadProfile(userLinkId: string) {
     const [row] = await db
-        .select()
-        .from(profile)
-        .where(eq(profile.userLinkId, userLinkId))
+        .select({
+            displayName: userLink.displayName,
+            avatarSlug: userLink.avatarSlug,
+            bio: userLink.bio,
+            pronouns: userLink.pronouns,
+            topics: userLink.topics,
+        })
+        .from(userLink)
+        .where(eq(userLink.id, userLinkId))
     if (!row) {
         throw new Response("Profile not found", { status: 404 })
     }
@@ -69,7 +75,7 @@ export const updateProfile = createServerFn({ method: "POST" })
         }
         const update = parsed.data
         await db
-            .update(profile)
+            .update(userLink)
             .set({
                 ...(update.displayName !== undefined && {
                     displayName: update.displayName,
@@ -87,6 +93,6 @@ export const updateProfile = createServerFn({ method: "POST" })
                     topics: JSON.stringify(update.topics),
                 }),
             })
-            .where(eq(profile.userLinkId, userLinkId))
+            .where(eq(userLink.id, userLinkId))
         return loadProfile(userLinkId)
     })

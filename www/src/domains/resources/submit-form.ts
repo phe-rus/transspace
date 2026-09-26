@@ -11,6 +11,8 @@ export const submitFormSchema = z.object({
     contact: z.string().optional(),
     internationalAccess: z.boolean().optional(),
     isFree: z.boolean().optional(),
+    // a submitter can only declare a DIY or peer run option (spec 0006)
+    isDiy: z.boolean().optional(),
     // fetched on demand from the app-wide Turnstile widget at submit
     // time via useTurnstileToken(), not held in form state
 })
@@ -26,4 +28,5 @@ export const submitFormDefaults: z.input<typeof submitFormSchema> = {
     contact: "",
     internationalAccess: false,
     isFree: false,
+    isDiy: false,
 }

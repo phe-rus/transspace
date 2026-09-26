@@ -2,8 +2,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { queryOptions } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
-import { profile } from "@/schemas/profile"
-import { appLock } from "@/schemas/app-lock"
+import { userLink } from "@/schemas/user-link"
 import { getCurrentSession } from "@/middleware/session"
 import { isOnboarded } from "@/domains/profile/types"
 
@@ -21,20 +20,16 @@ export const getAuthGateStatus = createServerFn({
     const session = await getCurrentSession()
     if (!session) return { signedIn: false }
 
-    const [profileRow] = await db
+    const [row] = await db
         .select({
-            displayName: profile.displayName,
-            avatarSlug: profile.avatarSlug,
+            displayName: userLink.displayName,
+            avatarSlug: userLink.avatarSlug,
+            pinHash: userLink.pinHash,
         })
-        .from(profile)
-        .where(eq(profile.userLinkId, session.userLinkId))
-    const onboarded = profileRow ? isOnboarded(profileRow) : false
-
-    const [lockRow] = await db
-        .select({ pinHash: appLock.pinHash })
-        .from(appLock)
-        .where(eq(appLock.userLinkId, session.userLinkId))
-    const hasPinSet = Boolean(lockRow?.pinHash)
+        .from(userLink)
+        .where(eq(userLink.id, session.userLinkId))
+    const onboarded = row ? isOnboarded(row) : false
+    const hasPinSet = Boolean(row?.pinHash)
     const isUnlocked = Boolean(
         session.unlockedUntil &&
             session.unlockedUntil.getTime() > Date.now()

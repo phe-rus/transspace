@@ -2,6 +2,7 @@ import { z } from "zod"
 import {
     RESOURCE_CATEGORIES,
     RESOURCE_SUBCATEGORIES_BY_CATEGORY,
+    RESOURCE_TIERS,
     type ResourceCategory,
 } from "@/data/resource-categories"
 
@@ -51,6 +52,7 @@ export const listResourcesSchema = z.object({
     verifiedOnly: z.boolean().optional(),
     freeOnly: z.boolean().optional(),
     internationalOnly: z.boolean().optional(),
+    tier: z.enum(RESOURCE_TIERS).optional(),
     status: z.enum(RESOURCE_STATUSES).optional(),
     cursor: z.string().optional(),
     limit: z.number().int().min(1).max(50).optional(),
@@ -70,6 +72,9 @@ export const submitResourceSchema = z.object({
     internationalAccess: z.boolean().optional(),
     isFree: z.boolean().optional(),
     structuredDetails: z.record(z.string(), z.unknown()).optional(),
+    // a submitter may only declare diy; verified is refused in the
+    // handler with a 422 (spec 0006 AC-4)
+    tier: z.enum(RESOURCE_TIERS).optional(),
     lat: z.number().optional(),
     lng: z.number().optional(),
     turnstileToken: z.string(),
@@ -77,6 +82,9 @@ export const submitResourceSchema = z.object({
 
 export const publishResourceSchema = z.object({
     ...contentRefSchema,
+    // undefined leaves the tier as submitted, null clears it (spec 0006
+    // AC-5)
+    tier: z.enum(RESOURCE_TIERS).nullable().optional(),
     turnstileToken: z.string(),
 })
 

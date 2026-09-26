@@ -7,8 +7,6 @@ import { db } from "@/db"
 import * as authSchema from "@/schemas/auth"
 import { account as authAccount } from "@/schemas/auth"
 import { userLink } from "@/schemas/user-link"
-import { profile } from "@/schemas/profile"
-import { admins } from "@/schemas/moderation"
 
 const authEnv = {
     BETTER_AUTH_SECRET: import.meta.env.BETTER_AUTH_SECRET ?? process.env.BETTER_AUTH_SECRET,
@@ -101,10 +99,6 @@ export const auth = betterAuth({
                         storagePrefix: crypto.randomUUID(),
                         createdAt: new Date(),
                     })
-                    await db.insert(profile).values({
-                        id: crypto.randomUUID(),
-                        userLinkId: createdAccount.userId,
-                    })
                     // the very first account on the whole platform
                     // becomes the founder (grantedBy null marks them as
                     // such, see lib/admins.ts isFounder): full
@@ -117,12 +111,14 @@ export const auth = betterAuth({
                         .select({ total: count() })
                         .from(userLink)
                     if (total === 1) {
-                        await db.insert(admins).values({
-                            userLinkId: createdAccount.userId,
-                            role: "super_admin",
-                            grantedBy: null,
-                            grantedAt: new Date(),
-                        })
+                        await db
+                            .update(userLink)
+                            .set({
+                                adminRole: "super_admin",
+                                adminGrantedBy: null,
+                                adminGrantedAt: new Date(),
+                            })
+                            .where(eq(userLink.id, createdAccount.userId))
                     }
                     await clearInfraTokens(createdAccount.id)
                 },

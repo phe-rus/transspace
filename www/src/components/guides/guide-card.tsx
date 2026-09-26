@@ -24,16 +24,16 @@ export function GuideCard({ guide }: GuideCardProps) {
     <Link
       to="/guides/$guideId/details"
       params={{ guideId: guide.id }}
-      className="flex flex-col gap-2.5 overflow-hidden rounded-3xl border border-border bg-card transition-colors hover:bg-muted"
+      className="group flex flex-col gap-3 border-t border-border/60 py-5"
     >
       {guide.coverImageUrl && (
         <img
           src={guide.coverImageUrl}
           alt=""
-          className="h-32 w-full object-cover"
+          className="h-36 w-full rounded-2xl object-cover"
         />
       )}
-      <div className="flex flex-col gap-2.5 p-5">
+      <div className="flex flex-col gap-2.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h6 className="flex items-center gap-1.5">
             <HugeiconsIcon icon={guideCategoryIcon[category]} className="size-3.5" />
@@ -53,7 +53,7 @@ export function GuideCard({ guide }: GuideCardProps) {
               : guide.seriesTitle}
           </p>
         )}
-        <h3>{guide.title}</h3>
+        <h3 className="underline-offset-4 group-hover:underline">{guide.title}</h3>
         <p>{guide.excerpt}</p>
         <div className="mt-1 flex items-center justify-between">
           <p>{guide.contributor} · {m["pages.guides.readTimeMinutes"]({ count: guide.readTime })}</p>

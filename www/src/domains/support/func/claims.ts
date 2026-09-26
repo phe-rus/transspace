@@ -4,7 +4,7 @@ import { and, desc, eq } from "drizzle-orm"
 import { z } from "zod"
 import { db } from "@/db"
 import { supportClaim, supportPost } from "@/schemas/support"
-import { profile } from "@/schemas/profile"
+import { userLink } from "@/schemas/user-link"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
@@ -80,13 +80,13 @@ export const listSupportClaims = createServerFn({ method: "GET" })
             .select({
                 id: supportClaim.id,
                 helperUserLinkId: supportClaim.helperUserLinkId,
-                helperDisplayName: profile.displayName,
+                helperDisplayName: userLink.displayName,
                 status: supportClaim.status,
                 message: supportClaim.message,
                 createdAt: supportClaim.createdAt,
             })
             .from(supportClaim)
-            .leftJoin(profile, eq(profile.userLinkId, supportClaim.helperUserLinkId))
+            .leftJoin(userLink, eq(userLink.id, supportClaim.helperUserLinkId))
             .where(eq(supportClaim.supportPostId, data.id))
             .orderBy(desc(supportClaim.createdAt))
     })

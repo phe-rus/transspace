@@ -19,6 +19,13 @@ export const RESOURCE_CATEGORIES = ["health", "legal", "housing", "community", "
 
 export type ResourceCategory = (typeof RESOURCE_CATEGORIES)[number]
 
+// how a health entry was checked (spec 0006): verified by a moderator, or
+// DIY accepted (self provided or community run care with a clear label).
+// Only the health category carries a tier
+export const RESOURCE_TIERS = ["verified", "diy"] as const
+
+export type ResourceTier = (typeof RESOURCE_TIERS)[number]
+
 export const resourceCategoryColor: Record<ResourceCategory, string> = {
   health: "#3b82f6", // matches --info (--color-blue-500)
   legal: "#f59e0b", // matches --warning (--color-amber-500)

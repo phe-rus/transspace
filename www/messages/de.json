@@ -9,6 +9,10 @@
       "support": "Unterstützung",
       "profile": "Profil"
     },
+    "actions": {
+      "submitResource": "Ressource einreichen",
+      "signIn": "Bei Transspace anmelden"
+    },
     "groups": {
       "health": {
         "label": "Gesundheit",
@@ -120,7 +124,8 @@
         "internationalOnly": "Akzeptiert Menschen aus anderen Ländern",
         "relatedGuides": "Verwandte Guides",
         "resourcesCount": "{count} Ressourcen",
-        "anyCountry": "Jedes Land"
+        "anyCountry": "Jedes Land",
+        "careType": "Art der Versorgung"
       },
       "healthcareProviders": {
         "title": "Gesundheitsdienstleister",
@@ -165,6 +170,12 @@
         "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend",
         "lastReviewedCount": "Zuletzt überprüft {when}",
         "communityReportsCount": "{count} Community-Rückmeldungen",
+        "practicalDetails": "Praktische Angaben",
+        "hours": "Öffnungszeiten",
+        "languages": "Sprachen",
+        "accessibility": "Barrierefreiheit",
+        "safetyNotes": "Sicherheit und Privatsphäre",
+        "whatToBring": "Was du mitbringen solltest",
         "photoPlaceholder": "Foto von {name}",
         "about": "Über",
         "services": "Angebote",
@@ -176,7 +187,8 @@
         "saveResource": "Diese Ressource speichern",
         "suggestUpdate": "Aktualisierung vorschlagen",
         "trustSignals": "Vertrauenssignale",
-        "internationalAccessNote": "Akzeptiert Menschen aus anderen Ländern"
+        "internationalAccessNote": "Akzeptiert Menschen aus anderen Ländern",
+        "diyNote": "Das ist Versorgung durch die Community, keine medizinische Versorgung. Lies die Sicherheitshinweise und sei besonders vorsichtig."
       }
     },
     "opportunities": {
@@ -290,10 +302,22 @@
       "signIn": "Anmelden",
       "successTitle": "Vielen Dank für die Einreichung",
       "signInRequired": "Melden Sie sich an, um eine Ressource einzureichen.",
-      "isFree": "Dies ist kostenlos oder gleitend skaliert"
+      "isFree": "Dies ist kostenlos oder gleitend skaliert",
+      "isDiy": "Das ist ein DIY oder Peer Angebot (von der Community, kein zugelassener Dienst)"
     },
     "stories": {
-      "comingSoon": "Geschichten kommen bald."
+      "title": "Geschichten",
+      "subtitle": "Erfahrungen aus erster Hand von Menschen aus der Community: Transition, Umzug, Wohnen, Arbeit und mehr. Es sind persönliche Erfahrungen, keine Ratschläge.",
+      "searchPlaceholder": "Geschichten durchsuchen",
+      "share": "Teile deine Geschichte",
+      "signInToShare": "Melde dich an, um eine Geschichte zu teilen",
+      "all": "Alle",
+      "noMatches": "Keine passenden Geschichten. Versuche eine andere Suche oder ein anderes Thema.",
+      "anonymous": "Anonym geteilt",
+      "experienceNote": "Das ist die Erfahrung einer einzelnen Person, kein Ratschlag. Was für sie funktioniert hat, muss für dich nicht funktionieren, sprich also mit Menschen, denen du vertraust.",
+      "notFoundTitle": "Geschichte nicht gefunden",
+      "notFoundBody": "Diese Geschichte existiert nicht oder ist noch nicht veröffentlicht.",
+      "backToStories": "Zurück zu den Geschichten"
     },
     "auth": {
       "signIn": {
@@ -612,12 +636,35 @@
       "confirm": "Bestätigen",
       "banDialogDescription": "Das blockiert {name} von der Anmeldung, bis die Sperre aufgehoben wird. Gib einen Grund für das Protokoll an.",
       "banReasonPlaceholder": "Warum sperrst du dieses Konto?"
+    },
+    "submitStory": {
+      "title": "Teile deine Geschichte",
+      "subtitle": "Schreibe über deine Erfahrung in deinen eigenen Worten. Eine Moderation liest jede Geschichte, bevor sie erscheint.",
+      "signInRequired": "Melde dich an, um eine Geschichte zu teilen.",
+      "signIn": "Anmelden",
+      "successTitle": "Danke fürs Teilen",
+      "successBody": "Eine Moderation liest deine Geschichte, bevor sie erscheint.",
+      "titleLabel": "Titel",
+      "titlePlaceholder": "Worum geht es in deiner Geschichte?",
+      "summaryLabel": "Kurze Zusammenfassung",
+      "summaryPlaceholder": "Ein oder zwei Sätze, die Lesenden sagen, was sie erwartet",
+      "topic": "Thema",
+      "identity": "Wie soll dein Name angezeigt werden?",
+      "identityProfile": "Meinen Profilnamen zeigen",
+      "identityProfileHint": "Lesende sehen den Anzeigenamen deines Profils.",
+      "identityAnonymous": "Anonym teilen",
+      "identityAnonymousHint": "Es wird nirgends ein Name angezeigt.",
+      "bodyLabel": "Deine Geschichte",
+      "bodyPlaceholder": "Schreibe hier. Du kannst Überschriften und Listen hinzufügen. Bitte lass die echten Namen anderer Menschen weg.",
+      "submit": "Geschichte einreichen",
+      "submitting": "Wird gesendet..."
     }
   },
   "components": {
     "resourceCard": {
       "verified": "Community-verifiziert",
-      "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend"
+      "pendingReview": "Von der Community eingereicht, Überprüfung ausstehend",
+      "diy": "DIY akzeptiert"
     },
     "atlasDetail": {
       "backToList": "Zurück zur Liste",

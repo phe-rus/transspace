@@ -61,6 +61,12 @@ export const resource = sqliteTable(
         })
             .notNull()
             .default(false),
+        // how a health entry was checked: verified (a moderator confirmed
+        // it) or diy (self provided or community run care, accepted with
+        // a clear label). Null means no tier. Only health entries carry
+        // one; validated at the domain layer, never a DB level enum
+        // (spec 0006)
+        tier: text("tier"),
         // category-specific key/value data (e.g. a pharmacy's
         // medications and dosage ranges); also holds the mock
         // prototype's `services` list under a conventional "services"

@@ -83,7 +83,7 @@ function RouteComponent() {
           {profile.pronouns && <h6>{profile.pronouns}</h6>}
         </div>
 
-        <div className="w-full rounded-3xl border border-border bg-card px-7 py-6 text-center">
+        <div className="w-full text-center">
           <h6>{m["pages.profile.privacyNarrative"]()}</h6>
           <p className="mt-2.5 italic">
             {profile.bio || (
@@ -95,7 +95,7 @@ function RouteComponent() {
           </p>
         </div>
 
-        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid w-full grid-cols-1 gap-x-8 sm:grid-cols-2">
           <ProfileSettingRow icon={Settings01Icon} title={m["pages.profile.accountSettingsTitle"]()} subtitle={m["pages.profile.accountSettingsSubtitle"]()} to="/profile/account-settings" />
           <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} to="/profile/security" />
           <ProfileSettingRow icon={HelpCircleIcon} title={m["pages.profile.helpAndSupportTitle"]()} subtitle={m["pages.profile.helpAndSupportSubtitle"]()} to="/profile/help-and-support" />

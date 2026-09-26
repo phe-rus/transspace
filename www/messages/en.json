@@ -9,6 +9,10 @@
       "support": "Support",
       "profile": "Profile"
     },
+    "actions": {
+      "submitResource": "Submit a resource",
+      "signIn": "Sign in to Transspace"
+    },
     "groups": {
       "health": {
         "label": "Health",
@@ -120,7 +124,8 @@
         "verifiedOnly": "Community verified only",
         "freeOnly": "Sliding scale / free",
         "internationalOnly": "Accepts people from other countries",
-        "relatedGuides": "Related guides"
+        "relatedGuides": "Related guides",
+        "careType": "Type of care"
       },
       "healthcareProviders": {
         "title": "Healthcare providers",
@@ -165,6 +170,12 @@
         "pendingReview": "Community submitted, awaiting review",
         "lastReviewedCount": "Last reviewed {when}",
         "communityReportsCount": "{count} community reports",
+        "practicalDetails": "Practical details",
+        "hours": "Opening hours",
+        "languages": "Languages",
+        "accessibility": "Accessibility",
+        "safetyNotes": "Safety and privacy",
+        "whatToBring": "What to bring",
         "photoPlaceholder": "{name} photo",
         "about": "About",
         "services": "Services",
@@ -176,7 +187,8 @@
         "saveResource": "Save this resource",
         "suggestUpdate": "Suggest an update",
         "trustSignals": "Trust signals",
-        "internationalAccessNote": "Accepts people from other countries"
+        "internationalAccessNote": "Accepts people from other countries",
+        "diyNote": "This is community provided care, not medical care. Read the safety notes and take extra care."
       }
     },
     "opportunities": {
@@ -321,10 +333,22 @@
       "signInRequired": "Sign in to submit a resource.",
       "signIn": "Sign in",
       "successTitle": "Thanks for the submission",
-      "successBody": "A moderator will review it before it appears in the directory."
+      "successBody": "A moderator will review it before it appears in the directory.",
+      "isDiy": "This is a DIY or peer run option (community provided, not a licensed service)"
     },
     "stories": {
-      "comingSoon": "Stories is coming soon."
+      "title": "Stories",
+      "subtitle": "Firsthand experiences from people in the community: transition, moving, housing, work and more. They are personal experiences, not advice.",
+      "searchPlaceholder": "Search stories",
+      "share": "Share your story",
+      "signInToShare": "Sign in to share a story",
+      "all": "All",
+      "noMatches": "No stories match. Try a different search or topic.",
+      "anonymous": "Shared anonymously",
+      "experienceNote": "This is one person's experience, not advice. What worked for them may not work for you, so check with people you trust.",
+      "notFoundTitle": "Story not found",
+      "notFoundBody": "This story doesn't exist, or isn't published yet.",
+      "backToStories": "Back to stories"
     },
     "auth": {
       "signIn": {
@@ -612,12 +636,35 @@
       "confirm": "Confirm",
       "banDialogDescription": "This blocks {name} from signing in until you unban them. Give a reason for the record.",
       "banReasonPlaceholder": "Why are you banning this account?"
+    },
+    "submitStory": {
+      "title": "Share your story",
+      "subtitle": "Write about your experience in your own words. A moderator reads every story before it appears.",
+      "signInRequired": "Sign in to share a story.",
+      "signIn": "Sign in",
+      "successTitle": "Thank you for sharing",
+      "successBody": "A moderator will read your story before it appears.",
+      "titleLabel": "Title",
+      "titlePlaceholder": "What is your story about?",
+      "summaryLabel": "Short summary",
+      "summaryPlaceholder": "One or two sentences that tell a reader what to expect",
+      "topic": "Topic",
+      "identity": "How should your name be shown?",
+      "identityProfile": "Show my profile name",
+      "identityProfileHint": "Readers see the display name on your profile.",
+      "identityAnonymous": "Share anonymously",
+      "identityAnonymousHint": "No name is shown anywhere.",
+      "bodyLabel": "Your story",
+      "bodyPlaceholder": "Write here. You can add headings and lists. Please leave out the real names of other people.",
+      "submit": "Submit story",
+      "submitting": "Submitting..."
     }
   },
   "components": {
     "resourceCard": {
       "verified": "Community verified",
-      "pendingReview": "Community submitted, awaiting review"
+      "pendingReview": "Community submitted, awaiting review",
+      "diy": "DIY accepted"
     },
     "atlasDetail": {
       "backToList": "Back to list",
