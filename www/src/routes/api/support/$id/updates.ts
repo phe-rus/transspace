@@ -17,7 +17,6 @@ export const Route = createFileRoute("/api/support/$id/updates")({
                                 | "progress"
                                 | "pause_response"
                                 | "moderator_note"
-                            turnstileToken: string
                         },
                     })
                 }),

@@ -1,4 +1,3 @@
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import {
   RESOURCE_CATEGORIES,
   RESOURCE_SUBCATEGORIES_BY_CATEGORY,
@@ -34,18 +33,10 @@ function RouteComponent() {
     mutationFn: submitResource,
     onError: notifyError,
   })
-  const getTurnstileToken = useTurnstileToken()
 
   const form = useAppForm({
     defaultValues: submitFormDefaults,
     onSubmit: async ({ value }) => {
-      let turnstileToken: string
-      try {
-        turnstileToken = await getTurnstileToken()
-      } catch (error) {
-        await notifyError(error)
-        return
-      }
       await mutation.mutateAsync({
         data: {
           name: value.name,
@@ -59,7 +50,6 @@ function RouteComponent() {
           internationalAccess: value.internationalAccess,
           isFree: value.isFree,
           tier: value.category === "health" && value.isDiy ? "diy" : undefined,
-          turnstileToken,
         },
       })
     },

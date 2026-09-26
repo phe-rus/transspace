@@ -13,7 +13,6 @@ export const Route = createFileRoute("/api/support/$id/claims/")({
                     return createClaim({
                         data: { ...body, ...params } as {
                             id: string
-                            turnstileToken: string
                         },
                     })
                 }),

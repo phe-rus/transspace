@@ -62,4 +62,14 @@ export const userLink = sqliteTable("userLink", {
     adminRole: text("adminRole"),
     adminGrantedBy: text("adminGrantedBy"),
     adminGrantedAt: integer("adminGrantedAt", { mode: "timestamp_ms" }),
+
+    // ---- people this person blocked (spec 0009 AC-5): a JSON array of
+    // userLink ids. Their comments are never returned to this person.
+    // Private: never returned by any public read
+    blockedUserIds: text("blockedUserIds"),
+
+    // ---- communities this person joined (spec 0010 AC-2): a JSON array
+    // of slugs from data/communities.ts. Only changes what feeds show,
+    // never what the person may read or post
+    joinedCommunities: text("joinedCommunities"),
 })

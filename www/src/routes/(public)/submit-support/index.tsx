@@ -1,4 +1,3 @@
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import {
   SUPPORT_POST_TYPES,
   directionForType,
@@ -161,7 +160,6 @@ function RouteComponent() {
     mutationFn: submitSupportPost,
     onError: notifyError,
   })
-  const getTurnstileToken = useTurnstileToken()
   const countryOptions = useMemo(() => sortedCountryOptions(getLocale()), [])
 
   const form = useAppForm({
@@ -179,14 +177,6 @@ function RouteComponent() {
           field.kind === "number" ? Number(raw) : raw
       }
       // fetched right before the write, not held in form state; keeps
-      // one Turnstile widget for the whole app instead of one per form
-      let turnstileToken: string
-      try {
-        turnstileToken = await getTurnstileToken()
-      } catch (error) {
-        await notifyError(error)
-        return
-      }
       await submitMutation.mutateAsync({
         data: {
           type,
@@ -198,7 +188,6 @@ function RouteComponent() {
             directionForType(type) === "request" ? value.isUrgent : undefined,
           isRecurring:
             directionForType(type) === "offer" ? value.isRecurring : undefined,
-          turnstileToken,
         },
       })
     },

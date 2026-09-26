@@ -10,7 +10,6 @@ import { isModerator } from "@/lib/moderators"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { paginationSchema, toPage } from "@/lib/pagination"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { assertNotDecoy } from "@/lib/private-data"
 import {
     grantModeratorSchema,
@@ -84,7 +83,6 @@ export const grantModerator = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         if (data.targetUserLinkId === userLinkId) {
             throw new Response(
                 "Cannot grant moderator status to yourself",
@@ -126,7 +124,6 @@ export const setModeratorCountry = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
             .select({ grantedAt: userLink.moderatorGrantedAt })
             .from(userLink)
@@ -153,7 +150,6 @@ export const revokeModerator = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
             .select({ grantedAt: userLink.moderatorGrantedAt })
             .from(userLink)

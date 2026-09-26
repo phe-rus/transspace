@@ -32,6 +32,40 @@
             "bucket_name": "transspace-storage"
         }
     ],
+    // one CommunityRoom per community (live chat, later voice) and a
+    // single LiveHub they report to (spec 0010). SQLite backed classes are
+    // the kind the Workers Free plan allows
+    "durable_objects": {
+        "bindings": [
+            { "name": "COMMUNITY_ROOM", "class_name": "CommunityRoom" },
+            { "name": "LIVE_HUB", "class_name": "LiveHub" }
+        ]
+    },
+    "migrations": [
+        {
+            "tag": "v1",
+            "new_sqlite_classes": ["CommunityRoom", "LiveHub"]
+        }
+    ],
+    // the free plan guard for communities' live rooms (spec 0010 AC-18).
+    // Limits are what 100% means per UTC day. They are planning numbers
+    // from knowledge of the Workers Free plan, not a live check (spec 0010
+    // Follow-up): confirm them against the current Cloudflare limits
+    "vars": {
+        // percent of any daily limit at which new voice pauses
+        "LIVE_VOICE_PAUSE_AT": "70",
+        // percent at which chat slows to one message per 10 seconds
+        "LIVE_CHAT_SLOW_AT": "90",
+        // full room seconds of relayed voice: about 33 GB a day (1,000 GB a
+        // month of free TURN) / 0.45 GB per full room hour * 3600
+        "LIVE_VOICE_SECONDS_DAILY_LIMIT": "264000",
+        // chat messages: WebSocket messages bill 20 to 1 as Durable Object
+        // requests, so this is 20,000 of the 100,000 free daily requests
+        "LIVE_CHAT_MESSAGES_DAILY_LIMIT": "400000",
+        // connects, history loads and reports: half of the 100,000 free
+        // daily Worker requests, leaving the rest for the site
+        "LIVE_ROOM_REQUESTS_DAILY_LIMIT": "50000"
+    },
     "ratelimits": [
         {
             "name": "RATE_LIMITER_WRITE",

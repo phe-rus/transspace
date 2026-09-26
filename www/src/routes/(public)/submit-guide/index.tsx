@@ -1,4 +1,3 @@
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import {
   GUIDE_CATEGORIES,
   guideCategoryIcon,
@@ -63,7 +62,6 @@ function RouteComponent() {
     mutationFn: uploadGuideImage,
     onError: notifyError,
   })
-  const getTurnstileToken = useTurnstileToken()
 
   async function uploadEditorImage(file: File): Promise<string> {
     const formData = new FormData()
@@ -76,13 +74,6 @@ function RouteComponent() {
   const form = useAppForm({
     defaultValues: submitGuideDefaults,
     onSubmit: async ({ value }) => {
-      let turnstileToken: string
-      try {
-        turnstileToken = await getTurnstileToken()
-      } catch (error) {
-        await notifyError(error)
-        return
-      }
       await submitMutation.mutateAsync({
         data: {
           id: draftGuideId,
@@ -94,7 +85,6 @@ function RouteComponent() {
           seriesOrder: value.seriesOrder,
           coverImageUrl: value.coverImageUrl || undefined,
           videoUrl: value.videoUrl || undefined,
-          turnstileToken,
         },
       })
     },

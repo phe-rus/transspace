@@ -1,4 +1,5 @@
 import { getGuideQueryOptions } from "@/domains/guides"
+import { CommentSection } from "@/components/comments/comment-section"
 import { guideCategoryLabel, type GuideCategory } from "@/data/guides"
 import { toEmbedUrl } from "@/lib/video-embed"
 import { m } from "@/paraglide/messages"
@@ -161,6 +162,10 @@ function RouteComponent() {
             ))}
           </div>
         </div>
+      )}
+
+      {guide.status === "published" && (
+        <CommentSection contentType="guide" contentId={guide.id} />
       )}
     </article>
   )

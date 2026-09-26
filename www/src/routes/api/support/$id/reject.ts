@@ -14,7 +14,6 @@ export const Route = createFileRoute("/api/support/$id/reject")({
                         data: { ...body, ...params } as {
                             id: string
                             reason: string
-                            turnstileToken: string
                         },
                     })
                 }),

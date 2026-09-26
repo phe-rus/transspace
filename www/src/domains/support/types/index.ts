@@ -74,7 +74,7 @@ const structuredDetailsSchemas = {
     }),
     request_financial: z.object({
         writtenCase: richText(200),
-        // integer minor units (e.g. cents)
+        // whole currency units, the form asks for no decimals
         targetAmount: z.number().int().min(1),
         currency: z
             .string()
@@ -132,7 +132,6 @@ export function parseStructuredDetails(
 }
 
 const idSchema = { id: z.string().min(1) }
-const turnstileSchema = { turnstileToken: z.string() }
 
 export const listSupportPostsSchema = z.object({
     type: z.enum(SUPPORT_POST_TYPES).optional(),
@@ -167,7 +166,6 @@ export const submitSupportPostSchema = z.object({
     // listening-ear availability), carried over from the original
     // mockup's MutualAidPost.recurring field
     isRecurring: z.boolean().optional(),
-    ...turnstileSchema,
 })
 
 export const editSupportPostSchema = z.object({
@@ -175,63 +173,52 @@ export const editSupportPostSchema = z.object({
     title: z.string().min(1).max(200).optional(),
     structuredDetails: z.record(z.string(), z.unknown()).optional(),
     visibilityTier: z.enum(SUPPORT_VISIBILITY_TIERS).optional(),
-    ...turnstileSchema,
 })
 
 export const withdrawSupportPostSchema = z.object({
     ...idSchema,
     reason: z.string().optional(),
-    ...turnstileSchema,
 })
 
 export const fulfillSupportPostSchema = z.object({
     ...idSchema,
-    ...turnstileSchema,
 })
 
 export const publishSupportPostSchema = z.object({
     ...idSchema,
-    ...turnstileSchema,
 })
 
 export const coSignSupportPostSchema = z.object({
     ...idSchema,
-    ...turnstileSchema,
 })
 
 export const verifySupportPostSchema = z.object({
     ...idSchema,
-    ...turnstileSchema,
 })
 
 export const rejectSupportPostSchema = z.object({
     ...idSchema,
     reason: z.string().min(1),
-    ...turnstileSchema,
 })
 
 export const pauseSupportPostSchema = z.object({
     ...idSchema,
     reason: z.string().min(1),
-    ...turnstileSchema,
 })
 
 export const reactivateSupportPostSchema = z.object({
     ...idSchema,
     note: z.string().optional(),
-    ...turnstileSchema,
 })
 
 export const escalateTierSupportPostSchema = z.object({
     ...idSchema,
     visibilityTier: z.enum(SUPPORT_VISIBILITY_TIERS),
-    ...turnstileSchema,
 })
 
 export const createClaimSchema = z.object({
     ...idSchema,
     message: z.string().optional(),
-    ...turnstileSchema,
 })
 
 const claimRefSchema = {
@@ -241,17 +228,14 @@ const claimRefSchema = {
 
 export const withdrawClaimSchema = z.object({
     ...claimRefSchema,
-    ...turnstileSchema,
 })
 
 export const assignClaimSchema = z.object({
     ...claimRefSchema,
-    ...turnstileSchema,
 })
 
 export const declineClaimSchema = z.object({
     ...claimRefSchema,
-    ...turnstileSchema,
 })
 
 export const postSupportUpdateSchema = z.object({
@@ -259,7 +243,6 @@ export const postSupportUpdateSchema = z.object({
     kind: z.enum(SUPPORT_UPDATE_KINDS),
     amount: z.number().int().min(0).optional(),
     body: z.string().optional(),
-    ...turnstileSchema,
 })
 
 export const supportPostReadSchema = z.object({

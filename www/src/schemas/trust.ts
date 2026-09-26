@@ -4,6 +4,7 @@ import {
     integer,
     uniqueIndex,
     primaryKey,
+    index,
 } from "drizzle-orm/sqlite-core"
 import { userLink } from "./user-link"
 
@@ -80,5 +81,46 @@ export const trustCoSign = sqliteTable(
         primaryKey({
             columns: [table.trustSignalId, table.userLinkId],
         }),
+    ]
+)
+
+// one table for every short text a person writes about a thing or to
+// another person (spec 0009 Decision): a comment on published content, a
+// direct message, or a report. `kind` is checked on every read.
+// contentType/contentId say what a comment or report is about, the same
+// content agnostic pair trustSignal uses
+export const message = sqliteTable(
+    "message",
+    {
+        id: text("id").primaryKey(),
+        // comment | direct | report
+        kind: text("kind").notNull(),
+        contentType: text("contentType"),
+        contentId: text("contentId"),
+        // a direct message's recipient, or the person a report is about
+        toUserLinkId: text("toUserLinkId").references(() => userLink.id),
+        authorUserLinkId: text("authorUserLinkId")
+            .notNull()
+            .references(() => userLink.id),
+        // a reply's parent comment, one level deep (spec 0009 AC-1)
+        parentId: text("parentId"),
+        // plain text only, 1 to 2000 characters (spec 0009 AC-6)
+        body: text("body").notNull(),
+        // visible | removed. A removed row never returns its body
+        // (spec 0009 AC-3)
+        status: text("status").notNull().default("visible"),
+        // direct messages only (spec 0009 step two)
+        readAt: integer("readAt", { mode: "timestamp_ms" }),
+        createdAt: integer("createdAt", {
+            mode: "timestamp_ms",
+        }).notNull(),
+    },
+    (table) => [
+        index("message_content_idx").on(
+            table.kind,
+            table.contentType,
+            table.contentId,
+            table.createdAt
+        ),
     ]
 )

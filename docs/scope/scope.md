@@ -34,7 +34,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 20 | Provider tiers, verified and DIY accepted | Slice 1 | planned |
 | 21 | Communication layer: comments, messages, voice | Slice 10 | planned |
 | 22 | Safety: places and community | Slice 11 | planned |
-| 23 | Gender affirming health community | Slice 11 | planned |
+| 23 | Communities | Slice 11 | in-progress |
 | 24 | Seed data pass for the directory and guides | Slice 1 | in-progress |
 | 25 | Schema consolidation | Foundation | in-progress |
 
@@ -287,13 +287,24 @@ For the safe space, legal aid and travel sections. These are mostly people posti
 **Done when:** a person can post a place with safety notes, other people can confirm or correct it, and talk about it through comments and messages.
 - [ ] Design it (spec): `/architect safety places`
 
-### 23. Gender affirming health community · needs a decision
-More like a community talk space than a directory: Reddit like threads and comments, plus posts for dos and donts, how tos and planning, written in rich text (feature 19) and discussed through comments (feature 21). Open questions: whether voting exists, how posts are categorised, and how medical claims are flagged as personal experience, not advice.
-**Done when:** a person can start a thread or post a how to, others can reply, and it is clearly marked as community experience.
-- [ ] Design it (spec): `/architect gender affirming community`
+### 23. Communities · in-progress · GA
+Fixed topic spaces run by moderators (Gender affirming care, Moving country, Housing, Work, Health, Family, General lounge), each with threads (questions, how tos, dos and donts, planning, experiences) and a live room with text chat and small voice circles. The gender affirming health community is the first of them: threads there are clearly marked as personal experience, not medical advice. Replies are the comments from feature 21. Runs on the Cloudflare free plan until about 1,000 monthly active people, and no one ever sees another person's IP address.
+**Done when:** a signed in person can join a community, start a thread or reply, chat live and join a voice room of up to 6 people, each with block and report, and a moderator can review new accounts' threads and act in live rooms.
+- [x] Design it (spec): [0010](../specs/0010-communities/index.md)
+- [ ] Build it: `/develop communities` · code in `www/src/domains/messages`, `www/src/components/comments`, `www/src/domains/guides/func/threads.ts`, `www/src/components/communities`, `www/src/routes/(public)/communities`, `www/src/live`
+  - [x] Replies: spec 0009 step one (comments, blocking), covers AC-8, AC-16
+  - [x] Threads end to end: migration, communities list, community page, thread submit and review rule, home feed, header and profile links, covers AC-1 to AC-10, AC-17, AC-19
+  - [x] Live text chat: community room, chat with retention, reconnect, moderation and reports, covers AC-11 to AC-13, AC-16, AC-17
+  - [ ] Voice: TURN credentials, relayed 6 person voice, seats and waiting, host tools, covers AC-14 to AC-16
+  - [x] Free plan guard: usage counters and the degrade modes, covers AC-18
+- [ ] Verify it: `/check verify communities`
+- [ ] Test it: `/test communities`
+- [ ] Review it (fresh model): `/check review communities`
+- [ ] Document it: `/document communities`
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
+- **Bigger voice rooms and the paid plan**: move community voice from the 6 person relayed mesh to the Cloudflare Realtime SFU, and plan the Workers paid plan, when monthly active people reach 1,000 · from spec 0010 · needs a decision
 - **Wallets & payments**: non-custodial wallet integration (each account connects its own wallet; transspace never holds funds) so requests and offers in feature 18 can move real money beyond its self-reported progress tracking · needs a decision · GA
 - **Platform trust & impact reporting**: aggregate totals, donor/helper leaderboards, ratings and reviews across the platform, sequenced after feature 18 has real usage data to report on · needs a decision
 - **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects; also covers turning feature 18's text-only listening-ear offer into a live session. The text chat and voice rooms now live in feature 21; this item keeps only the matching of people to verified professionals · needs a decision · GA

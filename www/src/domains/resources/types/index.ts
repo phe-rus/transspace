@@ -77,7 +77,6 @@ export const submitResourceSchema = z.object({
     tier: z.enum(RESOURCE_TIERS).optional(),
     lat: z.number().optional(),
     lng: z.number().optional(),
-    turnstileToken: z.string(),
 })
 
 export const publishResourceSchema = z.object({
@@ -85,10 +84,8 @@ export const publishResourceSchema = z.object({
     // undefined leaves the tier as submitted, null clears it (spec 0006
     // AC-5)
     tier: z.enum(RESOURCE_TIERS).nullable().optional(),
-    turnstileToken: z.string(),
 })
 
 export const rejectResourceSchema = z.object({
     ...contentRefSchema,
-    turnstileToken: z.string(),
 })

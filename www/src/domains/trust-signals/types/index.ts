@@ -48,16 +48,13 @@ export const getTrustSignalSchema = z.object(contentRefSchema)
 
 export const coSignSchema = z.object({
     ...contentRefSchema,
-    turnstileToken: z.string(),
 })
 
 export const verifyTrustSignalSchema = z.object({
     ...contentRefSchema,
-    turnstileToken: z.string(),
 })
 
 export const disputeTrustSignalSchema = z.object({
     ...contentRefSchema,
     disputed: z.boolean(),
-    turnstileToken: z.string(),
 })

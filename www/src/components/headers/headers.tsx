@@ -79,7 +79,7 @@ export const Headers = () => {
 
     const navItems = useMemo(() => [
         { label: m["navigation.items.map"](), to: "/atlas" },
-        { label: m["navigation.items.communities"](), to: "/r" },
+        { label: m["navigation.items.communities"](), to: "/communities" },
         { label: m["navigation.items.support"](), to: "/support" },
         ...(signedIn ? [{ label: m["navigation.items.profile"](), to: "/profile" }] : []),
     ], [signedIn])

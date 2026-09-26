@@ -11,7 +11,6 @@ import { isAdmin, isFounder, isSuperAdmin } from "@/lib/admins"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { paginationSchema, toPage } from "@/lib/pagination"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { assertNotDecoy } from "@/lib/private-data"
 import {
     banUserSchema,
@@ -143,7 +142,6 @@ export const grantAdmin = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         if (data.targetUserLinkId === userLinkId) {
             throw new Response("Cannot grant admin status to yourself", {
                 status: 422,
@@ -184,7 +182,6 @@ export const revokeAdmin = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
             .select({ role: userLink.adminRole })
             .from(userLink)
@@ -220,7 +217,6 @@ export const grantSuperAdmin = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         if (data.targetUserLinkId === userLinkId) {
             throw new Response("You're already the founding super admin", {
                 status: 422,
@@ -268,7 +264,6 @@ export const demoteSuperAdmin = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         const [target] = await db
             .select({
                 role: userLink.adminRole,
@@ -307,7 +302,6 @@ export const banUser = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         if (data.targetUserLinkId === userLinkId) {
             throw new Response("Cannot ban yourself", { status: 422 })
         }
@@ -340,7 +334,6 @@ export const unbanUser = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         await db
             .update(userLink)
             .set({ bannedAt: null, bannedBy: null, banReason: null })

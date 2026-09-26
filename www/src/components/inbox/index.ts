@@ -1,5 +1,5 @@
 export { InboxRow } from "./inbox-row"
 export { InboxThread } from "./inbox-thread"
 export { useInboxRead } from "./inbox-read"
-export { dayBucket, itemStamp, matchesQuery } from "./inbox-item"
+export { dayBucket, formatMessageTime, itemStamp, matchesQuery } from "./inbox-item"
 export type { DayBucket, InboxItem, InboxView } from "./inbox-item"

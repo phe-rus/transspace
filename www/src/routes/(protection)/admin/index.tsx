@@ -15,7 +15,6 @@ import {
   revokeModerator,
   setModeratorCountry,
 } from "@/domains/moderators"
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import { sortedCountryOptions, countryName } from "@/data/countries"
 import { notifyError, notifySuccess } from "@/lib/toast"
 import { m } from "@/paraglide/messages"
@@ -134,7 +133,6 @@ function RoleBadges({ user }: { user: AdminUser }) {
 
 function RouteComponent() {
   const [tab, setTab] = useState<"users" | "activity">("users")
-  const getTurnstileToken = useTurnstileToken()
   const queryClient = useQueryClient()
   const locale = getLocale()
   const countryOptions = useMemo(() => sortedCountryOptions(locale), [locale])
@@ -213,15 +211,6 @@ function RouteComponent() {
     ...mutationWithToast("pages.admin.userUnbannedToast"),
   })
 
-  async function withToken(run: (turnstileToken: string) => void) {
-    try {
-      const turnstileToken = await getTurnstileToken()
-      run(turnstileToken)
-    } catch (error) {
-      await notifyError(error)
-    }
-  }
-
   function openModeratorDialog(user: AdminUser, mode: "grant" | "set") {
     setModeratorCountryValue(user.moderatorCountryCode ?? "")
     setModeratorDialog({ user, mode })
@@ -231,34 +220,29 @@ function RouteComponent() {
     if (!moderatorDialog) return
     const { user, mode } = moderatorDialog
     const countryCode = moderatorCountryValue || undefined
-    withToken((turnstileToken) => {
-      if (mode === "grant") {
-        grantModeratorMutation.mutate({
-          data: { targetUserLinkId: user.id, countryCode, turnstileToken },
-        })
-      } else {
-        setModeratorCountryMutation.mutate({
-          data: { userLinkId: user.id, countryCode, turnstileToken },
-        })
-      }
-      setModeratorDialog(null)
-    })
+    if (mode === "grant") {
+      grantModeratorMutation.mutate({
+        data: { targetUserLinkId: user.id, countryCode },
+      })
+    } else {
+      setModeratorCountryMutation.mutate({
+        data: { userLinkId: user.id, countryCode },
+      })
+    }
+    setModeratorDialog(null)
   }
 
   function confirmBanDialog() {
     if (!banDialogUser || !banReason.trim()) return
     const user = banDialogUser
-    withToken((turnstileToken) => {
-      banUserMutation.mutate({
-        data: {
-          targetUserLinkId: user.id,
-          reason: banReason.trim(),
-          turnstileToken,
-        },
-      })
-      setBanDialogUser(null)
-      setBanReason("")
+    banUserMutation.mutate({
+      data: {
+        targetUserLinkId: user.id,
+        reason: banReason.trim(),
+      },
     })
+    setBanDialogUser(null)
+    setBanReason("")
   }
 
   return (
@@ -354,11 +338,9 @@ function RouteComponent() {
                                 <DropdownMenuItem
                                   variant="destructive"
                                   onClick={() =>
-                                    withToken((turnstileToken) =>
-                                      revokeModeratorMutation.mutate({
-                                        data: { userLinkId: user.id, turnstileToken },
-                                      })
-                                    )
+                                    revokeModeratorMutation.mutate({
+                                      data: { userLinkId: user.id },
+                                    })
                                   }
                                 >
                                   {m["pages.admin.removeModerator"]()}
@@ -370,11 +352,9 @@ function RouteComponent() {
                           {!user.isAdmin && (
                             <DropdownMenuItem
                               onClick={() =>
-                                withToken((turnstileToken) =>
-                                  grantAdminMutation.mutate({
-                                    data: { targetUserLinkId: user.id, turnstileToken },
-                                  })
-                                )
+                                grantAdminMutation.mutate({
+                                  data: { targetUserLinkId: user.id },
+                                })
                               }
                             >
                               {m["pages.admin.makeAdmin"]()}
@@ -384,11 +364,9 @@ function RouteComponent() {
                             <DropdownMenuItem
                               variant="destructive"
                               onClick={() =>
-                                withToken((turnstileToken) =>
-                                  revokeAdminMutation.mutate({
-                                    data: { userLinkId: user.id, turnstileToken },
-                                  })
-                                )
+                                revokeAdminMutation.mutate({
+                                  data: { userLinkId: user.id },
+                                })
                               }
                             >
                               {m["pages.admin.removeAdmin"]()}
@@ -398,11 +376,9 @@ function RouteComponent() {
                           {me.isFounder && !user.isSuperAdmin && (
                             <DropdownMenuItem
                               onClick={() =>
-                                withToken((turnstileToken) =>
-                                  grantSuperAdminMutation.mutate({
-                                    data: { targetUserLinkId: user.id, turnstileToken },
-                                  })
-                                )
+                                grantSuperAdminMutation.mutate({
+                                  data: { targetUserLinkId: user.id },
+                                })
                               }
                             >
                               {m["pages.admin.makeSuperAdmin"]()}
@@ -412,11 +388,9 @@ function RouteComponent() {
                             <DropdownMenuItem
                               variant="destructive"
                               onClick={() =>
-                                withToken((turnstileToken) =>
-                                  demoteSuperAdminMutation.mutate({
-                                    data: { userLinkId: user.id, turnstileToken },
-                                  })
-                                )
+                                demoteSuperAdminMutation.mutate({
+                                  data: { userLinkId: user.id },
+                                })
                               }
                             >
                               {m["pages.admin.demoteSuperAdmin"]()}
@@ -429,11 +403,9 @@ function RouteComponent() {
                               {user.isBanned ? (
                                 <DropdownMenuItem
                                   onClick={() =>
-                                    withToken((turnstileToken) =>
-                                      unbanUserMutation.mutate({
-                                        data: { userLinkId: user.id, turnstileToken },
-                                      })
-                                    )
+                                    unbanUserMutation.mutate({
+                                      data: { userLinkId: user.id },
+                                    })
                                   }
                                 >
                                   {m["pages.admin.unbanUser"]()}

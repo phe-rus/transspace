@@ -5,7 +5,6 @@ import { supportPost, supportUpdate } from "@/schemas/support"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { isModerator } from "@/lib/moderators"
 import { postSupportUpdateSchema } from "../types"
 
@@ -22,7 +21,6 @@ export const postSupportUpdate = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         if (!(DIRECT_KINDS as readonly string[]).includes(data.kind)) {
             throw new Response("Unsupported update kind", { status: 422 })

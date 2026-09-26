@@ -22,7 +22,7 @@ export const Route = createFileRoute(
                         data: {
                             ...body,
                             userLinkId: params.userLinkId,
-                        } as { userLinkId: string; turnstileToken: string },
+                        } as { userLinkId: string },
                     })
                 }),
         },

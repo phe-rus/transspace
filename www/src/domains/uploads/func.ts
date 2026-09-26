@@ -10,7 +10,6 @@ import {
     assertReadRateLimit,
     assertWriteRateLimit,
 } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import {
     ALLOWED_TYPES,
     MAX_FILE_BYTES,
@@ -59,12 +58,6 @@ export const uploadFile = createServerFn({ method: "POST" })
     })
     .handler(async ({ data, context: { userLinkId } }) => {
         await assertWriteRateLimit(userLinkId)
-        const turnstileToken = data.get("turnstileToken")
-        await assertTurnstileVerified(
-            typeof turnstileToken === "string"
-                ? turnstileToken
-                : undefined
-        )
 
         const file = data.get("file")
         if (!(file instanceof File)) {
@@ -181,7 +174,6 @@ export const deleteUploads = createServerFn({
     .validator(deleteUploadsSchema)
     .handler(async ({ data, context: { userLinkId } }) => {
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const storagePrefix = await getStoragePrefix(
             userLinkId

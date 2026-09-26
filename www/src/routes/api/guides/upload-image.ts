@@ -2,10 +2,8 @@ import { createFileRoute } from "@tanstack/react-router"
 import { uploadGuideImage } from "@/domains/guides"
 import { toHttpResponse } from "@/lib/http"
 
-// deliberately no Turnstile requirement, unlike every other write
-// route in this app (spec 0004-guides Security model): a person
-// composing a guide uploads images before ever reaching a final
-// submit, and a Turnstile token is single-use
+// session, write rate limit and the per account storage quota guard this
+// (spec 0004-guides Security model); Turnstile is only ever on login
 export const Route = createFileRoute("/api/guides/upload-image")({
     server: {
         handlers: {

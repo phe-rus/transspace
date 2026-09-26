@@ -15,7 +15,6 @@ export const Route = createFileRoute("/api/support/$id/")({
                     return editSupportPost({
                         data: { ...body, ...params } as {
                             id: string
-                            turnstileToken: string
                         },
                     })
                 }),

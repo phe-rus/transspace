@@ -8,7 +8,6 @@ import { userLink } from "@/schemas/user-link"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { isModerator } from "@/lib/moderators"
 import { getClientKey } from "./shared"
@@ -98,7 +97,6 @@ export const createClaim = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [post] = await db
             .select({
@@ -146,7 +144,6 @@ export const withdrawClaim = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const claim = await loadClaimOrThrow(data.id, data.claimId)
         if (claim.helperUserLinkId !== userLinkId) {
@@ -168,7 +165,6 @@ export const assignClaim = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [post] = await db
             .select({ authorUserLinkId: supportPost.authorUserLinkId })
@@ -232,7 +228,6 @@ export const declineClaim = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [post] = await db
             .select({ authorUserLinkId: supportPost.authorUserLinkId })

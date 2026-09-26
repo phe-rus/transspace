@@ -18,7 +18,6 @@ export const Route = createFileRoute("/api/support/$id/escalate-tier")({
                                 | "sensitive"
                                 | "critical"
                                 | "private"
-                            turnstileToken: string
                         },
                     })
                 }),

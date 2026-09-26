@@ -22,7 +22,6 @@ export const Route = createFileRoute(
                         data: { ...body, ...params } as {
                             contentType: string
                             contentId: string
-                            turnstileToken: string
                         },
                     })
                 }),

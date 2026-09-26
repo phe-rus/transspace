@@ -19,7 +19,6 @@ export const Route = createFileRoute("/api/resources/$id/publish")({
                         // wrapper's loosely-typed JSON body
                         data: { ...body, ...params } as {
                             id: string
-                            turnstileToken: string
                         },
                     })
                 }),

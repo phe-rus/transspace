@@ -16,8 +16,6 @@ export const submitSupportFormSchema = z.object({
     // structuredDetails fields). Text and select fields hold strings, long
     // text fields hold a rich text document
     fields: z.record(z.string(), z.unknown()),
-    // the turnstile token is fetched on demand at submit time via
-    // useTurnstileToken(), not held in form state
 })
 
 export const submitSupportFormDefaults: z.input<

@@ -5,7 +5,6 @@ import { supportPost } from "@/schemas/support"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { userLink } from "@/schemas/user-link"
 import {
     directionForType,
@@ -29,7 +28,6 @@ export const submitSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         assertValidSupportType(data.type)
 
         const direction = directionForType(data.type)

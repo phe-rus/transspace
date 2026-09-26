@@ -42,7 +42,9 @@ export const getGuide = createServerFn({ method: "GET" })
             .leftJoin(guideSeries, eq(guideSeries.id, guide.seriesId))
             .where(eq(guide.id, data.id))
         const row = rows[0]
-        if (!row) {
+        // a community thread is signed in only and read through getThread;
+        // this public read never returns one (spec 0010 AC-19)
+        if (!row || row.kind === "thread") {
             throw new Response("Not found", { status: 404 })
         }
         if (row.status !== "published") {

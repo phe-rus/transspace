@@ -15,11 +15,9 @@ import {
 } from "@/lib/uploads"
 import { getStoragePrefix } from "@/domains/uploads"
 
-// deliberately not Turnstile-gated, unlike every other write in this
-// codebase: a Turnstile token is single-use, but composing a guide
-// means uploading several images before ever reaching a final submit;
-// session + write rate limit + the existing per-account quota gate
-// this instead (spec 0004 Security model)
+// session + write rate limit + the existing per-account quota gate this
+// (spec 0004 Security model), like every write; Turnstile is only ever on
+// login
 export const uploadGuideImage = createServerFn({ method: "POST" })
     .middleware([SessionMiddleware])
     .validator((data: unknown) => {

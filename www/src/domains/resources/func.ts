@@ -13,7 +13,6 @@ import { isModerator } from "@/lib/moderators"
 import { assertNotDecoy } from "@/lib/private-data"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { readTrustSignal } from "@/domains/trust-signals"
 import { encodeCreatedAtCursor, decodeCreatedAtCursor } from "@/lib/cursor"
 import {
@@ -279,7 +278,6 @@ export const submitResource = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         assertValidCategory(data.category, data.subcategory)
         // a submitter can only declare diy, and only a health entry carries
         // a tier at all (spec 0006 AC-1, AC-4)
@@ -344,7 +342,6 @@ export const publishResource = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [row] = await db
             .select({ status: resource.status, category: resource.category })
@@ -386,7 +383,6 @@ export const rejectResource = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [row] = await db
             .select({ status: resource.status })

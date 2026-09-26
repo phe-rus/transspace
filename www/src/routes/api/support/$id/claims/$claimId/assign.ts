@@ -16,7 +16,6 @@ export const Route = createFileRoute(
                         data: { ...body, ...params } as {
                             id: string
                             claimId: string
-                            turnstileToken: string
                         },
                     })
                 }),

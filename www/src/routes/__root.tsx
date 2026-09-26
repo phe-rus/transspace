@@ -1,6 +1,5 @@
 import { LanguageSelect } from "@/components/languages"
 import { NotFoundComponent } from "@/components/notFoundComponent"
-import { TurnstileProvider } from "@/components/turnstile-provider"
 import { getclientURL } from "@/lib/getURL"
 import { currentOptions } from "@/middleware/auth-session"
 import { getLocale } from "@/paraglide/runtime"
@@ -14,6 +13,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { LiveSessionProvider } from "@/components/communities/live-session"
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => seo({
@@ -63,11 +63,13 @@ function RootDocument() {
           enableColorScheme
           enableSystem
         >
-          <TurnstileProvider>
+          {/* one live connection for the whole app, so a live keeps going
+              across pages, with its floating circle */}
+          <LiveSessionProvider>
             <Outlet />
-            <LanguageSelect />
-            <GooeyToaster />
-          </TurnstileProvider>
+          </LiveSessionProvider>
+          <LanguageSelect />
+          <GooeyToaster />
         </ThemeProvider>
         <Scripts />
         <TanStackDevtools

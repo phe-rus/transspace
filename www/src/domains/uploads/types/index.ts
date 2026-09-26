@@ -8,5 +8,4 @@ export const listUploadsSchema = z.object({
 
 export const deleteUploadsSchema = z.object({
     keys: z.array(z.string().min(1)).min(1),
-    turnstileToken: z.string(),
 })

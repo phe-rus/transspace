@@ -1,6 +1,8 @@
+import { LiveRoomsStrip, ThreadCard } from "@/components/communities"
 import { m } from "@/paraglide/messages"
 import { getLocale } from "@/paraglide/runtime"
 import { listResourcesQueryOptions } from "@/domains/resources"
+import { listCommunitiesQueryOptions, listHomeThreadsQueryOptions } from "@/domains/guides"
 import { profileQueryOptions } from "@/domains/profile"
 import { authGateQueryOptions } from "@/lib/auth-gate"
 import { visitorCountryQueryOptions } from "@/lib/request-geo"
@@ -45,6 +47,18 @@ function RouteComponent() {
     ...profileQueryOptions(),
     enabled: signedIn && authGate.onboarded,
     retry: false,
+  })
+  // spec 0010 AC-9: signed in only, so it is never fetched for a visitor
+  const homeThreadsQuery = useQuery({
+    ...listHomeThreadsQueryOptions(),
+    enabled: signedIn,
+  })
+  const homeThreads = homeThreadsQuery.data
+  // the live rooms above the cards; counts change, so they refresh
+  const { data: communities } = useQuery({
+    ...listCommunitiesQueryOptions(),
+    enabled: signedIn,
+    refetchInterval: 30_000,
   })
 
   const { data: heroResources } = useSuspenseQuery(
@@ -189,16 +203,30 @@ function RouteComponent() {
               <h2>{m["pages.home.trendingTitle"]()}</h2>
               <p>{m["pages.home.trendingSubtitle"]()}</p>
             </div>
-            <Link to="/r" className="flex items-center gap-1">
+            <Link to={signedIn ? "/communities" : "/auth"} className="flex items-center gap-1">
               {m["pages.home.joinCommunity"]()}
               <HugeiconsIcon icon={ArrowRightIcon} className="size-3.5" />
             </Link>
           </div>
 
-          {/* no community/discussion data model exists yet (not part of
-              the resource directory build); this is an honest empty
-              state, not a placeholder for fabricated posts */}
-          <p className="py-6 text-center">{m["pages.home.trendingEmpty"]()}</p>
+          {!signedIn ? (
+            <p className="py-6 text-center">{m["pages.home.trendingSignedOut"]()}</p>
+          ) : homeThreads && homeThreads.threads.length === 0 ? (
+            <p className="py-6 text-center">{m["pages.home.trendingEmpty"]()}</p>
+          ) : homeThreads ? (
+            <div className="flex flex-col gap-3">
+              {communities && <LiveRoomsStrip rooms={communities} />}
+              {!homeThreads.fromJoined && <p>{m["pages.home.trendingNudge"]()}</p>}
+              {/* one sideways scrolling row of cards, snapping card by card */}
+              <ul className="no-scrollbar -mx-1 flex list-none snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 ps-1 *:ps-0">
+                {homeThreads.threads.map((thread) => (
+                  <li key={thread.id} className="shrink-0 snap-start">
+                    <ThreadCard thread={thread} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </motion.div>
 
         <motion.div variants={fadeUp} className="flex justify-center pt-2">

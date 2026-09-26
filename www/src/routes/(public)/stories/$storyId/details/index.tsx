@@ -1,4 +1,5 @@
 import { storyTopicLabel, type StoryTopic } from "@/data/stories"
+import { CommentSection } from "@/components/comments/comment-section"
 import { getGuideQueryOptions } from "@/domains/guides"
 import { m } from "@/paraglide/messages"
 import { ArrowLeft01Icon, InformationCircleIcon } from "@hugeicons/core-free-icons"
@@ -65,6 +66,10 @@ function RouteComponent() {
         <Preview content={bodyContent as never} />
       ) : (
         <p>{story.excerpt}</p>
+      )}
+
+      {story.status === "published" && (
+        <CommentSection contentType="guide" contentId={story.id} />
       )}
     </article>
   )

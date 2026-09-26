@@ -23,7 +23,6 @@ export const Route = createFileRoute(
                             contentType: string
                             contentId: string
                             disputed: boolean
-                            turnstileToken: string
                         },
                     })
                 }),

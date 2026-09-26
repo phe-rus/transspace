@@ -8,9 +8,9 @@ import {
   postSupportUpdate,
   withdrawSupportPost,
 } from "@/domains/support"
-import { isRichDoc } from "@/data/rich-text"
+import { CommentSection } from "@/components/comments/comment-section"
+import { detailEntries, formatMoney } from "@/components/inbox/inbox-item"
 import { supportPostTypeLabel, type SupportPostType } from "@/data/support-types"
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import { authGateQueryOptions } from "@/lib/auth-gate"
 import { notifyError, notifySuccess } from "@/lib/toast"
 import { m } from "@/paraglide/messages"
@@ -63,10 +63,6 @@ function RouteComponent() {
   const { data: post } = useSuspenseQuery(getSupportPostQueryOptions(postId))
   const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
   const [progressAmount, setProgressAmount] = useState("")
-  // every support write endpoint requires a Turnstile token (spec 0005
-  // AC-15); fetched on demand from the one app-wide widget right before
-  // each action fires, instead of this page owning its own widget
-  const getTurnstileToken = useTurnstileToken()
 
   const isAuthorOrModerator = post?.visibility === "full" && "updates" in post && post.updates !== null
 
@@ -173,6 +169,11 @@ function RouteComponent() {
 
   const type = post.type as SupportPostType
   const details = post.structuredDetails as Record<string, unknown>
+  const entries = detailEntries(post)
+  const currency = typeof details.currency === "string" ? details.currency : ""
+  const money = (amount: unknown) =>
+    (typeof amount === "number" && formatMoney(amount, currency)) ||
+    `${String(amount ?? "")} ${currency}`.trim()
   const canManage = Boolean(claims)
   const isOpen = post.status === "published"
 
@@ -218,16 +219,20 @@ function RouteComponent() {
       </div>
 
       <div className="flex flex-col gap-3">
-        {Object.entries(details).map(([key, value]) =>
-          isRichDoc(value) ? (
-            <div key={key} className="flex flex-col gap-1">
-              <strong className="text-foreground">{key}</strong>
-              <Preview content={value as never} />
+        {entries.map((entry) =>
+          entry.kind === "textarea" ? (
+            <div key={entry.label} className="flex flex-col gap-1">
+              <strong className="text-foreground">{entry.label}</strong>
+              {entry.doc ? (
+                <Preview content={entry.doc as never} />
+              ) : (
+                <p>{entry.value}</p>
+              )}
             </div>
           ) : (
-            <p key={key}>
-              <strong className="text-foreground">{key}: </strong>
-              {String(value)}
+            <p key={entry.label}>
+              <strong className="text-foreground">{entry.label}: </strong>
+              {entry.value}
             </p>
           )
         )}
@@ -236,8 +241,7 @@ function RouteComponent() {
       {type === "request_financial" && (
         <div className="flex flex-col gap-1 border-t border-border/60 pt-5">
           <p>
-            {post.raisedAmount ?? 0} / {String(details.targetAmount ?? "")}{" "}
-            {String(details.currency ?? "")}
+            {money(post.raisedAmount ?? 0)} / {money(details.targetAmount)}
           </p>
           <p className="text-xs text-muted-foreground">
             {m["pages.supportDetail.selfReportedNote"]()}
@@ -251,8 +255,7 @@ function RouteComponent() {
             className="rounded-full"
             disabled={claimMutation.isPending}
             onClick={async () => {
-              const turnstileToken = await getTurnstileToken()
-              claimMutation.mutate({ data: { id: postId, turnstileToken } })
+              claimMutation.mutate({ data: { id: postId } })
             }}
           >
             {claimMutation.isSuccess
@@ -287,9 +290,8 @@ function RouteComponent() {
                         className="rounded-full"
                         disabled={assignMutation.isPending}
                         onClick={async () => {
-                          const turnstileToken = await getTurnstileToken()
                           assignMutation.mutate({
-                            data: { id: postId, claimId: claim.id, turnstileToken },
+                            data: { id: postId, claimId: claim.id },
                           })
                         }}
                       >
@@ -301,9 +303,8 @@ function RouteComponent() {
                         className="rounded-full"
                         disabled={declineMutation.isPending}
                         onClick={async () => {
-                          const turnstileToken = await getTurnstileToken()
                           declineMutation.mutate({
-                            data: { id: postId, claimId: claim.id, turnstileToken },
+                            data: { id: postId, claimId: claim.id },
                           })
                         }}
                       >
@@ -332,13 +333,11 @@ function RouteComponent() {
                 className="rounded-full"
                 disabled={!progressAmount || progressMutation.isPending}
                 onClick={async () => {
-                  const turnstileToken = await getTurnstileToken()
                   progressMutation.mutate({
                     data: {
                       id: postId,
                       kind: "progress",
                       amount: Number(progressAmount),
-                      turnstileToken,
                     },
                   })
                 }}
@@ -355,8 +354,7 @@ function RouteComponent() {
                 className="rounded-full"
                 disabled={fulfillMutation.isPending}
                 onClick={async () => {
-                  const turnstileToken = await getTurnstileToken()
-                  fulfillMutation.mutate({ data: { id: postId, turnstileToken } })
+                  fulfillMutation.mutate({ data: { id: postId } })
                 }}
               >
                 {m["pages.supportDetail.markFulfilled"]()}
@@ -366,8 +364,7 @@ function RouteComponent() {
                 className="rounded-full"
                 disabled={withdrawMutation.isPending}
                 onClick={async () => {
-                  const turnstileToken = await getTurnstileToken()
-                  withdrawMutation.mutate({ data: { id: postId, turnstileToken } })
+                  withdrawMutation.mutate({ data: { id: postId } })
                 }}
               >
                 {m["pages.supportDetail.withdrawPost"]()}
@@ -375,6 +372,10 @@ function RouteComponent() {
             </div>
           )}
         </div>
+      )}
+
+      {post.status === "published" && post.visibilityTier !== "private" && (
+        <CommentSection contentType="supportPost" contentId={postId} />
       )}
 
       <div className="flex items-center gap-3 border-t border-border/60 pt-5">

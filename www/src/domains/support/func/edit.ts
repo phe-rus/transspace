@@ -5,7 +5,6 @@ import { supportClaim, supportPost, supportUpdate } from "@/schemas/support"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import type { SupportPostType } from "@/data/support-types"
 import {
     editSupportPostSchema,
@@ -49,7 +48,6 @@ export const editSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadOwnPostOrThrow(data.id, userLinkId)
         if (row.status === "paused") {
@@ -103,7 +101,6 @@ export const withdrawSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadOwnPostOrThrow(data.id, userLinkId)
         if (
@@ -144,7 +141,6 @@ export const fulfillSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadOwnPostOrThrow(data.id, userLinkId)
         if (row.status !== "published" && row.status !== "paused") {

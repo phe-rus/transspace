@@ -1,7 +1,9 @@
 import { env } from "cloudflare:workers"
 
-// spec 0002 AC-5: every write endpoint requires a Turnstile challenge;
-// read/search endpoints never do
+// used in exactly one place, the login entry (/api/auth/login). The
+// engineer's rule overrides spec 0002 AC-5: no write, form or other
+// endpoint uses Turnstile; they rely on the session and the write rate
+// limit
 export async function assertTurnstileVerified(
     token: string | undefined,
     remoteIp?: string

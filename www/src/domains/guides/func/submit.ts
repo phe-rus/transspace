@@ -6,7 +6,6 @@ import { trustSignal } from "@/schemas/trust"
 import { SessionMiddleware } from "@/middleware/require-session"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import {
     analyzeBodyContent,
     assertValidCoverImageUrl,
@@ -53,7 +52,6 @@ export const submitGuide = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
         const kind = data.kind ?? "guide"
         assertValidCategoryForKind(kind, data.category)
         // a story must say how it shows its writer, and a guide carries

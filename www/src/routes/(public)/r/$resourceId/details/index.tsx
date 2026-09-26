@@ -1,4 +1,5 @@
 import { getResourceQueryOptions } from "@/domains/resources"
+import { CommentSection } from "@/components/comments/comment-section"
 import { m } from "@/paraglide/messages"
 import { resourceCategoryLabel, type ResourceCategory } from "@/data/resource-categories"
 import { TierBadge } from "@/components/resources/tier-badge"
@@ -146,7 +147,7 @@ function RouteComponent() {
                     <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                       {detail.label}
                     </dt>
-                    <dd className="text-foreground">{detail.value}</dd>
+                    <dd className="ms-0 ps-0 text-foreground">{detail.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -169,6 +170,10 @@ function RouteComponent() {
               </Button>
             </div>
           </div>
+
+          {resource.status === "published" && (
+            <CommentSection contentType="resource" contentId={resource.id} />
+          )}
         </div>
 
         <aside className="flex flex-1 flex-col gap-8 border-t border-border/60 pt-6 md:sticky md:top-11 md:self-start md:border-t-0 md:border-l md:pt-0 md:pl-8">

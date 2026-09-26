@@ -35,7 +35,6 @@ export const coSignSupportPost = createServerFn({ method: "POST" })
             data: {
                 contentType: "supportPost",
                 contentId: data.id,
-                turnstileToken: data.turnstileToken,
             },
         })
     })
@@ -60,7 +59,6 @@ export const verifySupportPost = createServerFn({ method: "POST" })
             data: {
                 contentType: "supportPost",
                 contentId: data.id,
-                turnstileToken: data.turnstileToken,
             },
         })
     })

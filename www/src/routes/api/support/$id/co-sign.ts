@@ -13,7 +13,6 @@ export const Route = createFileRoute("/api/support/$id/co-sign")({
                     return coSignSupportPost({
                         data: { ...body, ...params } as {
                             id: string
-                            turnstileToken: string
                         },
                     })
                 }),

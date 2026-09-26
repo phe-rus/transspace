@@ -1,6 +1,8 @@
 import { z } from "zod"
 import { GUIDE_CATEGORIES } from "@/data/guides"
 import { AUTHOR_VISIBILITIES, STORY_TOPICS } from "@/data/stories"
+import { THREAD_TYPES } from "@/data/communities"
+import { RETENTION_HOURS } from "@/data/live-room"
 
 export const GUIDE_STATUSES = ["pending", "published", "rejected"] as const
 
@@ -76,15 +78,50 @@ export const submitGuideSchema = z.object({
     seriesOrder: z.number().int().min(1).optional(),
     coverImageUrl: z.string().optional(),
     videoUrl: z.string().optional(),
-    turnstileToken: z.string(),
 })
 
 export const publishGuideSchema = z.object({
     ...contentRefSchema,
-    turnstileToken: z.string(),
 })
 
 export const rejectGuideSchema = z.object({
     ...contentRefSchema,
-    turnstileToken: z.string(),
+})
+
+// ---- community threads (spec 0010): guide rows with kind = "thread", the
+// community slug in category. Never listed or read through the guide
+// endpoints above, which are public; these are all signed in only
+
+export const listThreadsSchema = z.object({
+    slug: z.string().min(1),
+    threadType: z.enum(THREAD_TYPES).optional(),
+    cursor: z.string().optional(),
+})
+
+export const getThreadSchema = z.object(contentRefSchema)
+
+export const submitThreadSchema = z.object({
+    // client generated, like a guide's, so editor images can upload under
+    // it before the row exists
+    id: z.string().regex(UUID_RE),
+    slug: z.string().min(1),
+    title: z.string().trim().min(1),
+    excerpt: z.string().trim().min(1),
+    threadType: z.enum(THREAD_TYPES),
+    authorVisibility: z.enum(AUTHOR_VISIBILITIES),
+    bodyContent: z.unknown(),
+})
+
+export const setCommunityJoinedSchema = z.object({
+    slug: z.string().min(1),
+    joined: z.boolean(),
+})
+
+export const setRoomRetentionSchema = z.object({
+    slug: z.string().min(1),
+    hours: z.union(RETENTION_HOURS.map((hours) => z.literal(hours))),
+})
+
+export const roomSlugSchema = z.object({
+    slug: z.string().min(1),
 })

@@ -1,4 +1,3 @@
-import { useTurnstileToken } from "@/components/turnstile-provider"
 import { STORY_TOPICS, storyTopicIcon, storyTopicLabel } from "@/data/stories"
 import { submitGuide, uploadGuideImage } from "@/domains/guides"
 import { submitGuideDefaults, submitGuideFormSchema } from "@/domains/guides/submit-form"
@@ -37,7 +36,6 @@ function RouteComponent() {
     mutationFn: uploadGuideImage,
     onError: notifyError,
   })
-  const getTurnstileToken = useTurnstileToken()
 
   async function uploadEditorImage(file: File): Promise<string> {
     const formData = new FormData()
@@ -50,13 +48,6 @@ function RouteComponent() {
   const form = useAppForm({
     defaultValues: submitGuideDefaults,
     onSubmit: async ({ value }) => {
-      let turnstileToken: string
-      try {
-        turnstileToken = await getTurnstileToken()
-      } catch (error) {
-        await notifyError(error)
-        return
-      }
       await submitMutation.mutateAsync({
         data: {
           id: draftId,
@@ -66,7 +57,6 @@ function RouteComponent() {
           category: value.category,
           authorVisibility: value.authorVisibility,
           bodyContent: value.bodyContent,
-          turnstileToken,
         },
       })
     },

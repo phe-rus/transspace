@@ -1,6 +1,7 @@
 import { isRichDoc, plainText, type RichDoc } from "@/data/rich-text"
 import { SUPPORT_FIELDS_BY_TYPE, type SupportFieldKind } from "@/data/support-fields"
 import { supportPostTypeLabel, type SupportPostType } from "@/data/support-types"
+import { m } from "@/paraglide/messages"
 import { getLocale } from "@/paraglide/runtime"
 
 export type InboxView = "review" | "checkin"
@@ -57,8 +58,18 @@ export type DetailEntry = {
   doc?: RichDoc
 }
 
-// "remoteOrLocal" -> "Remote or local"
+// looks up a message by its dot path, or undefined when there is none
+function message(key: string): string | undefined {
+  const fn = (m as unknown as Record<string, (() => string) | undefined>)[key]
+  return typeof fn === "function" ? fn() : undefined
+}
+
+// the submit form's translated label, minus its form-only hint in brackets
+// ("Organization (optional, can stay pseudonymous)" -> "Organization"),
+// falling back to the key itself: "remoteOrLocal" -> "Remote or local"
 function detailLabel(key: string): string {
+  const label = message(`pages.submitSupport.fields.${key}`)
+  if (label) return label.replace(/\s*[(（][^()（）]*[)）]\s*$/, "")
   const words = key
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .replace(/[_-]+/g, " ")
@@ -70,20 +81,23 @@ function detailLabel(key: string): string {
 // so a textarea field stays a paragraph and everything else (text, select,
 // number) is a chip unless its value is long. A key the config does not
 // know is judged by length alone
-// targetAmount is stored in minor units next to a separate currency field;
-// read together they are one money value, so show it as such
-function formatMoney(minorUnits: number, currency: string): string | null {
+// targetAmount is a whole number of currency units (the form asks for one,
+// no decimals) next to a separate currency field; read together they are
+// one money value, so show it as such
+export function formatMoney(amount: number, currency: string): string | null {
   try {
     return new Intl.NumberFormat(getLocale(), {
       style: "currency",
       currency,
-    }).format(minorUnits / 100)
+    }).format(amount)
   } catch {
     return null
   }
 }
 
-export function detailEntries(item: InboxItem): DetailEntry[] {
+export function detailEntries(
+  item: Pick<InboxItem, "type" | "structuredDetails">
+): DetailEntry[] {
   const fields: readonly { name: string; kind: SupportFieldKind }[] =
     SUPPORT_FIELDS_BY_TYPE[item.type as SupportPostType] ?? []
   const details = parseDetails(item.structuredDetails)
@@ -102,8 +116,11 @@ export function detailEntries(item: InboxItem): DetailEntry[] {
     .filter(([key]) => !(money && key === "currency"))
     .sort(([a], [b]) => order(a) - order(b))
     .map(([key, value]) => {
-      const text =
+      const raw =
         money && key === "targetAmount" ? money : formatDetailValue(value)
+      // a select value ("remote") reads as its translated option label
+      const text =
+        message(`pages.submitSupport.fields.${key}Options.${raw}`) ?? raw
       const known = fields.find((field) => field.name === key)?.kind
       // a text field holding a sentence or two reads as prose too, so a
       // listening ear (all short text fields on paper) is laid out the same

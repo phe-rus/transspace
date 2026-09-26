@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useRef,
-  useState,
   type ReactNode,
 } from "react"
 
@@ -63,19 +62,17 @@ function loadTurnstileScript(): Promise<void> {
 
 type GetToken = () => Promise<string>
 
+// how long a write waits for Cloudflare's script before giving up
+const READY_TIMEOUT_MS = 15 * 1000
+
 const TurnstileContext = createContext<GetToken | null>(null)
 
-// spec 0002 AC-5: every write endpoint requires a Turnstile challenge.
-// One widget for the whole app (mounted once in __root.tsx), running in
-// Cloudflare's "execute" mode with "interaction-only" appearance: it
-// stays completely invisible and takes no space unless Cloudflare's own
-// risk check decides an interactive challenge is actually needed, and
-// even then only once useTurnstileToken()'s getToken() runs it. Callers
-// ask for a token right before firing their write, instead of each form
-// embedding and babysitting its own persistent widget. Renders nothing,
-// and useTurnstileToken() rejects, when VITE_TURNSTILE_SITE_KEY isn't
-// set; that key still needs a real value in this environment (see spec
-// 0002-identity-data-trust-foundation's Follow up).
+// the invisible Turnstile widget, mounted only on the sign in page: login
+// is the one place in the app that uses Turnstile (the engineer's rule,
+// overriding spec 0002 AC-5). It runs in Cloudflare's "execute" mode with
+// "interaction-only" appearance, so it stays invisible unless Cloudflare's
+// own risk check wants an interactive challenge. Renders nothing, and
+// useTurnstileToken() rejects, when VITE_TURNSTILE_SITE_KEY isn't set
 export function TurnstileProvider({ children }: { children: ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string | undefined>(undefined)
@@ -83,7 +80,14 @@ export function TurnstileProvider({ children }: { children: ReactNode }) {
     resolve: (token: string) => void
     reject: (error: Error) => void
   } | null>(null)
-  const [ready, setReady] = useState(false)
+  // resolves once the widget exists. A write asked for a token before that
+  // (a Join tapped the moment a page opens) waits on it instead of failing
+  const readyRef = useRef<{ promise: Promise<void>; resolve: () => void } | null>(null)
+  if (!readyRef.current) {
+    let resolve!: () => void
+    const promise = new Promise<void>((done) => (resolve = done))
+    readyRef.current = { promise, resolve }
+  }
 
   useEffect(() => {
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as
@@ -97,7 +101,7 @@ export function TurnstileProvider({ children }: { children: ReactNode }) {
     // Instead every run waits on the shared script promise, and only the
     // first .then() that is still live (and finds no widget yet) renders
     if (widgetIdRef.current) {
-      setReady(true)
+      readyRef.current?.resolve()
       return
     }
 
@@ -122,7 +126,7 @@ export function TurnstileProvider({ children }: { children: ReactNode }) {
           pendingRef.current = null
         },
       })
-      setReady(true)
+      readyRef.current?.resolve()
     })
 
     // intentionally no widget teardown here: this provider lives for
@@ -134,10 +138,27 @@ export function TurnstileProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const getToken = useCallback((): Promise<string> => {
+  const getToken = useCallback(async (): Promise<string> => {
+    if (!import.meta.env.VITE_TURNSTILE_SITE_KEY) {
+      throw new Error("Turnstile is not configured")
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined
+    try {
+      await Promise.race([
+        readyRef.current!.promise,
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(
+            () => reject(new Error("Turnstile is not ready yet")),
+            READY_TIMEOUT_MS
+          )
+        }),
+      ])
+    } finally {
+      clearTimeout(timer)
+    }
     return new Promise((resolve, reject) => {
       if (!widgetIdRef.current || !window.turnstile) {
-        reject(new Error("Turnstile is not ready"))
+        reject(new Error("Turnstile is not ready yet"))
         return
       }
       pendingRef.current = { resolve, reject }
@@ -146,17 +167,17 @@ export function TurnstileProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <TurnstileContext.Provider value={ready ? getToken : null}>
+    <TurnstileContext.Provider value={getToken}>
       {children}
       <div ref={containerRef} className="fixed bottom-0 left-0 z-[60]" />
     </TurnstileContext.Provider>
   )
 }
 
-// throws if called outside TurnstileProvider or before the widget is
-// ready; callers already gate their action buttons on being signed in
-// and past the initial page load, so by click time this should always
-// be ready
+// the token getter. Called before the widget has loaded, it waits for it
+// (up to READY_TIMEOUT_MS) rather than failing, so a write tapped right
+// after a page opens still goes through. Rejects only outside the
+// provider, with no site key, or when Cloudflare's script never loads
 export function useTurnstileToken(): GetToken {
   const getToken = useContext(TurnstileContext)
   if (!getToken) {

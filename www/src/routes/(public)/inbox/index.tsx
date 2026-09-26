@@ -8,9 +8,17 @@ import {
   type DayBucket,
   type InboxItem,
 } from "@/components/inbox"
-import { useTurnstileToken } from "@/components/turnstile-provider"
+import {
+  PendingThreadRow,
+  ThreadReviewPane,
+} from "@/components/communities"
 import { countryName } from "@/data/countries"
 import { amIModeratorQueryOptions } from "@/domains/moderators"
+import {
+  listPendingThreadsQueryOptions,
+  publishGuide,
+  rejectGuide,
+} from "@/domains/guides"
 import {
   listStaleSupportPostsQueryOptions,
   listSupportPostsQueryOptions,
@@ -60,8 +68,10 @@ import { useEffect, useState } from "react"
 export const Route = createFileRoute("/(public)/inbox/")({
   validateSearch: (
     search: Record<string, unknown>
-  ): { view?: "checkin"; post?: string } => ({
-    ...(search.view === "checkin" ? { view: "checkin" as const } : {}),
+  ): { view?: "checkin" | "threads"; post?: string } => ({
+    ...(search.view === "checkin" || search.view === "threads"
+      ? { view: search.view }
+      : {}),
     ...(typeof search.post === "string" ? { post: search.post } : {}),
   }),
   component: RouteComponent,
@@ -84,7 +94,6 @@ function RouteComponent() {
   const [reasons, setReasons] = useState<Record<string, string>>({})
   const [query, setQuery] = useState("")
   const { readIds, ready, markRead, markUnread } = useInboxRead()
-  const getTurnstileToken = useTurnstileToken()
   const queryClient = useQueryClient()
 
   const pendingQuery = useQuery(
@@ -94,6 +103,8 @@ function RouteComponent() {
     })
   )
   const staleQuery = useQuery(listStaleSupportPostsQueryOptions())
+  // pending community threads (spec 0010 AC-5), reviewed like a story
+  const threadsQuery = useQuery(listPendingThreadsQueryOptions())
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: ["support-posts"] })
@@ -125,6 +136,22 @@ function RouteComponent() {
     },
     onError: notifyError,
   })
+  const threadOutcome = (toast: string) => () => {
+    notifySuccess(toast)
+    queryClient.invalidateQueries({ queryKey: ["threads"] })
+    queryClient.invalidateQueries({ queryKey: ["communities"] })
+    closeThread()
+  }
+  const approveThreadMutation = useMutation({
+    mutationFn: publishGuide,
+    onSuccess: threadOutcome(m["pages.supportModeration.threadApprovedToast"]()),
+    onError: notifyError,
+  })
+  const rejectThreadMutation = useMutation({
+    mutationFn: rejectGuide,
+    onSuccess: threadOutcome(m["pages.supportModeration.threadRejectedToast"]()),
+    onError: notifyError,
+  })
   const pauseMutation = useMutation({
     mutationFn: pauseSupportPost,
     onSuccess: () => {
@@ -134,15 +161,6 @@ function RouteComponent() {
     },
     onError: notifyError,
   })
-
-  async function withToken(run: (turnstileToken: string) => void) {
-    try {
-      const turnstileToken = await getTurnstileToken()
-      run(turnstileToken)
-    } catch (error) {
-      await notifyError(error)
-    }
-  }
 
   const pendingRaw = (pendingQuery.data?.items ?? []) as unknown as InboxItem[]
   // "general" scope is a client-side narrowing of the same page (the
@@ -155,8 +173,19 @@ function RouteComponent() {
       : pendingRaw
   const staleItems = (staleQuery.data ?? []) as unknown as InboxItem[]
 
+  const pendingThreads = threadsQuery.data ?? []
+  const needle = query.trim().toLowerCase()
+  const visibleThreads = pendingThreads.filter((thread) =>
+    `${thread.title} ${thread.excerpt}`.toLowerCase().includes(needle)
+  )
+  const selectedThread =
+    view === "threads"
+      ? (visibleThreads.find((thread) => thread.id === postId) ?? null)
+      : null
+
   const listQuery = view === "checkin" ? staleQuery : pendingQuery
-  const items = view === "checkin" ? staleItems : pendingItems
+  const items =
+    view === "threads" ? [] : view === "checkin" ? staleItems : pendingItems
   // nothing is selected until the moderator picks a message, the same way a
   // messaging app opens on its list
   const visible = items.filter((item) => matchesQuery(item, query))
@@ -186,7 +215,10 @@ function RouteComponent() {
   const busy =
     publishMutation.isPending ||
     rejectMutation.isPending ||
-    pauseMutation.isPending
+    pauseMutation.isPending ||
+    approveThreadMutation.isPending ||
+    rejectThreadMutation.isPending
+  const hasSelection = Boolean(selected ?? selectedThread)
 
   return (
     // the inbox is app chrome (a messaging shell), not read content, so the
@@ -199,7 +231,7 @@ function RouteComponent() {
       <aside
         className={cn(
           "flex min-h-0 flex-col md:border-r md:border-border/35 md:pr-3",
-          selected && "hidden md:flex"
+          hasSelection && "hidden md:flex"
         )}
       >
         <div className="flex flex-col gap-3 pt-4 pb-2">
@@ -253,7 +285,10 @@ function RouteComponent() {
               navigate({
                 search: (prev) => ({
                   ...prev,
-                  view: value === "checkin" ? "checkin" : undefined,
+                  view:
+                    value === "checkin" || value === "threads"
+                      ? value
+                      : undefined,
                   post: undefined,
                 }),
               })
@@ -282,6 +317,17 @@ function RouteComponent() {
                   </Badge>
                 )}
               </TabsTrigger>
+              <TabsTrigger value="threads" className="gap-2 px-0">
+                {m["pages.supportModeration.threadsTab"]()}
+                {threadsQuery.isSuccess && (
+                  <Badge
+                    variant={view === "threads" ? "default" : "secondary"}
+                    className="tabular-nums"
+                  >
+                    {pendingThreads.length}
+                  </Badge>
+                )}
+              </TabsTrigger>
             </TabsList>
           </Tabs>
 
@@ -300,7 +346,33 @@ function RouteComponent() {
         </div>
 
         <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto pb-4">
-          {listQuery.isSuccess && visible.length === 0 ? (
+          {view === "threads" ? (
+            threadsQuery.isSuccess && visibleThreads.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <HugeiconsIcon icon={MessageIcon} />
+                  </EmptyMedia>
+                  <EmptyTitle>
+                    {pendingThreads.length === 0
+                      ? m["pages.supportModeration.threadsEmpty"]()
+                      : m["pages.supportModeration.noResults"]()}
+                  </EmptyTitle>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <ul className="flex flex-col gap-0.5">
+                {visibleThreads.map((thread) => (
+                  <li key={thread.id}>
+                    <PendingThreadRow
+                      thread={thread}
+                      selected={thread.id === selectedThread?.id}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )
+          ) : listQuery.isSuccess && visible.length === 0 ? (
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
@@ -358,12 +430,28 @@ function RouteComponent() {
         </div>
       </aside>
 
-      <main className={cn("flex min-h-0 flex-col", !selected && "hidden md:flex")}>
-        {selected ? (
+      <main className={cn("flex min-h-0 flex-col", !hasSelection && "hidden md:flex")}>
+        {selectedThread ? (
+          <ThreadReviewPane
+            key={selectedThread.id}
+            thread={selectedThread}
+            busy={busy}
+            onApprove={() =>
+              approveThreadMutation.mutate({
+                data: { id: selectedThread.id },
+              })
+            }
+            onReject={() =>
+              rejectThreadMutation.mutate({
+                data: { id: selectedThread.id },
+              })
+            }
+          />
+        ) : selected ? (
           <InboxThread
             key={selected.id}
             item={selected}
-            view={view}
+            view={view === "checkin" ? "checkin" : "review"}
             position={selectedIndex + 1}
             total={visible.length}
             onNavigate={(step) => {
@@ -380,25 +468,19 @@ function RouteComponent() {
             }
             busy={busy}
             onPublish={() =>
-              withToken((turnstileToken) =>
-                publishMutation.mutate({
-                  data: { id: selected.id, turnstileToken },
-                })
-              )
+              publishMutation.mutate({
+                data: { id: selected.id },
+              })
             }
             onReject={() =>
-              withToken((turnstileToken) =>
-                rejectMutation.mutate({
-                  data: { id: selected.id, reason, turnstileToken },
-                })
-              )
+              rejectMutation.mutate({
+                data: { id: selected.id, reason },
+              })
             }
             onPause={() =>
-              withToken((turnstileToken) =>
-                pauseMutation.mutate({
-                  data: { id: selected.id, reason, turnstileToken },
-                })
-              )
+              pauseMutation.mutate({
+                data: { id: selected.id, reason },
+              })
             }
           />
         ) : (

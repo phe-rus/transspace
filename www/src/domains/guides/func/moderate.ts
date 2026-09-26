@@ -6,7 +6,6 @@ import { ModeratorMiddleware } from "@/middleware/require-moderator"
 import { assertNotDecoy } from "@/lib/private-data"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { publishGuideSchema, rejectGuideSchema } from "../types"
 
 export const publishGuide = createServerFn({ method: "POST" })
@@ -16,10 +15,9 @@ export const publishGuide = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [row] = await db
-            .select({ status: guide.status })
+            .select({ status: guide.status, kind: guide.kind })
             .from(guide)
             .where(eq(guide.id, data.id))
         if (!row) {
@@ -29,9 +27,16 @@ export const publishGuide = createServerFn({ method: "POST" })
             throw new Response("Not pending", { status: 422 })
         }
 
+        const now = new Date()
         await db
             .update(guide)
-            .set({ status: "published", updatedAt: new Date() })
+            .set({
+                status: "published",
+                updatedAt: now,
+                // a community thread's activity starts at its approval
+                // (spec 0010 Value sourcing)
+                ...(row.kind === "thread" ? { lastActivityAt: now } : {}),
+            })
             .where(eq(guide.id, data.id))
 
         await logModerationAction({
@@ -50,7 +55,6 @@ export const rejectGuide = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [row] = await db
             .select({ status: guide.status })

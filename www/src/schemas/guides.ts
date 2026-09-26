@@ -46,6 +46,13 @@ export const guide = sqliteTable(
         // profile or anonymous, required for a story: anonymous never
         // returns a writer name from any read (spec 0007 AC-4)
         authorVisibility: text("authorVisibility"),
+        // a community thread's type (spec 0010): required when kind is
+        // thread, always null for a guide or a story. Validated against
+        // THREAD_TYPES at the domain layer
+        threadType: text("threadType"),
+        // a community thread's last activity (spec 0010 AC-3, AC-8): set
+        // when it publishes, moved by every new reply. Null until then
+        lastActivityAt: integer("lastActivityAt", { mode: "timestamp_ms" }),
         // the @pherus/rich-text editor's structured Tiptap content;
         // never raw HTML (spec 0004 data model). Validated at
         // submission (image src allowlist, 256 KB cap, spec 0004 AC-9)
@@ -102,6 +109,13 @@ export const guide = sqliteTable(
             table.id
         ),
         index("guide_status_idx").on(table.status),
+        // a community's thread list, newest activity first (spec 0010)
+        index("guide_thread_idx").on(
+            table.kind,
+            table.category,
+            table.status,
+            table.lastActivityAt
+        ),
         // supports listing a series in order (spec 0004 AC-10)
         index("guide_seriesId_seriesOrder_idx").on(
             table.seriesId,

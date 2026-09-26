@@ -24,9 +24,16 @@ export type CurrentSession = {
 // Returns null for no session at all, never throws: callers decide what
 // an absent session means for them.
 export async function getCurrentSession(): Promise<CurrentSession | null> {
-    const result = await auth.api.getSession({
-        headers: getRequestHeaders(),
-    })
+    return sessionFromHeaders(getRequestHeaders())
+}
+
+// the same read for a request that never reaches TanStack Start's handler,
+// such as a community room's WebSocket upgrade (spec 0010), which the
+// worker entry answers itself
+export async function sessionFromHeaders(
+    headers: Headers
+): Promise<CurrentSession | null> {
+    const result = await auth.api.getSession({ headers })
     if (!result) return null
     const raw = result.session as {
         id: string

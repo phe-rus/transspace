@@ -8,7 +8,6 @@ import { SessionMiddleware } from "@/middleware/require-session"
 import { ModeratorMiddleware } from "@/middleware/require-moderator"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { assertWriteRateLimit, assertReadRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import {
     assertValidContentType,
     CO_SIGN_ACCOUNT_AGE_MS,
@@ -143,7 +142,6 @@ export const coSignTrustSignal = createServerFn({ method: "POST" })
     .handler(async ({ data, context: { userLinkId } }) => {
         assertValidContentType(data.contentType)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [signal] = await db
             .select({
@@ -229,7 +227,6 @@ export const verifyTrustSignal = createServerFn({ method: "POST" })
     .handler(async ({ data, context: { userLinkId } }) => {
         assertValidContentType(data.contentType)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [signal] = await db
             .select({ id: trustSignal.id })
@@ -271,7 +268,6 @@ export const disputeTrustSignal = createServerFn({ method: "POST" })
     .handler(async ({ data, context: { userLinkId } }) => {
         assertValidContentType(data.contentType)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const [signal] = await db
             .select({ id: trustSignal.id })

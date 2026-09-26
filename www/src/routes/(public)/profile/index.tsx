@@ -1,9 +1,11 @@
 import { ProfileActivityRow } from "@/components/profile/activity-row"
 import { ProfileSettingRow } from "@/components/profile/setting-row"
+import { communityLabel } from "@/data/communities"
 import { mySubmissions, savedResources } from "@/data/profile-activity"
 import { profileQueryOptions } from "@/domains/profile"
 import { amIModeratorQueryOptions } from "@/domains/moderators"
 import { amIAdminQueryOptions } from "@/domains/admins"
+import { listCommunitiesQueryOptions } from "@/domains/guides"
 import { m } from "@/paraglide/messages"
 import {
   Edit02Icon,
@@ -18,7 +20,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
-import { createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
 export const Route = createFileRoute("/(public)/profile/")({
@@ -38,6 +40,8 @@ function RouteComponent() {
   const { data: profile } = useSuspenseQuery(profileQueryOptions())
   const { data: moderatorStatus } = useQuery(amIModeratorQueryOptions())
   const { data: adminStatus } = useQuery(amIAdminQueryOptions())
+  const { data: communities } = useQuery(listCommunitiesQueryOptions())
+  const joinedCommunities = (communities ?? []).filter((community) => community.joined)
   const [signingOut, setSigningOut] = useState(false)
 
   async function handleLogOut() {
@@ -99,7 +103,35 @@ function RouteComponent() {
           <ProfileSettingRow icon={Settings01Icon} title={m["pages.profile.accountSettingsTitle"]()} subtitle={m["pages.profile.accountSettingsSubtitle"]()} to="/profile/account-settings" />
           <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} to="/profile/security" />
           <ProfileSettingRow icon={HelpCircleIcon} title={m["pages.profile.helpAndSupportTitle"]()} subtitle={m["pages.profile.helpAndSupportSubtitle"]()} to="/profile/help-and-support" />
-          <ProfileSettingRow icon={UserMultiple02Icon} title={m["pages.profile.communitiesTitle"]()} subtitle={m["pages.profile.communitiesSubtitle"]()} />
+          {/* spec 0010 AC-10: opens the communities list, and names each
+              joined community with a link straight to it */}
+          <div className="flex flex-col">
+            <ProfileSettingRow
+              icon={UserMultiple02Icon}
+              title={m["pages.profile.communitiesTitle"]()}
+              subtitle={
+                joinedCommunities.length
+                  ? m["pages.profile.communitiesSubtitle"]()
+                  : m["pages.profile.communitiesNone"]()
+              }
+              to="/communities"
+            />
+            {joinedCommunities.length > 0 && (
+              <ul className="flex list-none flex-wrap gap-1.5 pb-4 ps-12 *:ps-0">
+                {joinedCommunities.map((community) => (
+                  <li key={community.slug}>
+                    <Link
+                      to="/communities/$slug"
+                      params={{ slug: community.slug }}
+                      className="block rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-muted-foreground hover:text-foreground"
+                    >
+                      {communityLabel(community.slug)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           {moderatorStatus?.isModerator && (
             <ProfileSettingRow
               icon={Shield01Icon}

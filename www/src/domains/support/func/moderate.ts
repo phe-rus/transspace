@@ -9,7 +9,6 @@ import {
 import { ModeratorMiddleware } from "@/middleware/require-moderator"
 import { assertNotDecoy } from "@/lib/private-data"
 import { assertWriteRateLimit } from "@/lib/rate-limit"
-import { assertTurnstileVerified } from "@/lib/turnstile"
 import { logModerationAction } from "@/lib/moderation-audit"
 import { createTrustSignal } from "@/domains/trust-signals"
 import { isMoreRestrictive } from "@/data/support-types"
@@ -50,7 +49,6 @@ export const publishSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadPostOrThrow(data.id)
         await assertSelfReviewAllowed(userLinkId, row.authorUserLinkId)
@@ -98,7 +96,6 @@ export const rejectSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadPostOrThrow(data.id)
         await assertSelfReviewAllowed(userLinkId, row.authorUserLinkId)
@@ -146,7 +143,6 @@ export const pauseSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadPostOrThrow(data.id)
         await assertSelfReviewAllowed(userLinkId, row.authorUserLinkId)
@@ -187,7 +183,6 @@ export const reactivateSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadPostOrThrow(data.id)
         // spec 0005 AC-9: any moderator, not necessarily the one who
@@ -229,7 +224,6 @@ export const escalateTierSupportPost = createServerFn({ method: "POST" })
         const { userLinkId } = context
         assertNotDecoy(context)
         await assertWriteRateLimit(userLinkId)
-        await assertTurnstileVerified(data.turnstileToken)
 
         const row = await loadPostOrThrow(data.id)
         await assertSelfReviewAllowed(userLinkId, row.authorUserLinkId)
