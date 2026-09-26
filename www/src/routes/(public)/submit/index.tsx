@@ -1,4 +1,4 @@
-import { TurnstileWidget } from "@/components/turnstile-widget"
+import { useTurnstileToken } from "@/components/turnstile-provider"
 import {
   RESOURCE_CATEGORIES,
   RESOURCE_SUBCATEGORIES_BY_CATEGORY,
@@ -9,6 +9,7 @@ import {
 import { submitResource } from "@/domains/resources"
 import { submitFormDefaults, submitFormSchema } from "@/domains/resources/submit-form"
 import { authGateQueryOptions } from "@/lib/auth-gate"
+import { notifyError } from "@/lib/toast"
 import { m } from "@/paraglide/messages"
 import { Shield01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -29,11 +30,22 @@ export const Route = createFileRoute("/(public)/submit/")({
 
 function RouteComponent() {
   const { data: authGate } = useSuspenseQuery(authGateQueryOptions())
-  const mutation = useMutation({ mutationFn: submitResource })
+  const mutation = useMutation({
+    mutationFn: submitResource,
+    onError: notifyError,
+  })
+  const getTurnstileToken = useTurnstileToken()
 
   const form = useAppForm({
     defaultValues: submitFormDefaults,
     onSubmit: async ({ value }) => {
+      let turnstileToken: string
+      try {
+        turnstileToken = await getTurnstileToken()
+      } catch (error) {
+        await notifyError(error)
+        return
+      }
       await mutation.mutateAsync({
         data: {
           name: value.name,
@@ -46,7 +58,7 @@ function RouteComponent() {
           contact: value.contact || undefined,
           internationalAccess: value.internationalAccess,
           isFree: value.isFree,
-          turnstileToken: value.turnstileToken,
+          turnstileToken,
         },
       })
     },
@@ -240,16 +252,6 @@ function RouteComponent() {
           </p>
         </div>
 
-        <form.Field name="turnstileToken">
-          {(field) => (
-            <TurnstileWidget onToken={(token) => field.handleChange(token ?? "")} />
-          )}
-        </form.Field>
-
-        {mutation.isError && (
-          <p className="text-sm text-destructive">{m["pages.submit.submitError"]()}</p>
-        )}
-
         <form.Subscribe
           selector={(state) => [state.values, state.isSubmitting] as const}
         >
@@ -259,8 +261,7 @@ function RouteComponent() {
               values.category.length > 0 &&
               values.countryName.trim().length > 0 &&
               values.city.trim().length > 0 &&
-              values.description.trim().length > 0 &&
-              Boolean(values.turnstileToken)
+              values.description.trim().length > 0
             return (
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
                 <Button
@@ -272,7 +273,6 @@ function RouteComponent() {
                     ? m["pages.submit.submitting"]()
                     : m["pages.submit.submit"]()}
                 </Button>
-                {!values.turnstileToken && <p>{m["pages.submit.verificationPending"]()}</p>}
               </div>
             )
           }}

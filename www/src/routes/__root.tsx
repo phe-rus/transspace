@@ -1,5 +1,6 @@
 import { LanguageSelect } from "@/components/languages"
 import { NotFoundComponent } from "@/components/notFoundComponent"
+import { TurnstileProvider } from "@/components/turnstile-provider"
 import { getclientURL } from "@/lib/getURL"
 import { currentOptions } from "@/middleware/auth-session"
 import { getLocale } from "@/paraglide/runtime"
@@ -62,9 +63,11 @@ function RootDocument() {
           enableColorScheme
           enableSystem
         >
-          <Outlet />
-          <LanguageSelect />
-          <GooeyToaster />
+          <TurnstileProvider>
+            <Outlet />
+            <LanguageSelect />
+            <GooeyToaster />
+          </TurnstileProvider>
         </ThemeProvider>
         <Scripts />
         <TanStackDevtools

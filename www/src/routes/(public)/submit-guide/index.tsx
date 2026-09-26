@@ -1,4 +1,4 @@
-import { TurnstileWidget } from "@/components/turnstile-widget"
+import { useTurnstileToken } from "@/components/turnstile-provider"
 import {
   GUIDE_CATEGORIES,
   guideCategoryIcon,
@@ -7,6 +7,7 @@ import {
 import { listGuideSeriesQueryOptions, submitGuide, uploadGuideImage } from "@/domains/guides"
 import { submitGuideDefaults, submitGuideFormSchema } from "@/domains/guides/submit-form"
 import { authGateQueryOptions } from "@/lib/auth-gate"
+import { notifyError } from "@/lib/toast"
 import { toEmbedUrl } from "@/lib/video-embed"
 import { m } from "@/paraglide/messages"
 import { Add01Icon, Image02Icon, Shield01Icon } from "@hugeicons/core-free-icons"
@@ -50,9 +51,19 @@ function RouteComponent() {
   const { data: seriesResult } = useQuery(listGuideSeriesQueryOptions(seriesQuery || undefined))
   const seriesTitles = seriesResult?.items.map((item: { title: any }) => item.title) ?? []
 
-  const submitMutation = useMutation({ mutationFn: submitGuide })
-  const editorUploadMutation = useMutation({ mutationFn: uploadGuideImage })
-  const coverUploadMutation = useMutation({ mutationFn: uploadGuideImage })
+  const submitMutation = useMutation({
+    mutationFn: submitGuide,
+    onError: notifyError,
+  })
+  const editorUploadMutation = useMutation({
+    mutationFn: uploadGuideImage,
+    onError: notifyError,
+  })
+  const coverUploadMutation = useMutation({
+    mutationFn: uploadGuideImage,
+    onError: notifyError,
+  })
+  const getTurnstileToken = useTurnstileToken()
 
   async function uploadEditorImage(file: File): Promise<string> {
     const formData = new FormData()
@@ -65,6 +76,13 @@ function RouteComponent() {
   const form = useAppForm({
     defaultValues: submitGuideDefaults,
     onSubmit: async ({ value }) => {
+      let turnstileToken: string
+      try {
+        turnstileToken = await getTurnstileToken()
+      } catch (error) {
+        await notifyError(error)
+        return
+      }
       await submitMutation.mutateAsync({
         data: {
           id: draftGuideId,
@@ -76,7 +94,7 @@ function RouteComponent() {
           seriesOrder: value.seriesOrder,
           coverImageUrl: value.coverImageUrl || undefined,
           videoUrl: value.videoUrl || undefined,
-          turnstileToken: value.turnstileToken,
+          turnstileToken,
         },
       })
     },
@@ -343,16 +361,6 @@ function RouteComponent() {
           </p>
         </div>
 
-        <form.Field name="turnstileToken">
-          {(field) => (
-            <TurnstileWidget onToken={(token) => field.handleChange(token ?? "")} />
-          )}
-        </form.Field>
-
-        {submitMutation.isError && (
-          <p className="text-sm text-destructive">{m["pages.submitGuide.submitError"]()}</p>
-        )}
-
         <form.Subscribe
           selector={(state) => [state.values, state.isSubmitting] as const}
         >
@@ -361,8 +369,7 @@ function RouteComponent() {
               values.title.trim().length > 0 &&
               values.excerpt.trim().length > 0 &&
               values.category.length > 0 &&
-              Boolean(values.bodyContent) &&
-              Boolean(values.turnstileToken)
+              Boolean(values.bodyContent)
             return (
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
                 <Button
@@ -374,7 +381,6 @@ function RouteComponent() {
                     ? m["pages.submitGuide.submitting"]()
                     : m["pages.submitGuide.submit"]()}
                 </Button>
-                {!values.turnstileToken && <p>{m["pages.submitGuide.verificationPending"]()}</p>}
               </div>
             )
           }}

@@ -2,18 +2,22 @@ import { ProfileActivityRow } from "@/components/profile/activity-row"
 import { ProfileSettingRow } from "@/components/profile/setting-row"
 import { mySubmissions, savedResources } from "@/data/profile-activity"
 import { profileQueryOptions } from "@/domains/profile"
+import { amIModeratorQueryOptions } from "@/domains/moderators"
+import { amIAdminQueryOptions } from "@/domains/admins"
 import { m } from "@/paraglide/messages"
 import {
   Edit02Icon,
   HelpCircleIcon,
   Logout05Icon,
   Settings01Icon,
+  Shield01Icon,
   SquareLock02Icon,
+  UserGroup02Icon,
   UserMultiple02Icon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button } from "@pherus/ui/button"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
@@ -32,6 +36,8 @@ export const Route = createFileRoute("/(public)/profile/")({
 
 function RouteComponent() {
   const { data: profile } = useSuspenseQuery(profileQueryOptions())
+  const { data: moderatorStatus } = useQuery(amIModeratorQueryOptions())
+  const { data: adminStatus } = useQuery(amIAdminQueryOptions())
   const [signingOut, setSigningOut] = useState(false)
 
   async function handleLogOut() {
@@ -94,6 +100,22 @@ function RouteComponent() {
           <ProfileSettingRow icon={SquareLock02Icon} title={m["pages.profile.dataAndPrivacyTitle"]()} subtitle={m["pages.profile.dataAndPrivacySubtitle"]()} to="/profile/security" />
           <ProfileSettingRow icon={HelpCircleIcon} title={m["pages.profile.helpAndSupportTitle"]()} subtitle={m["pages.profile.helpAndSupportSubtitle"]()} to="/profile/help-and-support" />
           <ProfileSettingRow icon={UserMultiple02Icon} title={m["pages.profile.communitiesTitle"]()} subtitle={m["pages.profile.communitiesSubtitle"]()} />
+          {moderatorStatus?.isModerator && (
+            <ProfileSettingRow
+              icon={Shield01Icon}
+              title={m["pages.profile.moderateTitle"]()}
+              subtitle={m["pages.profile.moderateSubtitle"]()}
+              to="/inbox"
+            />
+          )}
+          {adminStatus?.isAdmin && (
+            <ProfileSettingRow
+              icon={UserGroup02Icon}
+              title={m["pages.profile.adminTitle"]()}
+              subtitle={m["pages.profile.adminSubtitle"]()}
+              to="/admin"
+            />
+          )}
         </div>
 
         <div className="flex w-full flex-col gap-1">

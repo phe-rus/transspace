@@ -29,6 +29,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 15 | Opportunities | Slice 6 | planned |
 | 16 | Businesses & creators | Slice 7 | planned |
 | 17 | Unified global search | Slice 8 | planned |
+| 18 | Mutual aid requests and offers | Slice 9 | in-progress |
 
 ## Foundations
 
@@ -193,10 +194,29 @@ One search that spans resources, guides, stories, opportunities, and businesses 
 **Done when:** a search from the homepage or header returns relevant results across content types, with a helpful empty state when nothing matches.
 - [ ] Design it (spec): `/architect unified global search`
 
+## Slice 9: Mutual aid
+
+### 18. Mutual aid requests and offers · GA
+A moderated board where people can ask for help (money, a job, transport, information, a listening ear) or offer it, with a visibility model built for a global community where being seen can be dangerous in some countries. Financial asks and professional (medical/legal/advisory) offers get extra scrutiny so the board stays trustworthy without needing new money or live audio infrastructure. Replaces the existing hardcoded "support" page mockup.
+**Done when:** a signed-in person can post a request or offer at a visibility level they choose, a moderator can review it (including financial and professional checks) before it goes live, helpers can express interest and one can be assigned, and the requester can close it once helped.
+- [x] Design it (spec): [0005](../specs/0005-mutual-aid-requests-offers/index.md)
+- [ ] Build it: `/develop mutual aid requests and offers`
+  - [x] Data model, domain validation, and the core submit → moderate → publish loop for the simplest post types, satisfies AC-1, AC-2, AC-3, AC-4, AC-15 to AC-19
+  - [x] Author lifecycle (edit, withdraw, fulfill) and the remaining structured post types (financial, job, travel, professional, listening), satisfies AC-1, AC-5, AC-8, AC-12; endpoints and remaining types are done, a dedicated "edit my post" UI is still missing (spec Follow-up)
+  - [ ] Trust and verification: financial cosign escalation, self-reported progress tracking, professional credential verification, satisfies AC-6, AC-11, AC-13; financial escalation and progress tracking are done, professional verification has no moderator-facing UI yet
+  - [ ] Claim/assignment workflow and the pause/reactivate flow, satisfies AC-9, AC-10; claim/assignment is done, pause has UI, reactivate does not yet
+  - [ ] Stale-post surfacing and full i18n coverage across the new UI; stale surfacing is done, i18n covers all four shipped locales (en/de/fr/zh, hand-translated since the machine-translate service was down), so this is effectively done too but left unticked pending the missing verify/reactivate UI in the same milestone group
+- [ ] Verify it: `/check verify mutual aid requests and offers`
+- [ ] Test it: `/test mutual aid requests and offers`
+- [ ] Review it (fresh model): `/check review mutual aid requests and offers`
+- [ ] Document it: `/document mutual aid requests and offers`
+spec [0005](../specs/0005-mutual-aid-requests-offers/index.md) · code in `www/src/schemas/support.ts`, `www/src/data/support-types.ts`, `www/src/data/support-fields.ts`, `www/src/data/restricted-countries.ts`, `www/src/domains/support/`, `www/src/domains/moderators/func.ts`, `www/src/routes/api/support/`, `www/src/routes/(public)/support/`, `www/src/routes/(public)/submit-support/`, `www/src/routes/(protection)/dashboard/support/`, `www/src/components/support/`
+
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
-- **Community support & mutual aid**: crowdfunding/donation campaigns, the raised/target progress cards already sketched on the landing page · needs a decision · GA
-- **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects · needs a decision · GA
+- **Wallets & payments**: non-custodial wallet integration (each account connects its own wallet; transspace never holds funds) so requests and offers in feature 18 can move real money beyond its self-reported progress tracking · needs a decision · GA
+- **Platform trust & impact reporting**: aggregate totals, donor/helper leaderboards, ratings and reviews across the platform, sequenced after feature 18 has real usage data to report on · needs a decision
+- **Q2Q realtime peer sessions**: pseudonymous chat/voice/video sessions matching people to relevant community knowledge or verified professionals, built on Cloudflare Realtime + Durable Objects; also covers turning feature 18's text-only listening-ear offer into a live session · needs a decision · GA
 
 ## Legend
 

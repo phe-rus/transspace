@@ -2,6 +2,7 @@ import { getRequestHeaders } from "@tanstack/react-start/server"
 import { eq } from "drizzle-orm"
 import { db } from "@/db"
 import { session as sessionTable } from "@/schemas/auth"
+import { userLink } from "@/schemas/user-link"
 import { auth } from "@/lib/auth"
 
 // 10 minutes of inactivity (spec 0001 State transitions, Follow up: a
@@ -33,6 +34,17 @@ export async function getCurrentSession(): Promise<CurrentSession | null> {
         isDecoy?: boolean
         unlockedUntil?: Date | string | null
     }
+    // a banned account is treated as fully signed out here, the one
+    // seam every session-gated read/write already goes through, rather
+    // than a per-endpoint check that could be missed (engineer's
+    // explicit call, 2026-09-25: a ban blocks everything immediately,
+    // even with an existing valid session cookie)
+    const [link] = await db
+        .select({ bannedAt: userLink.bannedAt })
+        .from(userLink)
+        .where(eq(userLink.id, raw.userId))
+    if (link?.bannedAt) return null
+
     const unlockedUntil = raw.unlockedUntil
         ? new Date(raw.unlockedUntil)
         : null

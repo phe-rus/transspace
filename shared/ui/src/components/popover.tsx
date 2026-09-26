@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 import { cn } from "cn"
 
@@ -9,48 +10,12 @@ function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
 }
 
-function PopoverPortal({ ...props }: PopoverPrimitive.Portal.Props) {
-  return <PopoverPrimitive.Portal data-slot="popover-portal" {...props} />
-}
-
-function PopoverPositioner({
-  sideOffset = 8,
-  ...props
-}: PopoverPrimitive.Positioner.Props) {
-  return (
-    <PopoverPrimitive.Positioner
-      data-slot="popover-positioner"
-      sideOffset={sideOffset}
-      {...props}
-    />
-  )
-}
-
-function PopoverPopup({ className, ...props }: PopoverPrimitive.Popup.Props) {
-  return (
-    <PopoverPrimitive.Popup
-      data-slot="popover-popup"
-      className={cn(
-        "relative flex w-(--popup-width,auto) origin-(--transform-origin) flex-col gap-2 rounded-3xl border border-border bg-popover p-3 text-popover-foreground shadow-md outline-none",
-        "transition-[scale,opacity] duration-150 ease-out",
-        "data-starting-style:scale-[0.98] data-starting-style:opacity-0 data-ending-style:scale-[0.98] data-ending-style:opacity-0",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-// bundles Portal+Positioner+Popup, matching SelectContent/ComboboxContent's
-// convenience pattern, for a caller that just wants a positioned card and
-// doesn't need the parts split apart
 function PopoverContent({
   className,
-  children,
-  side = "bottom",
-  sideOffset = 8,
   align = "center",
   alignOffset = 0,
+  side = "bottom",
+  sideOffset = 4,
   ...props
 }: PopoverPrimitive.Popup.Props &
   Pick<
@@ -58,33 +23,32 @@ function PopoverContent({
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
   return (
-    <PopoverPrimitive.Portal data-slot="popover-portal">
+    <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
-        data-slot="popover-positioner"
-        side={side}
-        sideOffset={sideOffset}
         align={align}
         alignOffset={alignOffset}
+        side={side}
+        sideOffset={sideOffset}
         className="isolate z-50"
       >
-        <PopoverPopup className={className} {...props}>
-          {children}
-        </PopoverPopup>
+        <PopoverPrimitive.Popup
+          data-slot="popover-content"
+          className={cn(
+            "z-50 flex w-72 origin-(--transform-origin) flex-col gap-4 rounded-lg bg-popover p-2.5 text-xs text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            className
+          )}
+          {...props}
+        />
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
   )
 }
 
-function PopoverArrow({ className, ...props }: PopoverPrimitive.Arrow.Props) {
+function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <PopoverPrimitive.Arrow
-      data-slot="popover-arrow"
-      className={cn(
-        "data-[side=bottom]:-top-1.5 data-[side=top]:-bottom-1.5",
-        "data-[side=left]:-right-1.5 data-[side=right]:-left-1.5",
-        "size-3 rotate-45 rounded-[2px] border border-border bg-popover",
-        className
-      )}
+    <div
+      data-slot="popover-header"
+      className={cn("flex flex-col gap-1 text-xs", className)}
       {...props}
     />
   )
@@ -94,7 +58,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
       data-slot="popover-title"
-      className={cn("text-sm font-semibold", className)}
+      className={cn("text-sm font-medium", className)}
       {...props}
     />
   )
@@ -107,25 +71,17 @@ function PopoverDescription({
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-muted-foreground", className)}
       {...props}
     />
   )
 }
 
-function PopoverClose({ ...props }: PopoverPrimitive.Close.Props) {
-  return <PopoverPrimitive.Close data-slot="popover-close" {...props} />
-}
-
 export {
   Popover,
-  PopoverTrigger,
-  PopoverPortal,
-  PopoverPositioner,
-  PopoverPopup,
   PopoverContent,
-  PopoverArrow,
-  PopoverTitle,
   PopoverDescription,
-  PopoverClose,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
 }

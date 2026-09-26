@@ -1,6 +1,7 @@
-import { m } from "@/paraglide/messages"
+import { amIModeratorQueryOptions } from "@/domains/moderators"
+import { countPendingSupportPostsQueryOptions } from "@/domains/support"
 import { authGateQueryOptions } from "@/lib/auth-gate"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { m } from "@/paraglide/messages"
 import { ArrowDown01Icon, Menu03Icon, MessageIcon, Rocket01Icon, Shield01Icon, Stethoscope02Icon, UserGroup02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@pherus/ui/avatar"
@@ -18,6 +19,7 @@ import {
 } from "@pherus/ui/drawer"
 import { fadeDown, staggerChildren as stagger } from "@pherus/ui/lib/motion"
 import { cn } from "@pherus/ui/lib/utils"
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-router"
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -29,6 +31,16 @@ export const Headers = () => {
     // this is a cache hit, not a second fetch
     const { data: authStatus } = useSuspenseQuery(authGateQueryOptions())
     const signedIn = authStatus.signedIn
+    const { data: moderatorStatus } = useQuery({
+        ...amIModeratorQueryOptions(),
+        enabled: signedIn,
+    })
+    const isModerator = Boolean(moderatorStatus?.isModerator)
+    const { data: pendingCount } = useQuery({
+        ...countPendingSupportPostsQueryOptions(),
+        enabled: isModerator,
+        refetchInterval: 60_000,
+    })
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const [resourcesOpen, setResourcesOpen] = useState(false)
     const [navHeight, setNavHeight] = useState(40)
@@ -120,6 +132,29 @@ export const Headers = () => {
         show: { transition: { staggerChildren: reduceMotion ? 0 : 0.05 } },
     }), [reduceMotion])
 
+    const inboxUnread = pendingCount?.count ?? 0
+    const inboxLink = isModerator ? (
+        <Link
+            to="/inbox"
+            className={cn(
+                buttonVariants({ size: "icon", variant: "secondary" }),
+                "relative rounded-full",
+            )}
+            aria-label={
+                inboxUnread > 0
+                    ? `${m["navigation.aria.inbox"]()} (${inboxUnread})`
+                    : m["navigation.aria.inbox"]()
+            }
+        >
+            <HugeiconsIcon icon={MessageIcon} />
+            {inboxUnread > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-destructive px-1 text-[11px]/none font-semibold text-destructive-foreground tabular-nums">
+                    {inboxUnread > 99 ? "99+" : inboxUnread}
+                </span>
+            )}
+        </Link>
+    ) : null
+
     return (
         <motion.header
             ref={headerRef}
@@ -199,14 +234,7 @@ export const Headers = () => {
                             Submit a resource
                         </Link>}
 
-                        <Button
-                            size="icon"
-                            variant='secondary'
-                            className="rounded-full"
-                            aria-label={m["navigation.aria.notifications"]()}
-                        >
-                            <HugeiconsIcon icon={MessageIcon} />
-                        </Button>
+                        {inboxLink}
                     </motion.div>
 
                     <motion.div
@@ -231,6 +259,13 @@ export const Headers = () => {
                                 Login to transspace
                             </Link>
                         }
+                    </motion.div>
+
+                    <motion.div
+                        variants={fadeDown}
+                        className="mr-1 flex items-center md:hidden"
+                    >
+                        {inboxLink}
                     </motion.div>
 
                     <motion.div variants={fadeDown}>
@@ -347,8 +382,8 @@ export const Headers = () => {
                             onMouseLeave={scheduleClose}
                             style={{ top: navHeight }}
                             className={cn(
-                                "fixed inset-x-0 z-40 border-b border-border/35 bg-background/5 shadow-lg",
-                                'backdrop-blur'
+                                "fixed inset-x-0 z-35 border-b border-border/35 bg-background/5",
+                                'backdrop-blur shadow-lg opacity-100'
                             )}
                         >
                             <div className="container mx-auto grid grid-cols-2 gap-x-8 gap-y-6 py-7 md:grid-cols-4">
@@ -361,14 +396,17 @@ export const Headers = () => {
                                                 to={item.to}
                                                 className={cn(
                                                     "flex items-start gap-3 rounded-xl p-2.5",
-                                                    "transition-colors hover:bg-muted",
+                                                    "transition-colors hover:bg-accent/35",
                                                 )}
                                             >
-                                                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted">
-                                                    <HugeiconsIcon icon={group.icon} className="size-4" />
+                                                <span className={cn(
+                                                    "flex size-9 shrink-0 items-center justify-center rounded-full bg-primary",
+                                                    'text-primary-foreground'
+                                                )}>
+                                                    <HugeiconsIcon icon={group.icon} className="size-5.5" />
                                                 </span>
                                                 <span className="flex min-w-0 flex-col">
-                                                    <strong>{item.label}</strong>
+                                                    <h3>{item.label}</h3>
                                                     <p>{item.description}</p>
                                                 </span>
                                             </Link>

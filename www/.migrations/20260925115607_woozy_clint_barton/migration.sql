@@ -1,0 +1,1 @@
+ALTER TABLE `supportPost` ADD `isRecurring` integer DEFAULT false NOT NULL;

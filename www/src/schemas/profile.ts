@@ -18,5 +18,10 @@ export const profile = sqliteTable("profile", {
     // JSON array in one text column, since D1 has no native array type (spec
     // 0001 Data model sketch)
     topics: text("topics"),
+    // an optional self-reported range (e.g. "18-24"), never a birthdate;
+    // shown to a moderator reviewing a support post, spec 0005 territory.
+    // No settings UI sets this yet; it reads as unset until one exists
+    // (spec 0005 Follow-up)
+    ageRange: text("ageRange"),
     deletedAt: integer("deletedAt", { mode: "timestamp_ms" }),
 })

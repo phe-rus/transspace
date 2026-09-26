@@ -8,6 +8,10 @@ export const CONTENT_TYPES = [
     "story",
     "opportunity",
     "business",
+    // spec 0005: a support_post's trustSignal row is created at publish
+    // time, not submission, so an unreviewed financial ask can't
+    // accumulate cosigns before a moderator has seen it (spec 0005 AC-6)
+    "supportPost",
 ] as const
 
 export type ContentType = (typeof CONTENT_TYPES)[number]

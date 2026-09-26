@@ -12,4 +12,12 @@ export const userLink = sqliteTable("userLink", {
     createdAt: integer("createdAt", { mode: "timestamp_ms" })
         .notNull(),
     deletedAt: integer("deletedAt", { mode: "timestamp_ms" }),
+    // a ban blocks sign-in (getCurrentSession treats a banned account as
+    // signed out, see middleware/session.ts) without deleting the
+    // account or its data, so it can be reversed. Admin-only, never
+    // self-service; bannedBy has no FK so a banned admin's own row
+    // isn't tangled in the deleted account's foreign key graph
+    bannedAt: integer("bannedAt", { mode: "timestamp_ms" }),
+    bannedBy: text("bannedBy"),
+    banReason: text("banReason"),
 })

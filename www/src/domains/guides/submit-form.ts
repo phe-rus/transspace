@@ -9,7 +9,8 @@ export const submitGuideFormSchema = z.object({
     seriesOrder: z.number().int().min(1).optional(),
     coverImageUrl: z.string().optional(),
     videoUrl: z.string().optional(),
-    turnstileToken: z.string().min(1),
+    // fetched on demand from the app-wide Turnstile widget at submit
+    // time via useTurnstileToken(), not held in form state
 })
 
 export const submitGuideDefaults: z.input<typeof submitGuideFormSchema> = {
@@ -21,5 +22,4 @@ export const submitGuideDefaults: z.input<typeof submitGuideFormSchema> = {
     seriesOrder: undefined,
     coverImageUrl: "",
     videoUrl: "",
-    turnstileToken: "",
 }

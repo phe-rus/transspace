@@ -2,12 +2,13 @@ import { betterAuth } from "better-auth/minimal"
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2"
 import { genericOAuth } from "better-auth/plugins/generic-oauth"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
-import { eq } from "drizzle-orm"
+import { count, eq } from "drizzle-orm"
 import { db } from "@/db"
 import * as authSchema from "@/schemas/auth"
 import { account as authAccount } from "@/schemas/auth"
 import { userLink } from "@/schemas/user-link"
 import { profile } from "@/schemas/profile"
+import { admins } from "@/schemas/moderation"
 
 const authEnv = {
     BETTER_AUTH_SECRET: import.meta.env.BETTER_AUTH_SECRET ?? process.env.BETTER_AUTH_SECRET,
@@ -104,6 +105,25 @@ export const auth = betterAuth({
                         id: crypto.randomUUID(),
                         userLinkId: createdAccount.userId,
                     })
+                    // the very first account on the whole platform
+                    // becomes the founder (grantedBy null marks them as
+                    // such, see lib/admins.ts isFounder): full
+                    // privileges everywhere, including being the only
+                    // one who can promote or demote a super admin, and
+                    // the one nobody else can remove or demote. Counted
+                    // after this insert, so ===1 means this row is that
+                    // first account.
+                    const [{ total }] = await db
+                        .select({ total: count() })
+                        .from(userLink)
+                    if (total === 1) {
+                        await db.insert(admins).values({
+                            userLinkId: createdAccount.userId,
+                            role: "super_admin",
+                            grantedBy: null,
+                            grantedAt: new Date(),
+                        })
+                    }
                     await clearInfraTokens(createdAccount.id)
                 },
             },

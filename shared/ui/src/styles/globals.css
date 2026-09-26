@@ -332,8 +332,18 @@
   }
 }
 
-body::-webkit-scrollbar {
-  @apply hidden;
+/*
+  No scrollbar is ever drawn, on the page or in any nested scroller; scrolling
+  itself is untouched. Unlayered on purpose, so no utility or third party
+  style can bring one back.
+*/
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
