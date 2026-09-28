@@ -1,11 +1,11 @@
 # 0010. Communities: topic spaces with threads, live chat and voice
 
-**Date**: 2026-09-26
+**Date**: 2026-09-26 (updated 2026-09-26: lives, hands raised voice, dockable floating live, Turnstile off writes)
 **Status**: In Progress
 
 ## Summary
 
-Communities are a fixed set of topic spaces (the story topics plus a General lounge) where signed in people start threads, reply, chat live and talk in small voice rooms. Threads are rows in the existing guide table, replies are the comments from spec 0009, and each community's live chat and voice run in one Cloudflare Durable Object (a small always available server object per community). Everything runs on the free Cloudflare account until about 1,000 monthly active people, and no one ever sees another person's IP address (the network address that can reveal where someone is).
+Communities are a fixed set of topic spaces (the story topics plus a General lounge) where signed in people start threads, reply, and join lives: a live is started and ended by a host, carries a text chat that is deleted when it ends, and can open a small voice room whose speakers the host brings up. Threads are rows in the existing guide table, replies are the comments from spec 0009, and each community's live chat and voice run in one Cloudflare Durable Object (a small always available server object per community). Everything runs on the free Cloudflare account until about 1,000 monthly active people, and no one ever sees another person's IP address (the network address that can reveal where someone is).
 
 ## Requirements
 
@@ -26,15 +26,17 @@ Communities are a fixed set of topic spaces (the story topics plus a General lou
 - **AC-8**: People reply to a published thread with the comments from spec 0009 (plain text, one level of replies, delete, report, block). Every visible reply moves the thread's last activity time to the reply's time.
 - **AC-9**: The home page section "Trending in your communities" shows the most recently active threads from the communities the person joined. With no joined communities it shows the most recently active threads across all communities, with a nudge to join.
 - **AC-10**: The header link "Communities" goes to `/communities`. The profile row "Communities" is enabled and lists the joined communities, linking to each.
-- **AC-11**: The Live tab connects to the community's room and shows the text chat in real time. Messages show the sender's pseudonymous profile name, never anonymous. A message is 1 to 1000 characters of plain text. A person can send at most 20 messages per minute in a room.
-- **AC-12**: Chat is kept for the community's retention period, 24 hours by default. A moderator can set it to 24 hours, 7 days or 30 days per community. Messages older than the period are deleted from the room's storage, not hidden.
+- **AC-11**: The Live tab connects to the community's room. A live is started by an established member (the AC-5 rule) or a moderator, who becomes its host, and is ended by that host or a moderator. A live everyone has left ends itself after 2 minutes. Chat works only while a live runs, in real time. Messages show the sender's pseudonymous profile name, never anonymous. A message is 1 to 1000 characters of plain text. A person can send at most 20 messages per minute in a room.
+- **AC-12**: When a live ends, its chat is deleted from the room's storage at once, not hidden. Reported messages survive only as their report copy (AC-16). There is no retention setting.
 - **AC-13**: When the connection drops or the tab sleeps, the page reconnects on its own with a growing delay, then loads the messages it missed since the last one it saw.
-- **AC-14**: An established member (the AC-5 rule) can open a voice room in a community. Up to 6 people join and all can speak. Audio travels browser to browser, always forced through the TURN relay (a relay server that forwards audio so browsers never connect directly), so no participant ever learns another participant's IP address. Nothing is recorded.
-- **AC-15**: When voice is full, a 7th person stays in the text chat and sees "Voice is full (6 of 6)". When a seat frees, the first person waiting gets a prompt to join, which stays open for 20 seconds before passing to the next person waiting. A person whose connection drops keeps their seat for 30 seconds.
-- **AC-16**: Anyone in a room can report a chat message (the report keeps a copy of its text for moderators) and block a person. A blocked person's chat, replies and threads are hidden from the person who blocked them, including in thread lists and the home feed. Moderators can remove a chat message for everyone, remove a person from a room, and end any voice room. A voice room's host can mute or remove people in that voice room.
+- **AC-14**: Voice is part of a live: only the live's host (or a moderator) opens it, and the live host is the voice host. When the host leaves, hosting passes to the longest seated speaker; with no one seated the live ends. Up to 6 people hold seats and all of them can speak. People without a seat stay in the text chat and do not hear voice (listening needs the SFU follow up). Audio travels browser to browser, always forced through the TURN relay (a relay server that forwards audio so browsers never connect directly), so no participant ever learns another participant's IP address. Nothing is recorded.
+- **AC-15**: Anyone in the live can raise a hand. The host sees raised hands in the order raised and brings a person onto a free seat, or declines them (a declined person can raise again after 60 seconds). The host can also move a speaker back down to the chat, and invite someone who did not raise a hand, who accepts or ignores the invite. When all 6 seats are taken, bringing up is disabled and the host sees "Voice is full (6 of 6)". A person whose connection drops keeps their seat for 30 seconds.
+- **AC-16**: Anyone in a room can report a chat message (the report keeps a copy of its text for moderators) and block a person. A blocked person's chat, replies and threads are hidden from the person who blocked them, including in thread lists and the home feed. Moderators can remove a chat message for everyone, remove a person from a room, and end any voice room. The live's host can mute, move down or remove people in its voice room.
 - **AC-17**: A decoy session (the app lock duress PIN) can read communities and threads, and cannot join, post, reply, report, or enter a live room.
 - **AC-18**: The whole feature runs on the Cloudflare Workers Free plan. When daily usage nears the free limits, new voice rooms pause first, then chat sending slows to one message per 10 seconds per person. Threads and replies are never limited by this. Each state shows a short notice.
 - **AC-19**: Every page under `/communities` and every thread is marked `noindex` and never rendered for signed out visitors.
+- **AC-20**: A person stays in one live at a time across the whole app: leaving the Live tab keeps the live (and their voice) going, and only "Leave live" or the live ending disconnects. Away from the Live tab a floating circle shows the community icon, the people count and a pulse while someone speaks; it expands into a panel, which can pop out into an always on top window where the browser supports it (Document Picture in Picture).
+- **AC-21**: The floating circle can be dragged anywhere and on release glides to the nearest left or right edge at the height it was dropped, always inside the viewport and clear of the mobile bottom nav. It starts at the bottom left. Its position is remembered on this device only (browser storage, falling back to bottom left when storage is unavailable) and re clamped when the window resizes or rotates. Expanding opens the panel anchored to the circle and growing toward the middle of the screen (docked left opens rightward); on phones below the small breakpoint it opens as a bottom sheet. Dragging works with mouse, touch and keyboard (arrow keys move it, Enter expands).
 
 ## Decision
 
@@ -59,7 +61,7 @@ Reasoning and options: see [rationale.md](rationale.md).
 | Reply | `message` (spec 0009), `kind = "comment"` | `id` | `contentType = "guide"`, `contentId` (thread id), `authorUserLinkId`, `parentId`, `body`, `status`, `createdAt` | many to 1 thread, many to 1 `userLink` |
 | Chat report | `message`, `kind = "report"` | `id` | `contentType = "chat"`, `contentId` (`<slug>:<chatMessageId>`), `authorUserLinkId` (the reporter), `toUserLinkId` (the reported person), `body` (a copy of the reported text), `createdAt` | many to 1 `userLink` twice |
 | Person | `userLink` | `id` | **`joinedCommunities`** (nullable text, JSON array of slugs), `blockedUserIds` (spec 0009) | |
-| Community room | Durable Object `CommunityRoom`, one per slug, SQLite storage | slug | `settings.retentionHours` (24, 168 or 720, default 24); chat rows: `id`, `authorUserLinkId`, `authorName`, `body`, `status` (visible, removed), `createdAt`; voice state, persisted in the same storage so it survives hibernation (the object sleeping between events, which clears memory): `hostUserLinkId`, `seats` (up to 6, each with `heldUntil` when dropped), `waiting` (ordered), `offer` (`userLinkId`, `expiresAt`) | 1 per community |
+| Community room | Durable Object `CommunityRoom`, one per slug, SQLite storage | slug | live settings: `liveHost`, `liveHostName`, `liveStartedAt`, `liveEmptySince`; chat rows (deleted when the live ends): `id`, `authorUserLinkId`, `authorName`, `body`, `status` (visible, removed), `createdAt`; voice state, persisted in the same storage so it survives hibernation (the object sleeping between events, which clears memory): `voiceOpen`, `seats` (up to 6, each with `seatedAt`, `muted`, `heldUntil` when dropped), `hands` (`userLinkId`, `raisedAt`, ordered), `declined` (`userLinkId`, `until`), `invites` (`userLinkId`, `invitedAt`) | 1 per community |
 | Live hub | Durable Object `LiveHub`, a single instance, SQLite storage | `"global"` | per UTC day: `chatMessages`, `voiceSeconds`, `roomRequests`; per slug: `liveCount`, `updatedAt` | reported to by every room |
 
 New index: `guide_thread_idx` on (`kind`, `category`, `status`, `lastActivityAt`). One migration adds `guide.threadType`, `guide.lastActivityAt`, `userLink.joinedCommunities` and the index. Spec 0009 step one adds `message` and `userLink.blockedUserIds`.
@@ -68,11 +70,13 @@ New index: `guide_thread_idx` on (`kind`, `category`, `status`, `lastActivityAt`
 
 **State transitions**:
 - Thread: `pending → published` (moderator approves, or automatic for an established author) · `pending → rejected` · `published → rejected` (moderator takedown). Same machine as guides and stories.
-- Chat message: `visible → removed` (moderator), then deleted by the retention timer either way.
-- Voice seat: `waiting → seated → left`, with `seated → held` for 30 seconds after a drop, then `held → left` or `held → seated` on reconnect.
+- Live: `closed → open` (established member or moderator starts it) · `open → closed` (host or moderator ends it, or 2 minutes empty). Closing ends voice and deletes chat.
+- Chat message: `visible → removed` (moderator), then deleted when the live ends either way.
+- Voice seat: `inChat → handRaised → seated` (host brings up) · `handRaised → inChat` (declined, 60 second cool down, or lowered) · `inChat → invited → seated` (invite accepted) · `seated → inChat` (moved down or left) · `seated → held` for 30 seconds after a drop, then `held → inChat` or `held → seated` on reconnect.
+- Host: live host → longest seated speaker when the host leaves → live ends if no one is seated.
 - Live mode (from `LiveHub`): `normal → voicePaused → chatSlowed`, and back to `normal` at the start of the next UTC day.
 
-**API surface** (server functions unless marked; all signed in; writes need a non decoy session, Turnstile and the write rate limit, as spec 0009):
+**API surface** (server functions unless marked; all signed in; writes need a non decoy session and the write rate limit. No Turnstile: it guards login only):
 
 | Endpoint | Method | Key inputs | Key outputs | Auth | Key errors |
 |---|---|---|---|---|---|
@@ -80,14 +84,13 @@ New index: `guide_thread_idx` on (`kind`, `category`, `status`, `lastActivityAt`
 | `setCommunityJoined` | POST | `slug`, `joined: boolean` | joined list | signed in, not decoy | 422 unknown slug |
 | `listThreads` | GET | `slug`, `threadType?`, `cursor?` | threads (title, excerpt, type, author name or null, replyCount, lastActivityAt), `nextCursor` | signed in | 404 unknown slug |
 | `getThread` | GET | `id` | thread with body, author name or null, `isHealth` | signed in | 404 not published or not a thread |
-| `submitThread` (extends `submitGuide`) | POST | `slug`, `title`, `excerpt`, `threadType`, `authorVisibility`, `bodyContent`, `turnstileToken` | id, status (published or pending) | signed in, not decoy | 422, 429 |
+| `submitThread` (extends `submitGuide`) | POST | `slug`, `title`, `excerpt`, `threadType`, `authorVisibility`, `bodyContent` | id, status (published or pending) | signed in, not decoy | 422, 429 |
 | `listHomeThreads` | GET | none | up to 5 threads, `fromJoined: boolean` | signed in | none |
 | spec 0009 comment endpoints | | `contentType = "guide"`, `contentId` | | as spec 0009 | as spec 0009 |
 | `/api/communities/$slug/room` (route) | GET, WebSocket upgrade | session cookie | a WebSocket to the room | signed in, not decoy | 401, 403 decoy, 404 slug |
 | `getTurnCredentials` | POST | `slug` | `iceServers` (TURN only), `ttl` | signed in, not decoy, seated in that room's voice | 403, 503 voice paused |
-| `setRoomRetention` | POST | `slug`, `hours` (24, 168, 720) | hours | moderator | 403, 422 |
 
-WebSocket messages (JSON, `type` field). Client to room: `chat.send {body}`, `chat.history {sinceId}`, `chat.remove {id}` (moderator), `chat.report {id, reason?}`, `voice.open`, `voice.join`, `voice.leave`, `voice.signal {to, sdp or candidate}`, `voice.mute {userLinkId}` (host), `voice.remove {userLinkId}` (host or moderator), `voice.end` (moderator), `room.removePerson {userLinkId}` (moderator). Room to client: `chat.message`, `chat.removed`, `chat.history`, `voice.state {seats, waiting, hostUserLinkId}`, `voice.signal`, `voice.seatFree`, `live.mode {mode}`, `error {code}`.
+WebSocket messages (JSON, `type` field). Client to room: `chat.send {body}`, `chat.history {sinceId}`, `chat.remove {id}` (moderator), `chat.report {id, reason?}`, `live.start`, `live.end` (host or moderator), `voice.open` (live host or moderator), `voice.hand {raised: boolean}`, `voice.bringUp {userLinkId}` (host), `voice.decline {userLinkId}` (host), `voice.moveDown {userLinkId}` (host), `voice.invite {userLinkId}` (host), `voice.acceptInvite`, `voice.leave`, `voice.signal {to, sdp or candidate}`, `voice.mute {userLinkId}` (host), `voice.remove {userLinkId}` (host or moderator), `voice.end` (host or moderator), `room.removePerson {userLinkId}` (moderator). Room to client: `live.session`, `live.ended`, `chat.message`, `chat.removed`, `chat.history`, `voice.state {seats, hands, invites, hostUserLinkId}`, `voice.invited`, `voice.declined {until}`, `voice.signal`, `voice.removed`, `live.mode {mode}`, `error {code}`.
 
 **Value sourcing**:
 
@@ -107,36 +110,41 @@ WebSocket messages (JSON, `type` field). Client to room: `chat.send {body}`, `ch
 | `chat.send` | authorName | the `displayName` passed at connect time, stored with the message so later reads need no database call |
 | `chat.send` | createdAt, id | the room's clock and a random id |
 | chat delivery | hidden from blocker | the connection's `blockedUserIds` from connect time, refreshed on reconnect |
-| retention timer | cutoff | `now - settings.retentionHours`, run by a Durable Object alarm (a timer the object schedules for itself) every hour |
+| live end | chat deleted | `DELETE FROM chat` in the same step that clears the live settings; the empty live check runs on the room's alarm (a timer the object schedules for itself) using `liveEmptySince` + 2 minutes |
 | `chat.report` | copied text, reported person | the room's stored row for that id, inserted by the room itself as a `message` row with `kind = report`, through the D1 binding (Durable Object classes in this worker receive the same `env`, including `D1`) and the shared insert helper from the messages domain |
-| `voice.open` | allowed | `isEstablished` read from D1 at that moment, and `LiveHub` mode is not `voicePaused` or later |
+| `live.start` | allowed | `isEstablished` or `isModerator` read from D1 at that moment |
+| `voice.open` | allowed | caller is `liveHost` or `isModerator` (D1, at that moment), and `LiveHub` mode is not `voicePaused` or later |
+| host handoff | new host | the seat with the smallest `seatedAt` when the host leaves or is held past 30 seconds; none seated ends the live |
+| `voice.bringUp`, `voice.acceptInvite` | seat allowed | the person has a raised hand or an open invite, and seats used < 6 |
+| `voice.hand` | allowed | no `declined` row for the person with `until` in the future |
 | `getTurnCredentials` | seated check | a call to the room's Durable Object stub asking whether the caller holds a seat, never D1 |
-| seat hold and seat offer | expiry | `heldUntil` (drop time + 30 seconds) and `offer.expiresAt` (offer time + 20 seconds) in room storage, enforced by the room's alarm, never an in memory timer |
+| seat hold, decline cool down | expiry | `heldUntil` (drop time + 30 seconds) and `declined.until` (decline time + 60 seconds) in room storage, enforced by the room's alarm, never an in memory timer |
+| floating circle position | side, height | browser storage key per device (`left` or `right`, height as a fraction of the viewport), read in try/catch; default left, bottom |
 | `getTurnCredentials` | iceServers, ttl | minted per request from the Cloudflare Realtime TURN API with `CF_TURN_KEY_ID` and `CF_TURN_KEY_API_TOKEN`, time to live 1 hour; the client sets `iceTransportPolicy: "relay"` |
 | live mode | normal, voicePaused, chatSlowed | `LiveHub` daily counters as a percent of `LIVE_VOICE_SECONDS_DAILY_LIMIT`, `LIVE_CHAT_MESSAGES_DAILY_LIMIT` and `LIVE_ROOM_REQUESTS_DAILY_LIMIT` (whichever is highest), compared with `LIVE_VOICE_PAUSE_AT` and `LIVE_CHAT_SLOW_AT`; rooms report their counts every 60 seconds |
 | reply post (spec 0009) | whether to touch the thread | the comment handler looks up `guide.kind` for `contentId`; only when it is `thread` does the same `db.batch` also set `lastActivityAt` |
 | thread lists and home feed | hidden authors | the caller's `userLink.blockedUserIds`, filtered in the query |
 | `listCommunities`, `listThreads` | tie order | the fixed order of `data/communities.ts`; thread `id` after `lastActivityAt` |
-| "Voice is full" | seats used | the room's in memory `seats` length out of 6 |
+| "Voice is full" | seats used | the stored `seats` count out of 6 |
 
 **Key invariants**:
 - A thread always has a `threadType`, an `authorVisibility` and a slug from `data/communities.ts`. A guide or story never has a `threadType`.
 - An anonymous thread's author name is `null` in every read, including moderator lists shown outside the moderation screen.
 - The browser never gets a TURN configuration that allows a direct connection: `iceServers` holds TURN entries only and the client forces relay.
-- Chat older than the retention period does not exist in storage after the next alarm run.
+- A live that has ended has no chat rows in storage.
 - A removed chat message is never sent again, only its `chat.removed` marker.
 - The room trusts only identity headers set by the worker route. A request reaching the Durable Object any other way is refused.
-- Voice never has more than 6 seats. Only established members open a voice room.
-- Room state that must outlive a single event (voice seats, holds, the seat offer, retention settings) lives in the room's storage, never only in memory, and every deadline runs on the room's alarm.
+- Voice never has more than 6 seats. Only the live host or a moderator opens voice, and only the host (or a moderator) puts a person on a seat.
+- Room state that must outlive a single event (live settings, voice seats, holds, hands, decline cool downs, invites) lives in the room's storage, never only in memory, and every deadline runs on the room's alarm.
 - Moderator and established status are checked against D1 at the moment of each privileged action.
 - Nothing about communities is ever returned to a signed out request.
 
 **Security model**:
 - Signed in only for everything, `noindex` on every page. Decoy sessions read only (spec 0001 AC-6 rule).
-- Writes (threads, replies, joins, reports) need Turnstile and the write rate limit. Chat is rate limited inside the room (20 per minute, 1 per 10 seconds when slowed).
-- Moderators (`userLink` moderator columns, spec 0008) review pending threads, remove chat, remove people, end voice rooms, set retention. A voice host's powers stop at their own voice room.
+- Writes (threads, replies, joins, reports) need a signed in, non decoy session and the write rate limit. Turnstile guards login only. Chat is rate limited inside the room (20 per minute, 1 per 10 seconds when slowed).
+- Moderators (`userLink` moderator columns, spec 0008) review pending threads, remove chat, remove people, end lives and voice rooms; each such action is written to the moderation audit log. A live host's powers stop at their own live.
 - IP addresses: the relay only design means participants never see each other's addresses. The worker and Durable Object never store IP addresses.
-- No recording of voice, and chat is kept 24 hours by default. Reported messages are the only chat kept beyond retention, as `message` report rows.
+- No recording of voice, and chat is deleted when the live ends. Reported messages are the only chat kept after that, as `message` report rows.
 - Public reads select named `userLink` columns only (spec 0008 AC-5).
 
 **Configuration required**:
@@ -154,11 +162,14 @@ WebSocket messages (JSON, `type` field). Client to room: `chat.send {body}`, `ch
 - Review rule: a 3 day old account's thread lands as pending in the moderator inbox and is not listed until approved, verifies **AC-5**.
 - Anonymity: an anonymous thread returns no author name from `listThreads`, `getThread` and `listHomeThreads`, verifies **AC-6**.
 - Live chat: two tabs exchange messages, one drops for a minute and catches up with every missed message on reconnect, verifies **AC-11**, **AC-13**.
-- Retention: with retention at 24 hours, a message stored 25 hours ago is gone after the alarm runs, verifies **AC-12**.
-- Voice relay: the client's peer connection reports only relay candidates, and a 7th joiner sees the full notice and gets the seat prompt when someone leaves, verifies **AC-14**, **AC-15**.
+- Live end: a host ends a live with 10 messages; the room's chat table is empty and a reconnecting tab gets no history, verifies **AC-11**, **AC-12**.
+- Hands: a person raises a hand, the host declines, the person cannot raise again for 60 seconds; after that the host brings them up and they get TURN credentials, verifies **AC-15**.
+- Host handoff: the host leaves with two seated speakers; the one seated first becomes host, verifies **AC-14**.
+- Dock: drag the circle to the right middle, reload, and it returns there; with storage blocked it starts bottom left; rotating the phone keeps it on screen, verifies **AC-21**.
+- Voice relay: the client's peer connection reports only relay candidates, and with 6 seated the host cannot bring up a 7th, verifies **AC-14**, **AC-15**.
 - Report after expiry: a reported chat message is still readable by a moderator after the room deleted the original, verifies **AC-16**.
 - Demoted moderator: a moderator connected to a room loses moderator status, and their next `chat.remove` is refused without reconnecting, verifies **AC-16**.
-- Hibernation: a room sleeps with 3 seated people and one waiting; on the next event the seats and the waiting order are intact, verifies **AC-14**, **AC-15**.
+- Hibernation: a room sleeps with 3 seated people and two hands raised; on the next event the seats and the hand order are intact, verifies **AC-14**, **AC-15**.
 - Decoy: a decoy session gets 403 on the room upgrade and on `submitThread`, and can still read a thread, verifies **AC-17**.
 - Free plan: with `LiveHub` counters past `LIVE_VOICE_PAUSE_AT`, `voice.open` and `getTurnCredentials` refuse with the paused notice while threads still post, verifies **AC-18**.
 - Signed out: every communities route redirects to sign in and sends `noindex`, verifies **AC-1**, **AC-19**.
@@ -185,12 +196,18 @@ Slice 3, live text chat:
 11. [x] The Live tab UI with reconnect and catch up, and live counts in `listCommunities` from `LiveHub`, satisfies **AC-1**, **AC-13**.
 
 Slice 4, voice:
-12. `getTurnCredentials` and the TURN key secrets, satisfies **AC-14**.
+12. [x] `getTurnCredentials` (code done; setting the `CF_TURN_KEY_ID` and `CF_TURN_KEY_API_TOKEN` secrets in Cloudflare is the remaining manual step), satisfies **AC-14**.
 13. [x] Voice signalling in the room: open, join, persisted seats, waiting order, 30 second hold and 20 second seat offer on alarms, host mute and remove, moderator end, satisfies **AC-14**, **AC-15**, **AC-16**.
 14. [x] The voice bar UI: relay only peer connections for up to 6 people, the full notice and seat prompt, satisfies **AC-14**, **AC-15**.
 
 Slice 5, free plan guard:
 15. [x] `LiveHub` daily counters (chat messages, voice seconds, room requests) with the three daily limit settings, the live mode, and the notices for paused voice and slowed chat, satisfies **AC-18**.
+
+Slice 6, update of 2026-09-26 (built on what shipped):
+16. Remove retention: `setRoomRetention`, its moderator control, the retention sweep and `RETENTION_HOURS`; chat goes only when the live ends, satisfies **AC-12**.
+17. One host: drop the separate `voiceHost` setting, voice opens by the live host or a moderator, host handoff to the longest seated speaker, satisfies **AC-14**.
+18. Hands: replace the waiting line and the 20 second seat offer (`SEAT_OFFER_MS`, `voice_waiting`) with hands, decline cool down, bring up, move down and invite, plus the host's hands list in the voice bar, satisfies **AC-15**, **AC-16**.
+19. Dockable floating circle: drag with edge snap, default bottom left, per device position, resize clamp, keyboard moves, panel anchored to the circle and a bottom sheet on phones, satisfies **AC-20**, **AC-21**.
 
 Each slice adds its copy in en, de, fr and zh.
 
@@ -203,11 +220,11 @@ Each slice adds its copy in en, de, fr and zh.
 - Runs on the free plan, with a planned, measured point to move to paid.
 
 **Negative / tradeoffs**:
-- Voice tops out at 6 people, and a full room relays about 0.45 GB per hour through the free TURN allowance, until the move to the Cloudflare Realtime SFU (a media server that forwards audio, allowing many listeners) planned at 1,000 monthly active people.
+- Voice tops out at 6 speakers and people without a seat cannot listen, and a full room relays about 0.45 GB per hour through the free TURN allowance, until the move to the Cloudflare Realtime SFU (a media server that forwards audio, allowing many listeners) planned at 1,000 monthly active people.
 - The guide table now serves three kinds, so every guide read must keep filtering by `kind`.
 - Live rooms add the first stateful infrastructure (Durable Objects) to the app, which is new to operate and to test locally.
 - Adding a community needs a code change and deploy.
-- Chat display names are copied at send time, so a renamed or deleted person's old chat keeps the old name until retention removes it (at most 30 days).
+- Chat display names are copied at send time, so a renamed or deleted person's old chat keeps the old name until the live ends.
 - The free plan counters are estimates reported every 60 seconds, so a sudden spike can briefly pass a threshold before the mode changes.
 
 **Neutral**:
@@ -216,7 +233,9 @@ Each slice adds its copy in en, de, fr and zh.
 
 ## Follow-up
 
-- [ ] Move voice to the Cloudflare Realtime SFU, and plan the paid plan, when monthly active people reach 1,000 (new spec).
+- [ ] Remove the last Turnstile check on a write, in `www/src/domains/guides/func/upload-image.ts`.
+- [ ] Update `verify.md` for AC-11, AC-12, AC-14, AC-15, AC-20 and AC-21 (lives, hands, dock).
+- [ ] Move voice to the Cloudflare Realtime SFU (which also allows listeners without a seat), and plan the paid plan, when monthly active people reach 1,000 (new spec).
 - [ ] Check Cloudflare's current free plan limits (Durable Objects, requests per day, TURN data) against the thresholds before slice 3 ships; the numbers in this spec are from knowledge, not a live check.
 - [ ] Safety places (scope feature 22) can later link a place to a community thread.
 - [ ] Reply notifications (an installable web app with push) are out of scope here.
